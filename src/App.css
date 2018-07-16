@@ -1,0 +1,10 @@
+.App {
+  text-align: center;
+}
+
+.App-body {
+  display: flex;
+  max-width: 1200px;
+  padding: 1rem 2rem 4rem 2rem;
+  margin: auto;
+}

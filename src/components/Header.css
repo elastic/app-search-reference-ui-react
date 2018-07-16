@@ -1,0 +1,11 @@
+.Header {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  height: 50px;
+}
+
+.Header-label {
+  font-size: 20px;
+  margin-right: 10px;
+}
