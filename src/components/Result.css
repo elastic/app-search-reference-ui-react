@@ -1,0 +1,8 @@
+.Result {
+  border: 1px solid darkgray;
+  padding: 5px;
+}
+
+.Result + .Result {
+  margin-top: 10px;
+}

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import SearchBox from "../components/SearchBox";
 
-class App extends Component {
+class SearchBoxContainer extends Component {
   state = {
     value: "cat"
   };
@@ -18,4 +18,4 @@ class App extends Component {
   };
 }
 
-export default App;
+export default SearchBoxContainer;

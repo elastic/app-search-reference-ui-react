@@ -1,0 +1,11 @@
+.Meta {
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.Meta-term span + span {
+  margin-left: 5px;
+  font-style: italic;
+}
