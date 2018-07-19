@@ -1,10 +1,11 @@
+import PropTypes from "prop-types";
 import React from "react";
+
 import "./Results.css";
 
 import Result from "./Result";
 
-export default function Results({ results }) {
-  if (!results) return null;
+function Results({ results }) {
   return (
     <div className="Results">
       {results.map(result => (
@@ -13,3 +14,9 @@ export default function Results({ results }) {
     </div>
   );
 }
+
+Results.propTypes = {
+  results: PropTypes.array.isRequired
+};
+
+export default Results;

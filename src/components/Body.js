@@ -1,8 +1,9 @@
 import React from "react";
+
 import "./Body.css";
 
-import Results from "../containers/Results";
 import Meta from "../containers/Meta";
+import Results from "../containers/Results";
 
 export default function Body() {
   return (

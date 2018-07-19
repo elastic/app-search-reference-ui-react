@@ -1,7 +1,9 @@
+import PropTypes from "prop-types";
 import React from "react";
+
 import "./Meta.css";
 
-export default function Meta({ searchTerm, totalResults, current, size }) {
+function Meta({ current, size, searchTerm, totalResults }) {
   return (
     <div className="Meta">
       <div className="Meta-term">
@@ -14,3 +16,12 @@ export default function Meta({ searchTerm, totalResults, current, size }) {
     </div>
   );
 }
+
+Meta.propTypes = {
+  current: PropTypes.number.isRequired,
+  searchTerm: PropTypes.string.isRequired,
+  size: PropTypes.number.isRequired,
+  totalResults: PropTypes.number.isRequired
+};
+
+export default Meta;

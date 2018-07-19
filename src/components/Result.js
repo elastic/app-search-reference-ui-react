@@ -1,7 +1,14 @@
+import PropTypes from "prop-types";
 import React from "react";
+
 import "./Result.css";
 
-export default function Result({ result }) {
-  if (!result) return null;
+function Result({ result }) {
   return <div className="Result">Hi I'm result</div>;
 }
+
+Result.propTypes = {
+  result: PropTypes.object.isRequired
+};
+
+export default Result;
