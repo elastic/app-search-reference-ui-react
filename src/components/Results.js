@@ -7,7 +7,9 @@ export default function Results({ results }) {
   if (!results) return null;
   return (
     <div className="Results">
-      {results.map(result => <Result key={result.id} result={result} />)}
+      {results.map(result => (
+        <Result key={result.getRaw("id")} result={result} />
+      ))}
     </div>
   );
 }

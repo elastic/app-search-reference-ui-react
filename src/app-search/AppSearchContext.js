@@ -1,10 +1,12 @@
 import React from "react";
 
-export const AppSearchContext = React.createContext({
+const AppSearchContext = React.createContext({
   searchTerm: "",
   setSearchTerm: () => {},
   totalResults: 0,
-  currentItem: 0,
+  current: 0,
   size: 0,
   results: []
 });
+
+export default AppSearchContext;

@@ -1,24 +1,34 @@
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 
 import withAppSearch from "../app-search/withAppSearch";
 import SearchBox from "../components/SearchBox";
 
 export class SearchBoxContainer extends Component {
+  static propTypes = {
+    setSearchTerm: PropTypes.func.isRequired
+  };
+
   state = {
-    value: "cat"
+    value: ""
   };
 
   handleSubmit = e => {
+    const { setSearchTerm } = this.props;
+    const { value } = this.state;
+
     e.preventDefault();
-    this.props.setSearchTerm(this.state.value);
+    setSearchTerm(value);
   };
 
   render() {
+    const { value } = this.state;
+
     return (
       <SearchBox
-        value={this.state.value}
         onChange={this.handleChange}
         onSubmit={this.handleSubmit}
+        value={value}
       />
     );
   }

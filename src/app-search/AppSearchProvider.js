@@ -1,31 +1,52 @@
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 
-import { AppSearchContext } from "./AppSearchContext";
+import AppSearchContext from "./AppSearchContext";
 
 class AppSearchProvider extends Component {
+  static propTypes = {
+    children: PropTypes.element.isRequired,
+    driver: PropTypes.object.isRequired
+  };
+
   state = {
-    searchTerm: "lion"
+    current: 0,
+    results: [],
+    size: 0,
+    searchTerm: "",
+    totalResults: 0
   };
 
   setSearchTerm = searchTerm => {
-    this.setState({
-      searchTerm
+    const { driver } = this.props;
+
+    driver.search(searchTerm, {}).then(resultList => {
+      this.setState({
+        current: resultList.info.meta.page.current,
+        results: resultList.results,
+        size: resultList.info.meta.page.size,
+        searchTerm: searchTerm,
+        totalResults: resultList.info.meta.page.total_results
+      });
     });
   };
 
   render() {
+    const { children } = this.props;
+    const { current, results, size, searchTerm, totalResults } = this.state;
+
     return (
       <AppSearchContext.Provider
         value={{
-          searchTerm: this.state.searchTerm,
-          setSearchTerm: this.setSearchTerm,
-          totalResults: 1000,
-          currentItem: 1,
-          size: 20,
-          results: [{ id: "a" }, { id: "b" }, { id: "c" }]
+          current: current,
+          results: results,
+          size: size,
+          searchTerm: searchTerm,
+          totalResults: totalResults,
+          setSearchTerm: this.setSearchTerm
         }}
       >
-        {this.props.children}
+        {children}
       </AppSearchContext.Provider>
     );
   }
