@@ -1,14 +1,26 @@
 import React, { Component } from "react";
 
+import withAppSearch from "../app-search/withAppSearch";
 import SearchBox from "../components/SearchBox";
 
-class SearchBoxContainer extends Component {
+export class SearchBoxContainer extends Component {
   state = {
     value: "cat"
   };
 
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.setSearchTerm(this.state.value);
+  };
+
   render() {
-    return <SearchBox value={this.state.value} onChange={this.handleChange} />;
+    return (
+      <SearchBox
+        value={this.state.value}
+        onChange={this.handleChange}
+        onSubmit={this.handleSubmit}
+      />
+    );
   }
 
   handleChange = e => {
@@ -18,4 +30,4 @@ class SearchBoxContainer extends Component {
   };
 }
 
-export default SearchBoxContainer;
+export default withAppSearch(SearchBoxContainer);

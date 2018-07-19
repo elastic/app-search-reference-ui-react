@@ -5,15 +5,19 @@ import "./App.css";
 import Header from "./components/Header";
 import Body from "./components/Body";
 
+import AppSearchProvider from "./app-search/AppSearchProvider";
+
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <div className="App-body">
-          <Header />
-          <Body />
+      <AppSearchProvider>
+        <div className="App">
+          <div className="App-body">
+            <Header />
+            <Body />
+          </div>
         </div>
-      </div>
+      </AppSearchProvider>
     );
   }
 }

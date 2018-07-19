@@ -1,9 +1,9 @@
 import React from "react";
 import "./SearchBox.css";
 
-export default function SearchBox({ value, onChange }) {
+export default function SearchBox({ value, onChange, onSubmit }) {
   return (
-    <form className="SearchBox">
+    <form className="SearchBox" onSubmit={onSubmit}>
       <input
         className="SearchBox-input"
         type="text"
