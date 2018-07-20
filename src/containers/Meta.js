@@ -14,14 +14,16 @@ class MetaContainer extends Component {
 
   render() {
     const { current, searchTerm, size, totalResults } = this.props;
+    const start = totalResults === 0 ? 0 : (current - 1) * size + 1;
+    const end = totalResults <= size ? totalResults : start + size - 1;
 
     if (!searchTerm) return null;
 
     return (
       <Meta
-        current={current}
+        end={end}
         searchTerm={searchTerm}
-        size={size}
+        start={start}
         totalResults={totalResults}
       />
     );
