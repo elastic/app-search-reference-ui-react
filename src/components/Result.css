@@ -6,3 +6,17 @@
 .Result + .Result {
   margin-top: 10px;
 }
+
+.Result dl {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.Result dl dt {
+  width: 20%;
+}
+
+.Result dl dd {
+  width: 80%;
+  margin: 0;
+}

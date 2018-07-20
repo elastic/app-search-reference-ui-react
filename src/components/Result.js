@@ -3,12 +3,27 @@ import React from "react";
 
 import "./Result.css";
 
-function Result({ result }) {
-  return <div className="Result">Hi I'm result</div>;
+function Result({ fields, title }) {
+  return (
+    <div className="Result">
+      <h3>{title}</h3>
+      <dl>
+        {Object.keys(fields).map(key => {
+          return (
+            <React.Fragment key={key}>
+              <dt>{`${key}:`}</dt>
+              <dd>{fields[key]}</dd>
+            </React.Fragment>
+          );
+        })}
+      </dl>
+    </div>
+  );
 }
 
 Result.propTypes = {
-  result: PropTypes.object.isRequired
+  fields: PropTypes.object.isRequired,
+  title: PropTypes.string.isRequired
 };
 
 export default Result;

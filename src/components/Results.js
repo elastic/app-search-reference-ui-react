@@ -3,20 +3,12 @@ import React from "react";
 
 import "./Results.css";
 
-import Result from "./Result";
-
-function Results({ results }) {
-  return (
-    <div className="Results">
-      {results.map(result => (
-        <Result key={result.getRaw("id")} result={result} />
-      ))}
-    </div>
-  );
+function Results({ children }) {
+  return <div className="Results">{children}</div>;
 }
 
 Results.propTypes = {
-  results: PropTypes.array.isRequired
+  children: PropTypes.arrayOf(PropTypes.element).isRequired
 };
 
 export default Results;
