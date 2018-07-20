@@ -69,3 +69,7 @@ write their own components.
 - [ ] URL State
 - [ ] Configurable fields
 - [ ] Snippets
+- [ ] Autocomplete
+- [ ] Demonstrate config and download generation
+- [ ] Style
+- [ ] Add comments / tips - Productionize
