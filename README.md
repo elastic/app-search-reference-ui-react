@@ -70,6 +70,11 @@ write their own components.
 - [ ] Configurable fields
 - [ ] Snippets
 - [ ] Autocomplete
+- [ ] Automatic Facets and Filters
+- [ ] Sort
+- [ ] Results Per Page
+- [ ] Clickthroughs
+- [ ] Basic result page for clickthroughs
 - [ ] Demonstrate config and download generation
 - [ ] Style
 - [ ] Add comments / tips - Productionize
