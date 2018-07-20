@@ -3,6 +3,7 @@ import React from "react";
 import "./Body.css";
 
 import Meta from "../containers/Meta";
+import Paging from "../containers/Paging";
 import Results from "../containers/Results";
 
 export default function Body() {
@@ -10,6 +11,7 @@ export default function Body() {
     <div className="Body">
       <Meta />
       <Results />
+      <Paging />
     </div>
   );
 }

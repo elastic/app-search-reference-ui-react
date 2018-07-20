@@ -65,7 +65,7 @@ write their own components.
 
 ## TODO
 
-- [ ] Paging
+- [x] Paging
 - [ ] URL State
 - [ ] Configurable fields
 - [ ] Snippets
