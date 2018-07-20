@@ -16,7 +16,9 @@ function getTitle(result) {
 function formatResultFields(result) {
   var { _meta, id, name, title, ...filtered } = result.data;
   return Object.keys(filtered).reduce((acc, n) => {
-    acc[`${capitalizeFirstLetter(n)}`] = result.getRaw(n);
+    let value = result.getRaw(n);
+    value = Array.isArray(value) ? value.join(", ") : value;
+    acc[`${capitalizeFirstLetter(n)}`] = value;
     return acc;
   }, {});
 }
