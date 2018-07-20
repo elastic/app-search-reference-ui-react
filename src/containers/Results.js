@@ -9,6 +9,17 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+function getTitle(result) {
+  return result.getRaw("title") || result.getRaw("name") || result.getRaw("id");
+}
+
+function formatResultFields(result) {
+  var { _meta, id, name, title, ...filtered } = result.data;
+  return Object.keys(filtered).reduce((acc, n) => {
+    acc[`${capitalizeFirstLetter(n)}`] = result.getRaw(n);
+    return acc;
+  }, {});
+}
 class ResultsContainer extends Component {
   static propTypes = {
     results: PropTypes.array.isRequired
@@ -21,15 +32,10 @@ class ResultsContainer extends Component {
       <Results>
         {results.map(result => (
           <Result
-            fields={{
-              [`${capitalizeFirstLetter("description")}`]: result.getRaw(
-                "description"
-              ),
-              [`${capitalizeFirstLetter("version")}`]: result.getRaw("version")
-            }}
+            fields={formatResultFields(result)}
             key={`result-${result.getRaw("id")}`}
             result={result}
-            title={result.getRaw("name")}
+            title={getTitle(result)}
           />
         ))}
       </Results>
