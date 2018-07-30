@@ -6,13 +6,13 @@ import "./Result.css";
 function Result({ fields, title }) {
   return (
     <div className="Result">
-      <h3>{title}</h3>
+      <h3 dangerouslySetInnerHTML={{ __html: title }} />
       <dl>
         {Object.keys(fields).map(key => {
           return (
             <React.Fragment key={key}>
               <dt>{`${key}:`}</dt>
-              <dd>{fields[key]}</dd>
+              <dd dangerouslySetInnerHTML={{ __html: fields[key] }} />
             </React.Fragment>
           );
         })}

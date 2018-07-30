@@ -1,5 +1,17 @@
 {
   "engineName": "node-modules",
   "hostIdentifier": "host-n16af4",
-  "searchKey": "search-foueoyusuprj187kv7hyfof9"
+  "searchKey": "search-foueoyusuprj187kv7hyfof9",
+  "fields": [
+    "license",
+    "name",
+    "repository",
+    "created",
+    "dependencies",
+    "keywords",
+    "description",
+    "id",
+    "version",
+    "owners"
+  ]
 }

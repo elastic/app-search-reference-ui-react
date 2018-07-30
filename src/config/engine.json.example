@@ -1,5 +1,11 @@
 {
   "engineName": "your-engine-name",
   "hostIdentifier": "host-XXXXX",
-  "searchKey": "search-XXXXXXXXXXXXXXXXXXXXXXX"
+  "searchKey": "search-XXXXXXXXXXXXXXXXXXXXXXX",
+  "fields": [
+    "license",
+    "name",
+    "repository",
+    "created"
+  ]
 }

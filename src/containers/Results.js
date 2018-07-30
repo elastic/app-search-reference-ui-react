@@ -10,13 +10,19 @@ function capitalizeFirstLetter(string) {
 }
 
 function getTitle(result) {
-  return result.getRaw("title") || result.getRaw("name") || result.getRaw("id");
+  return (
+    result.getSnippet("title") ||
+    result.getRaw("title") ||
+    result.getSnippet("name") ||
+    result.getRaw("name") ||
+    result.getRaw("id")
+  );
 }
 
 function formatResultFields(result) {
   var { _meta, id, name, title, ...filtered } = result.data;
   return Object.keys(filtered).reduce((acc, n) => {
-    let value = result.getRaw(n);
+    let value = result.getSnippet(n) || result.getRaw(n);
     value = Array.isArray(value) ? value.join(", ") : value;
     acc[`${capitalizeFirstLetter(n)}`] = value;
     return acc;

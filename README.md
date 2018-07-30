@@ -68,7 +68,7 @@ write their own components.
 - [x] Paging
 - [ ] URL State
 - [ ] Configurable fields
-- [ ] Snippets
+- [x] Snippets
 - [ ] Autocomplete
 - [ ] Automatic Facets and Filters
 - [ ] Sort
