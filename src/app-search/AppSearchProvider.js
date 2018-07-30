@@ -9,46 +9,14 @@ class AppSearchProvider extends Component {
     driver: PropTypes.object.isRequired
   };
 
-  state = {
-    current: 1,
-    results: [],
-    size: 0,
-    searchTerm: "",
-    totalResults: 0
-  };
-
-  updateSearch = (searchTerm, current) => {
-    const { driver } = this.props;
-
-    driver
-      .search(searchTerm, {
-        page: {
-          size: 10,
-          current: current
-        }
-      })
-      .then(resultList => {
-        this.setState({
-          current: resultList.info.meta.page.current,
-          results: resultList.results,
-          size: resultList.info.meta.page.size,
-          searchTerm: searchTerm,
-          totalResults: resultList.info.meta.page.total_results
-        });
-      });
-  };
-
-  updatePage = current => {
-    const { searchTerm } = this.state;
-    this.updateSearch(searchTerm, current);
-  };
-
-  setSearchTerm = searchTerm => {
-    this.updateSearch(searchTerm, 1);
-  };
+  constructor(props) {
+    super(props);
+    this.state = props.driver.getState();
+    props.driver.subscribeToStateChanges(state => this.setState(state));
+  }
 
   render() {
-    const { children } = this.props;
+    const { children, driver } = this.props;
     const { current, results, size, searchTerm, totalResults } = this.state;
 
     return (
@@ -59,8 +27,8 @@ class AppSearchProvider extends Component {
           size: size,
           searchTerm: searchTerm,
           totalResults: totalResults,
-          updatePage: this.updatePage,
-          setSearchTerm: this.setSearchTerm
+          updatePage: driver.updatePage,
+          setSearchTerm: driver.setSearchTerm
         }}
       >
         {children}
