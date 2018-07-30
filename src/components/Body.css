@@ -2,4 +2,13 @@
   min-height: 100px;
   width: 100%;
   padding: 10px 0;
+  display: flex;
+}
+
+.Body-left {
+  width: 250px;
+  margin-right: 10px;
+}
+.Body-right {
+  flex: 1;
 }

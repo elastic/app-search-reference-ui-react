@@ -8,5 +8,6 @@
     "someField",
     "created"
   ],
-  "titleField": "title"
+  "titleField": "title",
+  "facets": ["anotherField", "someField"]
 }

@@ -28,9 +28,19 @@ function buildSearchOptionsFromConfig(config) {
     return acc;
   }, undefined);
 
+  const facets = (config.facets || []).reduce((acc, n) => {
+    acc = acc || {};
+    acc[n] = {
+      type: "value",
+      size: 10
+    };
+    return acc;
+  }, undefined);
+
   return {
-    search_fields: searchFields,
-    result_fields: resultFields
+    facets: facets,
+    result_fields: resultFields,
+    search_fields: searchFields
   };
 }
 

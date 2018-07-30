@@ -1,0 +1,9 @@
+.Facet {
+  min-height: 100px;
+  padding: 10px;
+  border: 1px solid darkgray;
+}
+
+.Facet + .Facet {
+  margin-top: 10px;
+}

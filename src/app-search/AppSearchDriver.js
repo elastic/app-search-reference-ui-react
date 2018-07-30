@@ -6,6 +6,7 @@ import * as SwiftypeAppSearch from "swiftype-app-search-javascript";
 export default class AppSearchDriver {
   state = {
     current: 1,
+    facets: {},
     results: [],
     size: 0,
     searchTerm: "",
@@ -63,6 +64,7 @@ export default class AppSearchDriver {
       .then(resultList => {
         this.setState({
           current: resultList.info.meta.page.current,
+          facets: resultList.info.facets,
           results: resultList.results,
           size: resultList.info.meta.page.size,
           searchTerm: searchTerm,

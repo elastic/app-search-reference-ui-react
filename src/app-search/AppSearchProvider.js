@@ -17,12 +17,20 @@ class AppSearchProvider extends Component {
 
   render() {
     const { children, driver } = this.props;
-    const { current, results, size, searchTerm, totalResults } = this.state;
+    const {
+      current,
+      facets,
+      results,
+      size,
+      searchTerm,
+      totalResults
+    } = this.state;
 
     return (
       <AppSearchContext.Provider
         value={{
           current: current,
+          facets: facets,
           results: results,
           size: size,
           searchTerm: searchTerm,
