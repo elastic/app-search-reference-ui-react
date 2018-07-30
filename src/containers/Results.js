@@ -4,24 +4,31 @@ import React, { Component } from "react";
 import withAppSearch from "../app-search/withAppSearch";
 import Results from "../components/Results";
 import Result from "../components/Result";
+import config from "../config/engine.json";
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+function getTitleField() {
+  // Use "title" as the title field if a user hasn't specified a title field
+  return config.titleField || "title";
+}
+
 function getTitle(result) {
+  const titleField = getTitleField();
+
   return (
-    result.getSnippet("title") ||
-    result.getRaw("title") ||
-    result.getSnippet("name") ||
-    result.getRaw("name") ||
-    result.getRaw("id")
+    result.getSnippet(titleField) ||
+    result.getRaw(titleField) ||
+    result.getRaw("id") // As a last resort, just show ID if nothing else
   );
 }
 
 function formatResultFields(result) {
-  var { _meta, id, name, title, ...filtered } = result.data;
-  return Object.keys(filtered).reduce((acc, n) => {
+  return Object.keys(result.data).reduce((acc, n) => {
+    if (["_meta", "id", getTitleField()].includes(n)) return acc;
+
     let value = result.getSnippet(n) || result.getRaw(n);
     value = Array.isArray(value) ? value.join(", ") : value;
     acc[`${capitalizeFirstLetter(n)}`] = value;

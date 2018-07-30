@@ -3,9 +3,10 @@
   "hostIdentifier": "host-XXXXX",
   "searchKey": "search-XXXXXXXXXXXXXXXXXXXXXXX",
   "fields": [
-    "license",
-    "name",
-    "repository",
+    "title",
+    "anotherField",
+    "someField",
     "created"
-  ]
+  ],
+  "titleField": "title"
 }
