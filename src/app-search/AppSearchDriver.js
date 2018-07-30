@@ -1,5 +1,8 @@
 import * as SwiftypeAppSearch from "swiftype-app-search-javascript";
 
+/*
+ * A framework agnostic state manager for App Search apps
+ */
 export default class AppSearchDriver {
   state = {
     current: 1,
@@ -9,13 +12,14 @@ export default class AppSearchDriver {
     totalResults: 0
   };
 
-  constructor(config) {
+  constructor({ hostIdentifier, searchKey, engineName, searchOptions }) {
     this.onStateChange = function() {};
-    this.config = config;
+    this.searchOptions = searchOptions || {};
+
     this.client = SwiftypeAppSearch.createClient({
-      hostIdentifier: config.hostIdentifier,
-      apiKey: config.searchKey,
-      engineName: config.engineName
+      hostIdentifier: hostIdentifier,
+      apiKey: searchKey,
+      engineName: engineName
     });
   }
 
@@ -46,23 +50,24 @@ export default class AppSearchDriver {
   };
 
   updateSearchResults = (searchTerm, current) => {
-    return this.search(searchTerm, {
-      page: {
-        size: 10,
-        current: current
-      }
-    }).then(resultList => {
-      this.setState({
-        current: resultList.info.meta.page.current,
-        results: resultList.results,
-        size: resultList.info.meta.page.size,
-        searchTerm: searchTerm,
-        totalResults: resultList.info.meta.page.total_results
+    return this.client
+      .search(
+        searchTerm,
+        Object.assign({}, this.searchOptions, {
+          page: {
+            size: 10,
+            current: current
+          }
+        })
+      )
+      .then(resultList => {
+        this.setState({
+          current: resultList.info.meta.page.current,
+          results: resultList.results,
+          size: resultList.info.meta.page.size,
+          searchTerm: searchTerm,
+          totalResults: resultList.info.meta.page.total_results
+        });
       });
-    });
   };
-
-  search() {
-    return this.client.search.apply(this.client, arguments);
-  }
 }
