@@ -18,7 +18,9 @@ function findFacetValueInFilters(name, filters) {
 class FacetsContainer extends Component {
   static propTypes = {
     addFilter: PropTypes.func.isRequired,
-    facets: PropTypes.object.isRequired
+    filters: PropTypes.arrayOf(PropTypes.object).isRequired,
+    facets: PropTypes.object.isRequired,
+    removeFilter: PropTypes.func.isRequired
   };
 
   render() {

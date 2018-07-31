@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 
 import "./Facet.css";
@@ -34,5 +35,13 @@ function Facet({ name, onRemove, onSelect, options, value }) {
     </div>
   );
 }
+
+Facet.propTypes = {
+  name: PropTypes.string.isRequired,
+  onRemove: PropTypes.func.isRequired,
+  onSelect: PropTypes.func.isRequired,
+  options: PropTypes.arrayOf(PropTypes.object).isRequired,
+  value: PropTypes.string
+};
 
 export default Facet;

@@ -37,7 +37,7 @@ function formatResultFields(result) {
 }
 class ResultsContainer extends Component {
   static propTypes = {
-    results: PropTypes.array.isRequired
+    results: PropTypes.arrayOf(PropTypes.object).isRequired
   };
 
   render() {
