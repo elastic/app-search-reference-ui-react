@@ -53,8 +53,7 @@ export default class AppSearchDriver {
   };
 
   setSearchTerm = searchTerm => {
-    const { filters } = this.state;
-    this.updateSearchResults(searchTerm, 1, filters);
+    this.updateSearchResults(searchTerm, 1, []);
   };
 
   updatePage = current => {
