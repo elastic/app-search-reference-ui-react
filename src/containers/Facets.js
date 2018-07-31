@@ -11,24 +11,33 @@ function capitalizeFirstLetter(string) {
 
 class FacetsContainer extends Component {
   static propTypes = {
+    addFilter: PropTypes.func.isRequired,
     facets: PropTypes.object.isRequired
   };
 
   render() {
-    const { facets } = this.props;
+    const { addFilter, facets } = this.props;
     const facetNames = Object.keys(facets);
-    if (facetNames.length === 0) return null;
+    if (!facetNames.length) return null;
 
     return (
       <Facets>
-        {facetNames.map(name => (
-          <Facet
-            key={name}
-            name={capitalizeFirstLetter(name)}
-            options={facets[name][0].data}
-            onSelect={() => {}}
-          />
-        ))}
+        {facetNames.map(name => {
+          const options = facets[name][0].data;
+          if (!options.length) return null;
+
+          return (
+            <Facet
+              key={name}
+              name={capitalizeFirstLetter(name)}
+              onSelect={({ clickEvent, value }) => {
+                clickEvent.preventDefault();
+                addFilter(name, value);
+              }}
+              options={options}
+            />
+          );
+        })}
       </Facets>
     );
   }

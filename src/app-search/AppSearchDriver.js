@@ -7,6 +7,7 @@ export default class AppSearchDriver {
   state = {
     current: 1,
     facets: {},
+    filters: [],
     results: [],
     size: 0,
     searchTerm: "",
@@ -29,7 +30,7 @@ export default class AppSearchDriver {
   }
 
   setState(newState) {
-    const state = Object.assign({}, this.state, newState);
+    const state = { ...this.state, ...newState };
     this.onStateChange(state);
     this.state = state;
   }
@@ -37,39 +38,47 @@ export default class AppSearchDriver {
   getState() {
     // We return a copy of state here, because we want to ensure the state
     // inside of this object remains immutable.
-    return Object.assign({}, this.state);
+    return { ...this.state };
   }
 
+  addFilter = (name, value) => {
+    const { filters, searchTerm } = this.state;
+    this.updateSearchResults(searchTerm, 1, [...filters, { [name]: value }]);
+  };
+
   setSearchTerm = searchTerm => {
-    this.updateSearchResults(searchTerm, 1);
+    const { filters } = this.state;
+    this.updateSearchResults(searchTerm, 1, filters);
   };
 
   updatePage = current => {
-    const { searchTerm } = this.state;
+    const { filters, searchTerm } = this.state;
 
-    this.updateSearchResults(searchTerm, current);
+    this.updateSearchResults(searchTerm, current, filters);
   };
 
-  updateSearchResults = (searchTerm, current) => {
-    return this.client
-      .search(
-        searchTerm,
-        Object.assign({}, this.searchOptions, {
-          page: {
-            size: 10,
-            current: current
-          }
-        })
-      )
-      .then(resultList => {
-        this.setState({
-          current: resultList.info.meta.page.current,
-          facets: resultList.info.facets,
-          results: resultList.results,
-          size: resultList.info.meta.page.size,
-          searchTerm: searchTerm,
-          totalResults: resultList.info.meta.page.total_results
-        });
+  updateSearchResults = (searchTerm, current, filters) => {
+    let searchOptions = {
+      ...this.searchOptions,
+      page: {
+        size: 10,
+        current: current
+      },
+      filters: {
+        all: filters
+      }
+    };
+
+    return this.client.search(searchTerm, searchOptions).then(resultList => {
+      this.setState({
+        current: resultList.info.meta.page.current,
+        facets: resultList.info.facets,
+        filters: filters,
+        results: resultList.results,
+        size: resultList.info.meta.page.size,
+        searchTerm: searchTerm,
+        totalResults: resultList.info.meta.page.total_results
       });
+    });
   };
 }

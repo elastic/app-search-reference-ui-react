@@ -35,8 +35,9 @@ class AppSearchProvider extends Component {
           size: size,
           searchTerm: searchTerm,
           totalResults: totalResults,
-          updatePage: driver.updatePage,
-          setSearchTerm: driver.setSearchTerm
+          addFilter: driver.addFilter,
+          setSearchTerm: driver.setSearchTerm,
+          updatePage: driver.updatePage
         }}
       >
         {children}
