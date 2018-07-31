@@ -67,10 +67,10 @@ write their own components.
 
 - [x] Paging
 - [ ] URL State
-- [ ] Configurable fields
+- [x] Configurable fields
 - [x] Snippets
 - [ ] Autocomplete
-- [ ] Automatic Facets and Filters
+- [x] Automatic Facets and Filters
 - [ ] Sort
 - [ ] Results Per Page
 - [ ] Clickthroughs
