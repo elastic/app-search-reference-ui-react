@@ -46,6 +46,12 @@ export default class AppSearchDriver {
     this.updateSearchResults(searchTerm, 1, [...filters, { [name]: value }]);
   };
 
+  removeFilter = (name, value) => {
+    const { filters, searchTerm } = this.state;
+    const updatedFilters = filters.filter(filter => !(filter[name] === value));
+    this.updateSearchResults(searchTerm, 1, updatedFilters);
+  };
+
   setSearchTerm = searchTerm => {
     const { filters } = this.state;
     this.updateSearchResults(searchTerm, 1, filters);

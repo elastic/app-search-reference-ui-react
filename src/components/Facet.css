@@ -1,7 +1,17 @@
 .Facet {
-  min-height: 100px;
+  min-height: 20px;
   padding: 10px;
   border: 1px solid darkgray;
+}
+
+.Facet-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.Facet-list {
+  margin: 0;
+  padding: 0;
 }
 
 .Facet + .Facet {

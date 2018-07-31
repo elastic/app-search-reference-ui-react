@@ -20,6 +20,7 @@ class AppSearchProvider extends Component {
     const {
       current,
       facets,
+      filters,
       results,
       size,
       searchTerm,
@@ -31,11 +32,13 @@ class AppSearchProvider extends Component {
         value={{
           current: current,
           facets: facets,
+          filters: filters,
           results: results,
           size: size,
           searchTerm: searchTerm,
           totalResults: totalResults,
           addFilter: driver.addFilter,
+          removeFilter: driver.removeFilter,
           setSearchTerm: driver.setSearchTerm,
           updatePage: driver.updatePage
         }}
