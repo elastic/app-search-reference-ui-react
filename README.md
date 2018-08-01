@@ -1,87 +1,49 @@
 # App Search Reference UI
 
-The goal of this project is to provide generic UI to that can be used with
-any [App Search](https://www.elastic.co/cloud/app-search-service) Engine.
+The Reference UI is a Generic UI meant to work with
+any [App Search](https://www.elastic.co/cloud/app-search-service) Engine. It
+serves as both a functional reference to test changes you make to your Engine,
+and also a code reference to use when building out your own App Search
+UI.
 
-## If you just downloaded this via the generator
+The project can be configured via a JSON [config file](src/config/engine.json),
+which allows you to easily control things like
 
-```
+- What Engine this UI runs against
+- What fields are displayed
+- What filters are used
+
+## Setup
+
+### If you just downloaded this via the generator
+
+You'll need to install [yarn](https://yarnpkg.com/en/). Once you have "yarn"
+installed, you should be able to use the `yarn` command from within your
+terminal.
+
+Run the following commands to start this application:
+
+```bash
+# Run the `cd` command to change the current directory to the
+# location of your downloaded Reference UI. Replace the path
+# below with the actual path of your project.
+cd ~/Downloads/app-search-reference-ui
+
+# Run this to set everything up
 yarn
+
+# Run this to start your application and open it up in a new browser window
 yarn start
 ```
 
-## How it works
+### If you're checking this project out directly from github
 
-This app is configured through a json [config file](src/config/engine.json) that
-is read at runtime.
+Follow the previous steps, but you'll also need to configure
+[engine.json](src/config/engine.json).
 
-Currently, this file must be configured manually after checkout before running
-this project.
+To do so, make a copy of [engine.json.example](src/config/engine.json.example),
+rename it to `engine.json` and configure with your Engine's specific details.
 
-Eventually, the idea is to generate that config file dynamically from the
-App Search dashboard and include it in a zipped download of this project. From
-a UX standpoint, a user would simply click "Generate" from their
-dashboard which would download this project (pre-configured for their engine)
-and include some instructions on running.
-
-## Usage
-
-- Clone this repository
-- Run `cp src/config/engine.json.example src/config/engine.json`
-- Configure your credentials in `config/engine.json`
-- Run `yarn`
-- Run `yarn start`
-
-## Component Structure
-
-This project is structured in such a way that it mimics the eventual setup
-of our UI toolkit.
-
-For example:
-
-```jsx
-<AppSearchProvider driver={new AppSearchDriver(config)}>
-  <div className="App">
-    <SearchBox />
-    <Meta />
-    <Results />
-  </div>
-</AppSearchProvider>
+```bash
+cp src/config/engine.json.example src/config/engine.json
 ```
-
-`AppSearchProvider` - The "Provider" is configured at the top level of your App.
-You pass it an instance of `AppSearchDriver`, which is configured for your
-Account and Engine. This "Provider" uses React's "Context" API to hold state
-and expose that state to other App Search components in the component tree.
-`AppSearchDriver` - Non-React "driver" class. The idea is to hold all non-React
-specific logic here, so that it can be shared across multiple toolkits
-`containers/{SearchBox,Meta,Results}` - These are individual "Connected" App
-Search Components. They are aware of state provided by AppSearchProvider and can
-update that state as well. They have no "View" of their own, they simply hold
-implement the logic. This means that any "View" component could be swapped in.
-
-Not shown above, but included in this project:
-
-`components/{SearchBox,Meta,Results,Result` - These are individual "View"
-components. They have no logic and are not aware of App Search. They take
-simple properties and render them in a template. These would be the "default"
-views for UI Toolkit, but could be easily swapped out.
-`app-search/withAppSearch` - A higher order component that a Toolkit user could
-use to connect any component to the App Search state. This enables users to
-write their own components.
-
-## TODO
-
-- [x] Paging
-- [ ] URL State
-- [x] Configurable fields
-- [x] Snippets
-- [ ] Autocomplete
-- [x] Automatic Facets and Filters
-- [ ] Sort
-- [ ] Results Per Page
-- [ ] Clickthroughs
-- [ ] Basic result page for clickthroughs
-- [ ] Demonstrate config and download generation
-- [ ] Style
-- [ ] Add comments / tips - Productionize
