@@ -36,6 +36,13 @@ yarn
 yarn start
 ```
 
+#### Updating configuration
+
+If you would like to make configuration changes, there is no need to regenerate
+this app from your App Search Dashboard! You can simply open up the
+[engine.json](src/config/engine.json) file, update the options, and restart
+this app.
+
 ### If you're checking this project out directly from github
 
 Follow the previous steps, but you'll also need to configure
