@@ -9,6 +9,18 @@ import AppSearchProvider from "./app-search/AppSearchProvider";
 import AppSearchDriver from "./app-search/AppSearchDriver";
 import config from "./config/engine.json";
 
+function getConfig() {
+  if (config.engineName) return config;
+
+  if (
+    typeof window !== "undefined" &&
+    window.appConfig &&
+    window.appConfig.engineName
+  ) {
+    return window.appConfig;
+  }
+}
+
 function buildSearchOptionsFromConfig(config) {
   const searchFields = (config.fields || []).reduce((acc, n) => {
     acc = acc || {};
@@ -56,6 +68,10 @@ function createDriverFromConfig(config) {
 
 class App extends Component {
   render() {
+    const config = getConfig();
+
+    if (!config) return <div>No config found</div>;
+
     return (
       <AppSearchProvider driver={createDriverFromConfig(config)}>
         <div className="App">

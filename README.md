@@ -54,3 +54,9 @@ rename it to `engine.json` and configure with your Engine's specific details.
 ```bash
 cp src/config/engine.json.example src/config/engine.json
 ```
+
+### External configuration
+
+If you are embedding this app inside of another page, and you'd like to
+source the configuration from outside of the `engine.json` file,
+you can simply write the configuration directly to `window.appConfig`.
