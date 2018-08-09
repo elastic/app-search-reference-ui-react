@@ -1,8 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-import "./Facet.css";
-
 function Facet({ name, onRemove, onSelect, options, value }) {
   return (
     <div className="Facet">

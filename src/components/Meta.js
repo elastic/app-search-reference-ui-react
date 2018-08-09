@@ -1,8 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-import "./Meta.css";
-
 function Meta({ end, searchTerm, start, totalResults }) {
   return (
     <div className="Meta">

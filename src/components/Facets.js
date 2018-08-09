@@ -1,8 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-import "./Facets.css";
-
 function Facets({ children }) {
   return <div className="Facets">{children}</div>;
 }

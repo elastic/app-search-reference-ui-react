@@ -1,7 +1,5 @@
 import React from "react";
 
-import "./Body.css";
-
 import Facets from "../containers/Facets";
 import Meta from "../containers/Meta";
 import Paging from "../containers/Paging";

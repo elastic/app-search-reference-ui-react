@@ -1,8 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-import "./Result.css";
-
 function Result({ fields, title }) {
   return (
     <div className="Result">

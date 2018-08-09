@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 
-import "./App.css";
-
 import Header from "./components/Header";
 import Body from "./components/Body";
 
@@ -72,12 +70,16 @@ class App extends Component {
 
     if (!config) return <div>No config found</div>;
 
+    const queryClass = "active-search";
     return (
       <AppSearchProvider driver={createDriverFromConfig(config)}>
-        <div className="App">
-          <div className="App-body">
-            <Header />
-            <Body />
+        <div>
+          <div className="site-background" />
+          <div className={`search-demo live-filtering ${queryClass}`}>
+            <div className="search-demo__content">
+              <Header />
+              <Body />
+            </div>
           </div>
         </div>
       </AppSearchProvider>
