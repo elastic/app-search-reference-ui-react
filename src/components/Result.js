@@ -1,14 +1,23 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-function Result({ fields, title }) {
+function Result({ fields, title, url }) {
   return (
     <li className="result">
       <div className="result__header">
-        <div
-          className="result__title"
-          dangerouslySetInnerHTML={{ __html: title }}
-        />
+        {!url && (
+          <span
+            className="result__title"
+            dangerouslySetInnerHTML={{ __html: title }}
+          />
+        )}
+        {url && (
+          <a
+            href={url}
+            className="result__title"
+            dangerouslySetInnerHTML={{ __html: title }}
+          />
+        )}
       </div>
       <div className="result__body">
         <ul className="result__details">
@@ -28,7 +37,8 @@ function Result({ fields, title }) {
 
 Result.propTypes = {
   fields: PropTypes.object.isRequired,
-  title: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
+  url: PropTypes.string
 };
 
 export default Result;

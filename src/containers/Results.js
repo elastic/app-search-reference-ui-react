@@ -11,8 +11,12 @@ function capitalizeFirstLetter(string) {
 }
 
 function getTitleField() {
-  // Use "title" as the title field if a user hasn't specified a title field
+  // Use "title" field as the title field if a user hasn't specified one
   return config.titleField || "title";
+}
+
+function getUrlField() {
+  return config.urlField;
 }
 
 function getTitle(result) {
@@ -25,9 +29,28 @@ function getTitle(result) {
   );
 }
 
+function getUrl(result) {
+  const urlField = getUrlField();
+  if (urlField) return result.getRaw(urlField);
+}
+
+/*
+  Our `Result` component expects result fields to be formatted in an object
+  like:
+  {
+    field1: "value1",
+    field2: "value2"
+  }
+
+  Our search results object is not formatted that way, so this function does
+  that formatting.
+
+  Note that we explicitly "exclude" certain fields that we know we don't
+  want to show, like "id", the title field, and the url field.
+*/
 function formatResultFields(result) {
   return Object.keys(result.data).reduce((acc, n) => {
-    if (["_meta", "id", getTitleField()].includes(n)) return acc;
+    if (["_meta", "id", getTitleField(), getUrlField()].includes(n)) return acc;
 
     let value = result.getSnippet(n) || result.getRaw(n);
     value = Array.isArray(value) ? value.join(", ") : value;
@@ -49,8 +72,8 @@ class ResultsContainer extends Component {
           <Result
             fields={formatResultFields(result)}
             key={`result-${result.getRaw("id")}`}
-            result={result}
             title={getTitle(result)}
+            url={getUrl(result)}
           />
         ))}
       </Results>

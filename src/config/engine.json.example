@@ -3,11 +3,14 @@
   "hostIdentifier": "host-XXXXX",
   "searchKey": "search-XXXXXXXXXXXXXXXXXXXXXXX",
   "fields": [
+    "id",
     "title",
     "anotherField",
     "someField",
     "created"
   ],
   "titleField": "title",
+  "urlField": "url",
+  "urlFieldTemplate": "http://www.example.com/{{id}}",
   "facets": ["anotherField", "someField"]
 }
