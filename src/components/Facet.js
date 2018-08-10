@@ -3,33 +3,42 @@ import React from "react";
 
 function Facet({ name, onRemove, onSelect, options, value }) {
   return (
-    <div className="Facet">
-      <div className="Facet-title">{name}</div>
-      {value && (
-        <div>
-          {value}{" "}
-          <a onClick={clickEvent => onRemove({ clickEvent, value })} href="/">
-            X
-          </a>
-        </div>
-      )}
-      {!value && (
-        <ul className="Facet-list">
-          {options.map(option => (
-            <div key={option.value}>
-              <a
-                href="/"
-                onClick={clickEvent =>
-                  onSelect({ clickEvent, value: option.value })
-                }
-              >
-                {option.value}
-              </a>{" "}
-              ({option.count})
-            </div>
-          ))}
+    <div className="facets__control">
+      <div>
+        <div className="facets__title">{name}</div>
+        <ul className="facets__list">
+          {value && (
+            <li className="facet__selected">
+              {value}{" "}
+              <span class="facet__remove">
+                (
+                <a
+                  onClick={clickEvent => onRemove({ clickEvent, value })}
+                  href="/"
+                >
+                  Remove
+                </a>
+                )
+              </span>
+            </li>
+          )}
+          {!value &&
+            options.map(option => (
+              <li className="facet" key={option.value}>
+                <a
+                  className="facet__link"
+                  href="/"
+                  onClick={clickEvent =>
+                    onSelect({ clickEvent, value: option.value })
+                  }
+                >
+                  {option.value}
+                </a>{" "}
+                <span className="facet__count">{option.count}</span>
+              </li>
+            ))}
         </ul>
-      )}
+      </div>
     </div>
   );
 }
