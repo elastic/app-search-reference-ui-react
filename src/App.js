@@ -70,18 +70,21 @@ class App extends Component {
 
     if (!config) return <div>No config found</div>;
 
-    const queryClass = "active-search";
     return (
       <AppSearchProvider driver={createDriverFromConfig(config)}>
-        <div>
-          <div className="site-background" />
-          <div className={`search-demo live-filtering ${queryClass}`}>
-            <div className="search-demo__content">
-              <Header />
-              <Body />
+        {({ searchTerm }) => (
+          <div>
+            <div className="site-background" />
+            <div
+              className={`search-demo  ${searchTerm ? "active-search" : ""}`}
+            >
+              <div className="search-demo__content">
+                <Header />
+                <Body />
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </AppSearchProvider>
     );
   }
