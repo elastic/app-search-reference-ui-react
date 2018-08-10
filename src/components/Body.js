@@ -7,14 +7,20 @@ import Results from "../containers/Results";
 
 export default function Body() {
   return (
-    <div className="Body">
-      <div className="Body-left">
+    <div className="search-demo__body">
+      <div className="search-results">
         <Facets />
-      </div>
-      <div className="Body-right">
-        <Meta />
-        <Results />
-        <Paging />
+        <div className="results">
+          <div className="results__header">
+            <Meta />
+          </div>
+          <div className="results__body">
+            <Results />
+          </div>
+          <div className="results__footer">
+            <Paging />
+          </div>
+        </div>
       </div>
     </div>
   );

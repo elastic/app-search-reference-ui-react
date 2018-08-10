@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 
 function Facets({ children }) {
-  return <div className="Facets">{children}</div>;
+  return <div className="facets with-counts">{children}</div>;
 }
 
 Facets.propTypes = {

@@ -3,19 +3,26 @@ import React from "react";
 
 function Result({ fields, title }) {
   return (
-    <div className="Result">
-      <h3 dangerouslySetInnerHTML={{ __html: title }} />
-      <dl>
-        {Object.keys(fields).map(key => {
-          return (
-            <React.Fragment key={key}>
-              <dt>{`${key}:`}</dt>
-              <dd dangerouslySetInnerHTML={{ __html: fields[key] }} />
-            </React.Fragment>
-          );
-        })}
-      </dl>
-    </div>
+    <li className="result">
+      <div className="result__header">
+        <div
+          className="result__title"
+          dangerouslySetInnerHTML={{ __html: title }}
+        />
+      </div>
+      <div className="result__body">
+        <ul className="result__details">
+          {Object.keys(fields).map(key => {
+            return (
+              <li key={key}>
+                <strong>{key}</strong>:{" "}
+                <span dangerouslySetInnerHTML={{ __html: fields[key] }} />
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </li>
   );
 }
 
