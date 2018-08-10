@@ -4,55 +4,10 @@ import React, { Component } from "react";
 import withAppSearch from "../app-search/withAppSearch";
 import Results from "../components/Results";
 import Result from "../components/Result";
-import config from "../config/engine.json";
+import * as Config from "../config/config-helper";
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-function getTitleField() {
-  // Use "title" field as the title field if a user hasn't specified one
-  return config.titleField || "title";
-}
-
-function getUrlField() {
-  return config.urlField;
-}
-
-function getUrlFieldTemplate() {
-  return config.urlFieldTemplate;
-}
-
-function getTitle(result) {
-  const titleField = getTitleField();
-
-  return (
-    result.getSnippet(titleField) ||
-    result.getRaw(titleField) ||
-    result.getRaw("id") // As a last resort, just show ID if nothing else
-  );
-}
-
-function getUrl(result) {
-  const urlField = getUrlField();
-  if (urlField) return result.getRaw(urlField);
-
-  const urlFieldTemplate = getUrlFieldTemplate();
-
-  if (urlFieldTemplate) {
-    const fieldValueReplacementRegex = /{{([^}]*)}}/g;
-    let compiledUrlField = urlFieldTemplate;
-    let match = fieldValueReplacementRegex.exec(urlFieldTemplate);
-
-    while (match != null) {
-      compiledUrlField = compiledUrlField.replace(
-        match[0],
-        result.getRaw(match[1])
-      );
-      match = fieldValueReplacementRegex.exec(urlFieldTemplate);
-    }
-    return compiledUrlField;
-  }
 }
 
 /*
@@ -62,17 +17,9 @@ function getUrl(result) {
     field1: "value1",
     field2: "value2"
   }
-
-  Our search results object is not formatted that way, so this function does
-  that formatting.
-
-  Note that we explicitly "exclude" certain fields that we know we don't
-  want to show, like "id", the title field, and the url field.
 */
 function formatResultFields(result) {
   return Object.keys(result.data).reduce((acc, n) => {
-    if (["_meta", "id", getTitleField(), getUrlField()].includes(n)) return acc;
-
     let value = result.getSnippet(n) || result.getRaw(n);
     value = Array.isArray(value) ? value.join(", ") : value;
     acc[`${capitalizeFirstLetter(n)}`] = value;
@@ -91,10 +38,12 @@ class ResultsContainer extends Component {
       <Results>
         {results.map(result => (
           <Result
-            fields={formatResultFields(result)}
+            fields={Config.stripUnnecessaryResultFields(
+              formatResultFields(result)
+            )}
             key={`result-${result.getRaw("id")}`}
-            title={getTitle(result)}
-            url={getUrl(result)}
+            title={Config.getResultTitle(result)}
+            url={Config.getResultUrl(result)}
           />
         ))}
       </Results>
