@@ -19,6 +19,10 @@ function getUrlField() {
   return config.urlField;
 }
 
+function getUrlFieldTemplate() {
+  return config.urlFieldTemplate;
+}
+
 function getTitle(result) {
   const titleField = getTitleField();
 
@@ -32,6 +36,23 @@ function getTitle(result) {
 function getUrl(result) {
   const urlField = getUrlField();
   if (urlField) return result.getRaw(urlField);
+
+  const urlFieldTemplate = getUrlFieldTemplate();
+
+  if (urlFieldTemplate) {
+    const fieldValueReplacementRegex = /{{([^}]*)}}/g;
+    let compiledUrlField = urlFieldTemplate;
+    let match = fieldValueReplacementRegex.exec(urlFieldTemplate);
+
+    while (match != null) {
+      compiledUrlField = compiledUrlField.replace(
+        match[0],
+        result.getRaw(match[1])
+      );
+      match = fieldValueReplacementRegex.exec(urlFieldTemplate);
+    }
+    return compiledUrlField;
+  }
 }
 
 /*

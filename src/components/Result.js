@@ -14,6 +14,7 @@ function Result({ fields, title, url }) {
         {url && (
           <a
             href={url}
+            target="_blank"
             className="result__title"
             dangerouslySetInnerHTML={{ __html: title }}
           />
