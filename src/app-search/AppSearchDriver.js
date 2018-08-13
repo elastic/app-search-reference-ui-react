@@ -9,7 +9,7 @@ export default class AppSearchDriver {
     facets: {},
     filters: [],
     results: [],
-    size: 0,
+    resultsPerPage: 20,
     searchTerm: "",
     sort: {},
     totalResults: 0
@@ -43,43 +43,67 @@ export default class AppSearchDriver {
   }
 
   addFilter = (name, value) => {
-    const { filters, searchTerm, sort } = this.state;
+    const { filters, resultsPerPage, searchTerm, sort } = this.state;
     this.updateSearchResults(
       searchTerm,
       1,
       [...filters, { [name]: value }],
+      resultsPerPage,
       sort
     );
   };
 
   removeFilter = (name, value) => {
-    const { filters, searchTerm, sort } = this.state;
+    const { filters, resultsPerPage, searchTerm, sort } = this.state;
     const updatedFilters = filters.filter(filter => !(filter[name] === value));
-    this.updateSearchResults(searchTerm, 1, updatedFilters, sort);
+    this.updateSearchResults(
+      searchTerm,
+      1,
+      updatedFilters,
+      resultsPerPage,
+      sort
+    );
+  };
+
+  setResultsPerPage = resultsPerPage => {
+    const { filters, searchTerm, sort } = this.state;
+    this.updateSearchResults(searchTerm, 1, filters, resultsPerPage, sort);
   };
 
   setSearchTerm = searchTerm => {
-    const { sort } = this.state;
-    this.updateSearchResults(searchTerm, 1, [], sort);
+    const { resultsPerPage, sort } = this.state;
+    this.updateSearchResults(searchTerm, 1, [], resultsPerPage, sort);
   };
 
   setSort = sort => {
-    const { filters, searchTerm } = this.state;
-    this.updateSearchResults(searchTerm, 1, filters, sort);
+    const { filters, resultsPerPage, searchTerm } = this.state;
+    this.updateSearchResults(searchTerm, 1, filters, resultsPerPage, sort);
   };
 
   updatePage = current => {
-    const { filters, searchTerm, sort } = this.state;
+    const { filters, resultsPerPage, searchTerm, sort } = this.state;
 
-    this.updateSearchResults(searchTerm, current, filters, sort);
+    this.updateSearchResults(
+      searchTerm,
+      current,
+      filters,
+      resultsPerPage,
+      sort
+    );
   };
 
-  updateSearchResults = (searchTerm, current, filters, sort) => {
+  updateSearchResults = (
+    searchTerm,
+    current,
+    filters,
+    resultsPerPage,
+    sort
+  ) => {
     const searchOptions = {
       ...this.searchOptions,
       page: {
-        size: 10,
-        current: current
+        current: current,
+        size: resultsPerPage
       },
       filters: {
         all: filters
@@ -96,7 +120,7 @@ export default class AppSearchDriver {
         facets: resultList.info.facets,
         filters: filters,
         results: resultList.results,
-        size: resultList.info.meta.page.size,
+        resultsPerPage: resultsPerPage,
         searchTerm: searchTerm,
         sort: sort,
         totalResults: resultList.info.meta.page.total_results

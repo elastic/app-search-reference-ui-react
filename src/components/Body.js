@@ -4,17 +4,19 @@ import Facets from "../containers/Facets";
 import Meta from "../containers/Meta";
 import Paging from "../containers/Paging";
 import Results from "../containers/Results";
+import ResultsPerPage from "../containers/ResultsPerPage";
 import Sort from "../containers/Sort";
 
 export default function Body() {
   return (
     <div className="search-demo__body">
       <div className="search-results">
+        <Sort />
         <Facets />
         <div className="results">
           <div className="results__header">
             <Meta />
-            <Sort />
+            <ResultsPerPage />
           </div>
           <div className="results__body">
             <Results />

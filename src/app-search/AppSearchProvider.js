@@ -22,7 +22,7 @@ class AppSearchProvider extends Component {
       facets,
       filters,
       results,
-      size,
+      resultsPerPage,
       searchTerm,
       sort,
       totalResults
@@ -33,12 +33,13 @@ class AppSearchProvider extends Component {
       facets: facets,
       filters: filters,
       results: results,
-      size: size,
+      resultsPerPage: resultsPerPage,
       searchTerm: searchTerm,
       sort: sort,
       totalResults: totalResults,
       addFilter: driver.addFilter,
       removeFilter: driver.removeFilter,
+      setResultsPerPage: driver.setResultsPerPage,
       setSearchTerm: driver.setSearchTerm,
       setSort: driver.setSort,
       updatePage: driver.updatePage

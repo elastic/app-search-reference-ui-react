@@ -7,7 +7,9 @@ function Sort({ onChange, options, value }) {
       <select name="sort" value={value} onChange={onChange}>
         <option value="">None</option>
         {options.map(option => (
-          <option value={option.value}>{option.name}</option>
+          <option key={option.value} value={option.value}>
+            {option.name}
+          </option>
         ))}
       </select>
     </div>

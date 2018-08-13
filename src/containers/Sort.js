@@ -20,7 +20,9 @@ function deSerialize(sortString) {
 
 class SortContainer extends Component {
   static propTypes = {
-    setSort: PropTypes.func.isRequired
+    setSort: PropTypes.func.isRequired,
+    sort: PropTypes.shape({ name: PropTypes.string, value: PropTypes.string })
+      .isRequired
   };
 
   render() {

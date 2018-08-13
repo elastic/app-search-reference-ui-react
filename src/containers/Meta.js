@@ -7,15 +7,18 @@ import Meta from "../components/Meta";
 class MetaContainer extends Component {
   static propTypes = {
     current: PropTypes.number.isRequired,
+    resultsPerPage: PropTypes.number.isRequired,
     searchTerm: PropTypes.string.isRequired,
-    size: PropTypes.number.isRequired,
     totalResults: PropTypes.number.isRequired
   };
 
   render() {
-    const { current, searchTerm, size, totalResults } = this.props;
-    const start = totalResults === 0 ? 0 : (current - 1) * size + 1;
-    const end = totalResults <= size ? totalResults : start + size - 1;
+    const { current, resultsPerPage, searchTerm, totalResults } = this.props;
+    const start = totalResults === 0 ? 0 : (current - 1) * resultsPerPage + 1;
+    const end =
+      totalResults <= resultsPerPage
+        ? totalResults
+        : start + resultsPerPage - 1;
 
     if (!searchTerm) return null;
 

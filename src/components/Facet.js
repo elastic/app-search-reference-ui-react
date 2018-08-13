@@ -10,7 +10,7 @@ function Facet({ name, onRemove, onSelect, options, value }) {
           {value && (
             <li className="facet__selected">
               {value}{" "}
-              <span class="facet__remove">
+              <span className="facet__remove">
                 (
                 <a
                   onClick={clickEvent => onRemove({ clickEvent, value })}
