@@ -11,6 +11,7 @@ export default class AppSearchDriver {
     results: [],
     size: 0,
     searchTerm: "",
+    sort: {},
     totalResults: 0
   };
 
@@ -42,28 +43,39 @@ export default class AppSearchDriver {
   }
 
   addFilter = (name, value) => {
-    const { filters, searchTerm } = this.state;
-    this.updateSearchResults(searchTerm, 1, [...filters, { [name]: value }]);
+    const { filters, searchTerm, sort } = this.state;
+    this.updateSearchResults(
+      searchTerm,
+      1,
+      [...filters, { [name]: value }],
+      sort
+    );
   };
 
   removeFilter = (name, value) => {
-    const { filters, searchTerm } = this.state;
+    const { filters, searchTerm, sort } = this.state;
     const updatedFilters = filters.filter(filter => !(filter[name] === value));
-    this.updateSearchResults(searchTerm, 1, updatedFilters);
+    this.updateSearchResults(searchTerm, 1, updatedFilters, sort);
   };
 
   setSearchTerm = searchTerm => {
-    this.updateSearchResults(searchTerm, 1, []);
+    const { sort } = this.state;
+    this.updateSearchResults(searchTerm, 1, [], sort);
+  };
+
+  setSort = sort => {
+    const { filters, searchTerm } = this.state;
+    this.updateSearchResults(searchTerm, 1, filters, sort);
   };
 
   updatePage = current => {
-    const { filters, searchTerm } = this.state;
+    const { filters, searchTerm, sort } = this.state;
 
-    this.updateSearchResults(searchTerm, current, filters);
+    this.updateSearchResults(searchTerm, current, filters, sort);
   };
 
-  updateSearchResults = (searchTerm, current, filters) => {
-    let searchOptions = {
+  updateSearchResults = (searchTerm, current, filters, sort) => {
+    const searchOptions = {
       ...this.searchOptions,
       page: {
         size: 10,
@@ -74,6 +86,10 @@ export default class AppSearchDriver {
       }
     };
 
+    if (Object.keys(sort).length > 0) {
+      searchOptions.sort = sort;
+    }
+
     return this.client.search(searchTerm, searchOptions).then(resultList => {
       this.setState({
         current: resultList.info.meta.page.current,
@@ -82,6 +98,7 @@ export default class AppSearchDriver {
         results: resultList.results,
         size: resultList.info.meta.page.size,
         searchTerm: searchTerm,
+        sort: sort,
         totalResults: resultList.info.meta.page.total_results
       });
     });

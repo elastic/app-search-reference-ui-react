@@ -4,6 +4,7 @@ import Facets from "../containers/Facets";
 import Meta from "../containers/Meta";
 import Paging from "../containers/Paging";
 import Results from "../containers/Results";
+import Sort from "../containers/Sort";
 
 export default function Body() {
   return (
@@ -13,6 +14,7 @@ export default function Body() {
         <div className="results">
           <div className="results__header">
             <Meta />
+            <Sort />
           </div>
           <div className="results__body">
             <Results />
