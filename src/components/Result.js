@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-function Result({ fields, title, url }) {
+function Result({ fields, onClickLink, title, url }) {
   return (
     <li className="result">
       <div className="result__header">
@@ -13,10 +13,11 @@ function Result({ fields, title, url }) {
         )}
         {url && (
           <a
-            href={url}
-            target="_blank"
             className="result__title"
             dangerouslySetInnerHTML={{ __html: title }}
+            href={url}
+            onClick={onClickLink}
+            target="_blank"
           />
         )}
       </div>

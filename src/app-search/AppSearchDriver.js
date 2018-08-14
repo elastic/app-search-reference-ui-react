@@ -9,6 +9,7 @@ export default class AppSearchDriver {
     facets: {},
     facetFields: [],
     filters: [],
+    requestId: "",
     results: [],
     resultsPerPage: 0,
     searchTerm: "",
@@ -88,6 +89,17 @@ export default class AppSearchDriver {
     this.updateSearchResults(searchTerm, 1, filters, resultsPerPage, sort);
   };
 
+  trackClickThrough = (documentId, tags = []) => {
+    const { requestId, searchTerm } = this.state;
+
+    this.client.click({
+      query: searchTerm,
+      documentId,
+      requestId,
+      tags
+    });
+  };
+
   updatePage = current => {
     const { filters, resultsPerPage, searchTerm, sort } = this.state;
 
@@ -133,6 +145,7 @@ export default class AppSearchDriver {
         current: resultList.info.meta.page.current,
         facets: resultList.info.facets,
         filters: filters,
+        requestId: resultList.info.meta.request_id,
         results: resultList.results,
         resultsPerPage: resultsPerPage,
         searchTerm: searchTerm,
