@@ -68,6 +68,7 @@ The following is a complete list of options available for configuraiton in [engi
 - titleField - (String)(Optional) The field to display as the title in results
 - urlField - (String)(Optional) A field with a url to use as a link in results
 - urlFieldTemplate - (String)(Optional) Instead of urlField, you can provide a URL "template" here, which lets you build a URL from other fields. ex: "http://www.example.com/{{id}}"
+- sortFields - (Array[String]) A list of fields that will be used for sort options
 - facets - (Array[String]) A list of fields that will be available as "facet" filters
 
 ## External configuration
