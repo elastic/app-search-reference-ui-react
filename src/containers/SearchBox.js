@@ -10,8 +10,15 @@ export class SearchBoxContainer extends Component {
   };
 
   state = {
-    value: ""
+    value: "",
+    focus: false
   };
+
+  handleFocus = e => {
+    this.setState({
+      focus: true
+    });
+  }
 
   handleSubmit = e => {
     const { setSearchTerm } = this.props;
@@ -28,6 +35,7 @@ export class SearchBoxContainer extends Component {
       <SearchBox
         onChange={this.handleChange}
         onSubmit={this.handleSubmit}
+        onFocus={this.handeFocus}
         value={value}
       />
     );

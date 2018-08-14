@@ -1,21 +1,20 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-<input placeholder="Search node packages&#8230;" />;
-
-function SearchBox({ onChange, onSubmit, value }) {
+function SearchBox({ onChange, onSubmit, onFocus, value }) {
   return (
-    <form className="search-demo__input-wrapper" onSubmit={onSubmit}>
+    <form className={"searchbox " + onFocus} onSubmit={onSubmit}>
       <input
-        className="search-demo__text-input"
+        className="searchbox__text-input"
         onChange={onChange}
         type="text"
         value={value}
+        placeholder="Search your documents&#8230;"
       />
       <input
         type="submit"
         value="Search"
-        className="button search-demo__submit"
+        className="button searchbox__submit"
       />
     </form>
   );

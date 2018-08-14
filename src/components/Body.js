@@ -4,12 +4,16 @@ import Facets from "../containers/Facets";
 import Meta from "../containers/Meta";
 import Paging from "../containers/Paging";
 import Results from "../containers/Results";
+import Sorting from "../containers/Sorting";
 
 export default function Body() {
   return (
-    <div className="search-demo__body">
+    <div className="reference-ui-body">
       <div className="search-results">
-        <Facets />
+        <div className="sidebar">
+          <Sorting />
+          <Facets />
+        </div>
         <div className="results">
           <div className="results__header">
             <Meta />

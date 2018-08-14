@@ -15,8 +15,8 @@ function Result({ fields, title }) {
           {Object.keys(fields).map(key => {
             return (
               <li key={key}>
-                <strong>{key}</strong>:{" "}
-                <span dangerouslySetInnerHTML={{ __html: fields[key] }} />
+                <span className="result__key">{key}</span>{" "}
+                <span className="result__value" dangerouslySetInnerHTML={{ __html: fields[key] }} />
               </li>
             );
           })}

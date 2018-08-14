@@ -3,17 +3,24 @@ import React from "react";
 
 function Meta({ end, searchTerm, start, totalResults }) {
   return (
-    <div className="results__header">
-      <div className="results__result-count">
+    <div className="meta">
+      <div className="meta__paging-info">
         Showing{" "}
         <strong>
           {start} - {end}
         </strong>{" "}
-        of <strong>{totalResults}</strong>
+        out of <strong>{totalResults}</strong>{" "}
+        for: <em>{searchTerm}</em>
       </div>
-      <div className="results__powered-by powered-by">
-        <span>Results for: </span>
-        <span>{searchTerm}</span>
+      <div className="meta__result-count">
+        <label htmlFor="result-count">Show{" "}
+          <select name="result-count" id="result-count">
+            <option value="10">10</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="all">All</option>
+          </select>
+        </label>
       </div>
     </div>
   );
