@@ -1,14 +1,14 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
-
 @import "normalize";
 
-// Variables
+// General Colors
 $black: #333333 !default;
 $linkColor: #3A56E4 !default;
 $textMatchColor: #3A56E4 !default;
 $facetLinkColor: #4f4f4f !default;
 $facetCountColor: #888888 !default;
 $metaTextColor: #4A4B4B !default;
+$helpTextGrayColor: #888888 !default;
 
 // Layout Colors
 $appContainerBackgroundColor: #ffffff !default;
@@ -17,6 +17,7 @@ $resultsLeftBorderColor: #eeeeee !default;
 // Header Colors
 $headerBackgroundColor: #f9f9f9 !default;
 $headerBorderColor: #eeeeee !default;
+$searchboxBorderColor: #abb1b7 !default;
 
 // Result Colors
 $resultBackgroundColor: #fcfcfc !default;
@@ -37,17 +38,20 @@ $sizeL: 24px !default;
 $sizeXL: 32px !default;
 $sizeXXL: 48px !default;
 
-
+$maxWidth: 1300px !default;
 $offset: 175px !default;
 
 
+// MIXINS
+@mixin limitWidth {
+  max-width: $maxWidth;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 // Base
-html {
-  box-sizing: border-box;
-}
-*, *:before, *:after {
-  box-sizing: inherit;
-}
+html { box-sizing: border-box; }
+*, *:before, *:after { box-sizing: inherit; }
 
 ul {
   list-style-type: none;
@@ -59,16 +63,6 @@ a {
   color: $linkColor;
 }
 
-a.subtle-link {
-  color: inherit;
-  font-style: italic;
-  border-bottom: 1px dotted #ccc;
-
-  &:hover {
-    color: $linkColor;
-  }
-}
-
 // Components
 .button {
   text-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px;
@@ -78,6 +72,17 @@ a.subtle-link {
   cursor: pointer;
   border-radius: 4px;
   border-width: 0px;
+
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 0px 1px inset, rgba(59, 69, 79, 0.3) 0px 2px 4px;
+    background: linear-gradient(rgb(60, 171, 255), rgb(64, 99, 240)) rgb(61, 132, 247);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 0px 1px inset, rgba(59, 69, 79, 0.3) 0px 2px 4px;
+    background: linear-gradient(rgb(34, 153, 245), rgb(39, 78, 236)) rgb(32, 113, 245);
+  }
 }
 
 .app-container {
@@ -106,14 +111,24 @@ a.subtle-link {
   }
 }
 
-.reference-ui-body {
+.initial-state-message {
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 180px);
+  color: $helpTextGrayColor;
 
+  .active-search & {
+    display: none;
+  }
 }
 
 .searchbox {
+  @include limitWidth;
   display: flex;
   border-radius: 6px;
-  border: 1px solid #dce2e9;
+  border: 1px solid $searchboxBorderColor;
   background: white;
   overflow: hidden;
   justify-content: center;
@@ -146,6 +161,16 @@ a.subtle-link {
   }
 }
 
+.search-results {
+  @include limitWidth;
+  display: flex;
+  padding: 0 $sizeL;
+}
+
+.sidebar {
+  flex: 0 1 30%;
+}
+
 .sorting {
   padding-top: $sizeXL;
   > select {
@@ -153,19 +178,13 @@ a.subtle-link {
   }
 }
 
-.search-results {
-  display: flex;
-  padding: 0 $sizeL;
-}
-
 .facets {
   padding: $sizeXXL $sizeXL $sizeXXL 0;
-  min-width: 25vw;
+}
 
-  &__control {
-    & + & {
-      margin-top: 30px;
-    }
+.facet {
+  & + & {
+    margin-top: 30px;
   }
 
   &__title {
@@ -180,11 +199,11 @@ a.subtle-link {
     font-size: 13px;
     margin: $sizeS 0;
   }
-}
 
-.facet {
-  display: flex;
-  justify-content: space-between;
+  &__item {
+    display: flex;
+    justify-content: space-between;
+  }
 
   &__link {
     color: $facetLinkColor;
@@ -238,11 +257,18 @@ a.subtle-link {
   }
 }
 
-
+.meta {
+  font-size: 12px;
+  color: $metaTextColor;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+]
 .results {
   width: 100%;
   padding: 2rem 0;
-
 
   &__header {
     display: flex;
@@ -256,17 +282,6 @@ a.subtle-link {
     border-left: 1px solid $resultsLeftBorderColor;
   }
 }
-
-.meta {
-  font-size: 12px;
-  color: $metaTextColor;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-
-}
-
 
 .result {
   border-top: 1px solid $resultBorderColor;
@@ -299,26 +314,31 @@ a.subtle-link {
     justify-content: space-between;
     align-items: center;
   }
+
   &__title {
     font-size: 1.8em;
     font-weight: $fontWeightBold;
   }
+
   &__key {
     font-family: monospace;
     font-weight: $fontWeightNormal;
     font-size: 14px;
-    flex: 0 1 40%;
+    flex: 0 1 50%;
     color: $resultKeyTextColor;
   }
+
   &__value {
     font-weight: $fontWeightNormal;
     font-size: 14px;
   }
+
   &__version {
     font-size: 12px;
     display: inline;
     vertical-align: bottom;
   }
+
   &__lisence {
     font-size: 12px;
     color: #999999;
@@ -339,24 +359,12 @@ a.subtle-link {
   }
 
   &__details {
-
     > li {
       display: flex;
 
       &:hover {
         background-color: $fieldHoverColor;
       }
-
-      // span {
-      //   &:after {
-      //     content: ", ";
-      //   }
-      //   &:last-of-type {
-      //     &:after {
-      //       content: "";
-      //     }
-      //   }
-      // }
     }
   }
 
@@ -366,7 +374,6 @@ a.subtle-link {
     line-height: 1;
   }
 }
-
 
 .rc-pagination {
   display: flex;

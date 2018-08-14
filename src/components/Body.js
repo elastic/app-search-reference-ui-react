@@ -9,6 +9,7 @@ import Sorting from "../containers/Sorting";
 export default function Body() {
   return (
     <div className="reference-ui-body">
+      <div className="initial-state-message">Type a search above to begin.</div>
       <div className="search-results">
         <div className="sidebar">
           <Sorting />

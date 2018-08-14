@@ -23,6 +23,7 @@ function SearchBox({ onChange, onSubmit, onFocus, value }) {
 SearchBox.propTypes = {
   onChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  onFocus: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired
 };
 
