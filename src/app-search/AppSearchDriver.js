@@ -118,8 +118,14 @@ export default class AppSearchDriver {
       }
     };
 
-    if (Object.keys(sort).length > 0) {
-      searchOptions.sort = sort;
+    if (
+      Object.keys(sort).length > 0 &&
+      sort.value.length > 1 &&
+      sort.direction.length > 1
+    ) {
+      searchOptions.sort = {
+        [sort.value]: sort.direction
+      };
     }
 
     return this.client.search(searchTerm, searchOptions).then(resultList => {

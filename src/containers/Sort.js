@@ -3,43 +3,41 @@ import React, { Component } from "react";
 
 import withAppSearch from "../app-search/withAppSearch";
 import Sort from "../components/Sort";
+import SortOption from "../types/SortOption";
 
-function serialize(sortObject) {
-  const keys = Object.keys(sortObject);
-  if (keys.length === 0) return "";
-  return `${[keys[0]]}|||${sortObject[[keys[0]]]}`;
+function findSortOption(sortOptions, sortString) {
+  const [value, direction] = sortString.split("|||");
+  return sortOptions.find(
+    option => option.value === value && option.direction === direction
+  );
 }
 
-function deSerialize(sortString) {
-  if (!sortString) return {};
-  const [sortBy, sortDirection] = sortString.split("|||");
+function formatOption(sortOption) {
   return {
-    [sortBy]: sortDirection
+    name: sortOption.name,
+    value: `${sortOption.value}|||${sortOption.direction}`
   };
 }
-
 class SortContainer extends Component {
   static propTypes = {
+    // Injected
     setSort: PropTypes.func.isRequired,
     sort: PropTypes.shape({ name: PropTypes.string, value: PropTypes.string })
-      .isRequired
+      .isRequired,
+    // Passed
+    sortOptions: PropTypes.arrayOf(SortOption).isRequired
   };
 
   render() {
-    const { setSort, sort } = this.props;
+    const { setSort, sort, sortOptions } = this.props;
 
     return (
       <Sort
         onChange={e => {
-          setSort(deSerialize(e.currentTarget.value));
+          setSort(findSortOption(sortOptions, e.currentTarget.value));
         }}
-        options={[
-          { name: "Name ASC", value: "name|||asc" },
-          { name: "Name DESC", value: "name|||desc" },
-          { name: "License ASC", value: "license|||asc" },
-          { name: "License DESC", value: "license|||desc" }
-        ]}
-        value={serialize(sort)}
+        options={sortOptions.map(formatOption)}
+        value={formatOption(sort).value}
       />
     );
   }

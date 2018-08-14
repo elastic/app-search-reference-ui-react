@@ -17,7 +17,11 @@ function createDriver() {
     searchKey,
     engineName,
     initialState: {
-      resultsPerPage: 20
+      resultsPerPage: 20,
+      sort: {
+        value: "",
+        direction: ""
+      }
     },
     searchOptions: buildSearchOptionsFromConfig()
   });

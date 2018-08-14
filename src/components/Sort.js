@@ -5,7 +5,6 @@ function Sort({ onChange, options, value }) {
   return (
     <div className="sort">
       <select name="sort" value={value} onChange={onChange}>
-        <option value="">None</option>
         {options.map(option => (
           <option key={option.value} value={option.value}>
             {option.name}
