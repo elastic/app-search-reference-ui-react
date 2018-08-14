@@ -16,6 +16,9 @@ function createDriver() {
     hostIdentifier,
     searchKey,
     engineName,
+    initialState: {
+      resultsPerPage: 20
+    },
     searchOptions: buildSearchOptionsFromConfig()
   });
 }

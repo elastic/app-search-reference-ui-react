@@ -7,17 +7,25 @@ export default class AppSearchDriver {
   state = {
     current: 1,
     facets: {},
+    facetFields: [],
     filters: [],
     results: [],
-    resultsPerPage: 20,
+    resultsPerPage: 0,
     searchTerm: "",
     sort: {},
     totalResults: 0
   };
 
-  constructor({ hostIdentifier, searchKey, engineName, searchOptions }) {
+  constructor({
+    hostIdentifier,
+    searchKey,
+    engineName,
+    initialState,
+    searchOptions
+  }) {
     this.onStateChange = function() {};
     this.searchOptions = searchOptions || {};
+    this.state = { ...this.state, ...initialState };
 
     this.client = SwiftypeAppSearch.createClient({
       hostIdentifier: hostIdentifier,
