@@ -1,4 +1,5 @@
 import config from "../config/engine.json";
+import { create } from "../types/SortOption";
 
 /*
 This file abstracts most logic around the configuration of the Reference UI.
@@ -19,6 +20,14 @@ export function getConfig() {
   ) {
     return window.appConfig;
   }
+}
+
+function toLowerCase(string) {
+  if (string) return string.toLowerCase();
+}
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 export function getTitleField() {
@@ -120,6 +129,30 @@ export function buildSearchOptionsFromConfig() {
   };
 }
 
-function toLowerCase(string) {
-  if (string) return string.toLowerCase();
+export function buildSortOptionsFromConfig() {
+  const config = getConfig();
+  return [
+    create({
+      name: "None",
+      value: "",
+      direction: ""
+    }),
+    ...(config.sortFields || []).reduce((acc, sortField) => {
+      acc.push(
+        create({
+          name: `${capitalizeFirstLetter(sortField)} ASC`,
+          value: sortField,
+          direction: "asc"
+        })
+      );
+      acc.push(
+        create({
+          name: `${capitalizeFirstLetter(sortField)} DESC`,
+          value: sortField,
+          direction: "desc"
+        })
+      );
+      return acc;
+    }, [])
+  ];
 }

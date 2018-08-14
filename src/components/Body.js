@@ -5,13 +5,14 @@ import Meta from "../containers/Meta";
 import Paging from "../containers/Paging";
 import Results from "../containers/Results";
 import ResultsPerPage from "../containers/ResultsPerPage";
-import Sort from "../config/Sort";
+import Sort from "../containers/Sort";
+import { buildSortOptionsFromConfig } from "../config/config-helper";
 
 export default function Body() {
   return (
     <div className="search-demo__body">
       <div className="search-results">
-        <Sort />
+        <Sort sortOptions={buildSortOptionsFromConfig()} />
         <Facets />
         <div className="results">
           <div className="results__header">
