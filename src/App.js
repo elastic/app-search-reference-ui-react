@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 
-import "./App.css";
-
 import Header from "./components/Header";
 import Body from "./components/Body";
 
@@ -74,12 +72,12 @@ class App extends Component {
 
     return (
       <AppSearchProvider driver={createDriverFromConfig(config)}>
-        <div className="App">
-          <div className="App-body">
-            <Header />
-            <Body />
+        {({ searchTerm }) => (
+          <div className={`reference-ui${searchTerm ? " active-search" : ""}`}>
+              <Header />
+              <Body />
           </div>
-        </div>
+        )}
       </AppSearchProvider>
     );
   }

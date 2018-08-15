@@ -1,23 +1,28 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-import "./Result.css";
-
 function Result({ fields, title }) {
   return (
-    <div className="Result">
-      <h3 dangerouslySetInnerHTML={{ __html: title }} />
-      <dl>
-        {Object.keys(fields).map(key => {
-          return (
-            <React.Fragment key={key}>
-              <dt>{`${key}:`}</dt>
-              <dd dangerouslySetInnerHTML={{ __html: fields[key] }} />
-            </React.Fragment>
-          );
-        })}
-      </dl>
-    </div>
+    <li className="result">
+      <div className="result__header">
+        <div
+          className="result__title"
+          dangerouslySetInnerHTML={{ __html: title }}
+        />
+      </div>
+      <div className="result__body">
+        <ul className="result__details">
+          {Object.keys(fields).map(key => {
+            return (
+              <li key={key}>
+                <span className="result__key">{key}</span>{" "}
+                <span className="result__value" dangerouslySetInnerHTML={{ __html: fields[key] }} />
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </li>
   );
 }
 

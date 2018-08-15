@@ -5,7 +5,7 @@ import AppSearchContext from "./AppSearchContext";
 
 class AppSearchProvider extends Component {
   static propTypes = {
-    children: PropTypes.element.isRequired,
+    children: PropTypes.func.isRequired,
     driver: PropTypes.object.isRequired
   };
 
@@ -27,23 +27,23 @@ class AppSearchProvider extends Component {
       totalResults
     } = this.state;
 
+    const providerValue = {
+      current: current,
+      facets: facets,
+      filters: filters,
+      results: results,
+      size: size,
+      searchTerm: searchTerm,
+      totalResults: totalResults,
+      addFilter: driver.addFilter,
+      removeFilter: driver.removeFilter,
+      setSearchTerm: driver.setSearchTerm,
+      updatePage: driver.updatePage
+    };
+
     return (
-      <AppSearchContext.Provider
-        value={{
-          current: current,
-          facets: facets,
-          filters: filters,
-          results: results,
-          size: size,
-          searchTerm: searchTerm,
-          totalResults: totalResults,
-          addFilter: driver.addFilter,
-          removeFilter: driver.removeFilter,
-          setSearchTerm: driver.setSearchTerm,
-          updatePage: driver.updatePage
-        }}
-      >
-        {children}
+      <AppSearchContext.Provider value={providerValue}>
+        {children(providerValue)}
       </AppSearchContext.Provider>
     );
   }

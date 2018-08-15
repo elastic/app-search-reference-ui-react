@@ -1,17 +1,26 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-import "./Meta.css";
-
 function Meta({ end, searchTerm, start, totalResults }) {
   return (
-    <div className="Meta">
-      <div className="Meta-term">
-        <span>Results for:</span>
-        <span>{searchTerm}</span>
+    <div className="meta">
+      <div className="meta__paging-info">
+        Showing{" "}
+        <strong>
+          {start} - {end}
+        </strong>{" "}
+        out of <strong>{totalResults}</strong>{" "}
+        for: <em>{searchTerm}</em>
       </div>
-      <div className="Meta-paging">
-        Showing {start} - {end} of {totalResults}
+      <div className="meta__result-count">
+        <label htmlFor="result-count">Show{" "}
+          <select name="result-count" id="result-count">
+            <option value="10">10</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="all">All</option>
+          </select>
+        </label>
       </div>
     </div>
   );

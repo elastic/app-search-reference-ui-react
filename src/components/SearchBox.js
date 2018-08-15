@@ -1,18 +1,21 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-import "./SearchBox.css";
-
-function SearchBox({ onChange, onSubmit, value }) {
+function SearchBox({ onChange, onSubmit, onFocus, value }) {
   return (
-    <form className="SearchBox" onSubmit={onSubmit}>
+    <form className={"searchbox " + onFocus} onSubmit={onSubmit}>
       <input
-        className="SearchBox-input"
+        className="searchbox__text-input"
         onChange={onChange}
         type="text"
         value={value}
+        placeholder="Search your documents&#8230;"
       />
-      <button className="SearchBox-button">GO</button>
+      <input
+        type="submit"
+        value="Search"
+        className="button searchbox__submit"
+      />
     </form>
   );
 }
@@ -20,6 +23,7 @@ function SearchBox({ onChange, onSubmit, value }) {
 SearchBox.propTypes = {
   onChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  onFocus: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired
 };
 
