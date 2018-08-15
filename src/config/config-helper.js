@@ -133,7 +133,7 @@ export function buildSortOptionsFromConfig() {
   const config = getConfig();
   return [
     create({
-      name: "None",
+      name: "Sort results",
       value: "",
       direction: ""
     }),

@@ -3,10 +3,10 @@ import React from "react";
 
 function Facet({ name, onRemove, onSelect, options, value }) {
   return (
-    <div className="facets__control">
+    <div className="facet">
       <div>
-        <div className="facets__title">{name}</div>
-        <ul className="facets__list">
+        <div className="facet__title">{name}</div>
+        <ul className="facet__list">
           {value && (
             <li className="facet__selected">
               {value}{" "}
@@ -24,7 +24,7 @@ function Facet({ name, onRemove, onSelect, options, value }) {
           )}
           {!value &&
             options.map(option => (
-              <li className="facet" key={option.value}>
+              <li className="facet__item" key={option.value}>
                 <a
                   className="facet__link"
                   href="/"

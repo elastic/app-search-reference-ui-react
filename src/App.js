@@ -36,16 +36,9 @@ class App extends Component {
     return (
       <AppSearchProvider driver={createDriver()}>
         {({ searchTerm }) => (
-          <div>
-            <div className="site-background" />
-            <div
-              className={`search-demo  ${searchTerm ? "active-search" : ""}`}
-            >
-              <div className="search-demo__content">
-                <Header />
-                <Body />
-              </div>
-            </div>
+          <div className={`reference-ui${searchTerm ? " active-search" : ""}`}>
+              <Header />
+              <Body />
           </div>
         )}
       </AppSearchProvider>

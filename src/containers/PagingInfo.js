@@ -2,9 +2,9 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 
 import withAppSearch from "../app-search/withAppSearch";
-import Meta from "../components/Meta";
+import PagingInfo from "../components/PagingInfo";
 
-class MetaContainer extends Component {
+class PagingInfoContainer extends Component {
   static propTypes = {
     current: PropTypes.number.isRequired,
     resultsPerPage: PropTypes.number.isRequired,
@@ -23,7 +23,7 @@ class MetaContainer extends Component {
     if (!searchTerm) return null;
 
     return (
-      <Meta
+      <PagingInfo
         end={end}
         searchTerm={searchTerm}
         start={start}
@@ -33,4 +33,4 @@ class MetaContainer extends Component {
   }
 }
 
-export default withAppSearch(MetaContainer);
+export default withAppSearch(PagingInfoContainer);

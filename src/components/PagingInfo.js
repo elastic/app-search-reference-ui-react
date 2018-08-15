@@ -1,23 +1,23 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-function Meta({ end, searchTerm, start, totalResults }) {
+function PagingInfo({ end, searchTerm, start, totalResults }) {
   return (
-    <div className="results__result-count">
+    <div className="paging-info">
       Showing{" "}
       <strong>
         {start} - {end}
       </strong>{" "}
-      of <strong>{totalResults}</strong> for <strong>{searchTerm}</strong>
+      out of <strong>{totalResults}</strong> for: <em>{searchTerm}</em>
     </div>
   );
 }
 
-Meta.propTypes = {
+PagingInfo.propTypes = {
   end: PropTypes.number.isRequired,
   searchTerm: PropTypes.string.isRequired,
   start: PropTypes.number.isRequired,
   totalResults: PropTypes.number.isRequired
 };
 
-export default Meta;
+export default PagingInfo;

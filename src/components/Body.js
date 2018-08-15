@@ -1,23 +1,28 @@
 import React from "react";
 
 import Facets from "../containers/Facets";
-import Meta from "../containers/Meta";
+import PagingInfo from "../containers/PagingInfo";
 import Paging from "../containers/Paging";
 import Results from "../containers/Results";
 import ResultsPerPage from "../containers/ResultsPerPage";
-import Sort from "../containers/Sort";
+import Sorting from "../containers/Sorting";
 import { buildSortOptionsFromConfig } from "../config/config-helper";
 
 export default function Body() {
   return (
-    <div className="search-demo__body">
+    <div className="reference-ui-body">
+      <div className="initial-state-message">Type a search above to begin.</div>
       <div className="search-results">
-        <Sort sortOptions={buildSortOptionsFromConfig()} />
-        <Facets />
+        <div className="sidebar">
+          <Sorting sortOptions={buildSortOptionsFromConfig()} />
+          <Facets />
+        </div>
         <div className="results">
           <div className="results__header">
-            <Meta />
-            <ResultsPerPage />
+            <div className="meta">
+              <PagingInfo />
+              <ResultsPerPage />
+            </div>
           </div>
           <div className="results__body">
             <Results />

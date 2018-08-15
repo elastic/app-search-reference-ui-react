@@ -10,7 +10,20 @@ export class SearchBoxContainer extends Component {
   };
 
   state = {
-    value: ""
+    value: "",
+    isFocused: false
+  };
+
+  handleFocus = e => {
+    this.setState({
+      isFocused: true
+    });
+  };
+
+  handleBlur = e => {
+    this.setState({
+      isFocused: false
+    });
   };
 
   handleSubmit = e => {
@@ -22,13 +35,20 @@ export class SearchBoxContainer extends Component {
   };
 
   render() {
-    const { value } = this.state;
+    const { isFocused, value } = this.state;
+    const { inputProps } = this.props;
 
     return (
       <SearchBox
+        isFocused={isFocused}
         onChange={this.handleChange}
         onSubmit={this.handleSubmit}
         value={value}
+        inputProps={{
+          onFocus: this.handleFocus,
+          onBlur: this.handleBlur,
+          ...inputProps
+        }}
       />
     );
   }

@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-function Sort({ onChange, options, value }) {
+function Sorting({ onChange, options, value }) {
   return (
-    <div className="sort">
-      <select name="sort" value={value} onChange={onChange}>
+    <div className="sorting">
+      <select id="sorting" name="sorting" value={value} onChange={onChange}>
         {options.map(option => (
           <option key={option.value} value={option.value}>
             {option.name}
@@ -15,7 +15,7 @@ function Sort({ onChange, options, value }) {
   );
 }
 
-Sort.propTypes = {
+Sorting.propTypes = {
   onChange: PropTypes.func.isRequired,
   options: PropTypes.arrayOf(
     PropTypes.shape({ name: PropTypes.string, value: PropTypes.string })
@@ -23,4 +23,4 @@ Sort.propTypes = {
   value: PropTypes.string
 };
 
-export default Sort;
+export default Sorting;

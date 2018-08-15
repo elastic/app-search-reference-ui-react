@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 
 import withAppSearch from "../app-search/withAppSearch";
-import Sort from "../components/Sort";
+import Sorting from "../components/Sorting";
 import SortOption from "../types/SortOption";
 
 function findSortOption(sortOptions, sortString) {
@@ -18,7 +18,7 @@ function formatOption(sortOption) {
     value: `${sortOption.value}|||${sortOption.direction}`
   };
 }
-class SortContainer extends Component {
+class SortingContainer extends Component {
   static propTypes = {
     // Injected
     setSort: PropTypes.func.isRequired,
@@ -29,10 +29,12 @@ class SortContainer extends Component {
   };
 
   render() {
-    const { setSort, sort, sortOptions } = this.props;
+    const { searchTerm, setSort, sort, sortOptions } = this.props;
+
+    if (!searchTerm) return null;
 
     return (
-      <Sort
+      <Sorting
         onChange={e => {
           setSort(findSortOption(sortOptions, e.currentTarget.value));
         }}
@@ -43,4 +45,4 @@ class SortContainer extends Component {
   }
 }
 
-export default withAppSearch(SortContainer);
+export default withAppSearch(SortingContainer);
