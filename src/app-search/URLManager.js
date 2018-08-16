@@ -63,6 +63,47 @@ function parseSizeFromQueryParams(queryParams) {
   return toSingleValueInteger(queryParams.size);
 }
 
+function paramsToState(queryParams) {
+  const state = {
+    current: parseCurrentFromQueryParams(queryParams),
+    filters: parseFiltersFromQueryParams(queryParams),
+    searchTerm: parseSearchTermFromQueryParams(queryParams),
+    resultsPerPage: parseSizeFromQueryParams(queryParams),
+    sort: parseSortFromQueryParams(queryParams)
+  };
+
+  return Object.keys(state).reduce((acc, key) => {
+    const value = state[key];
+    if (value) acc[key] = value;
+    return acc;
+  }, {});
+}
+
+function stateToParams(state) {
+  const { searchTerm, current, filters, resultsPerPage, sort } = state;
+  const params = {};
+
+  filters.forEach(filter => {
+    const key = Object.keys(filter)[0];
+    params[`f-${key}`] = filter[key];
+  });
+
+  if (current > 1) params.current = current;
+  if (searchTerm) params.q = searchTerm;
+  if (resultsPerPage) params.size = resultsPerPage;
+  if (sort && sort.value) {
+    params["sort-by"] = sort.value;
+    params["sort-direction"] = sort.direction;
+  }
+
+  return params;
+}
+
+function stateToQueryString(state) {
+  const params = stateToParams(state);
+  return queryString.stringify(params);
+}
+
 /**
  * The URL Manager is responsible for synchronizing state between
  * AppSearchDriver and the URL. There are 3 main cases to handle when
@@ -92,23 +133,15 @@ export default class URLManager {
     return state;
   }
 
-  pushStateToURL(state) {}
+  pushStateToURL(state) {
+    const searchString = stateToQueryString(state);
+    this.history.push(
+      {
+        search: `?${searchString}`
+      },
+      { some: "state" }
+    );
+  }
 
   onURLStateChange() {}
-}
-
-function paramsToState(queryParams) {
-  const state = {
-    current: parseCurrentFromQueryParams(queryParams),
-    filters: parseFiltersFromQueryParams(queryParams),
-    searchTerm: parseSearchTermFromQueryParams(queryParams),
-    resultsPerPage: parseSizeFromQueryParams(queryParams),
-    sort: parseSortFromQueryParams(queryParams)
-  };
-
-  return Object.keys(state).reduce((acc, key) => {
-    const value = state[key];
-    if (value) acc[key] = value;
-    return acc;
-  }, {});
 }

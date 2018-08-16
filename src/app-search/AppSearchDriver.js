@@ -14,7 +14,10 @@ export default class AppSearchDriver {
     results: [],
     resultsPerPage: 0,
     searchTerm: "",
-    sort: {},
+    sort: {
+      value: "",
+      direction: ""
+    },
     totalResults: 0
   };
 
@@ -160,6 +163,14 @@ export default class AppSearchDriver {
         searchTerm: searchTerm,
         sort: sort,
         totalResults: resultList.info.meta.page.total_results
+      });
+
+      this.URLManager.pushStateToURL({
+        current,
+        filters,
+        resultsPerPage,
+        searchTerm,
+        sort
       });
     });
   };
