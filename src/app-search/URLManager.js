@@ -106,7 +106,7 @@ function stateToQueryString(state) {
 
 /**
  * The URL Manager is responsible for synchronizing state between
- * AppSearchDriver and the URL. There are 3 main cases to handle when
+ * AppSearchDriver and the URL. There are 2 main cases we handle when
  * synchronizing:
  *
  * 1. When the app loads, AppSearchDriver will need to
@@ -117,8 +117,8 @@ function stateToQueryString(state) {
  * AppSearchDriver will need to be notified and given the updated state, so that
  * it can re-run the current search. `onURLStateChange` is used for this case.
  *
- * 3. When state changes in AppSearchDriver, the URL will need to be updated
- * to reflect those changes. `onURLStateChange` is used for this case.
+ * A third case would be handling an update on `history.pushState`, but that
+ * is outside the scope of this Reference UI for now.
  */
 
 export default class URLManager {

@@ -6,6 +6,7 @@ import SearchBox from "../components/SearchBox";
 
 export class SearchBoxContainer extends Component {
   static propTypes = {
+    searchTerm: PropTypes.string.isRequired,
     setSearchTerm: PropTypes.func.isRequired
   };
 
@@ -13,6 +14,11 @@ export class SearchBoxContainer extends Component {
     value: "",
     isFocused: false
   };
+
+  constructor(props) {
+    super();
+    this.state.value = props.searchTerm;
+  }
 
   handleFocus = e => {
     this.setState({
