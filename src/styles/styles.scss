@@ -23,7 +23,7 @@ $searchboxBorderColor: #abb1b7 !default;
 $resultBackgroundColor: #fcfcfc !default;
 $resultBorderColor: #eeeeee !default;
 $fieldHoverColor: #f6f6f6 !default;
-$resultKeyTextColor: #666666 !default;
+$resultKeyTextColor: #777777 !default;
 
 // Font Variables
 $fontWeightNormal: 400 !default;
@@ -64,7 +64,7 @@ ul {
 }
 
 a {
-  text-decoration: none;
+  text-decoration: underline;
   color: $linkColor;
 }
 
@@ -77,8 +77,7 @@ a {
   background: linear-gradient(rgb(45, 160, 250), rgb(49, 88, 238))
     rgb(47, 124, 244);
   cursor: pointer;
-  border-radius: 4px;
-  border-width: 0px;
+  border-radius: 3px;
 
   &:hover {
     box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 0px 1px inset,
@@ -108,8 +107,7 @@ a {
 }
 
 .reference-ui-header {
-  padding: $sizeXXL $sizeL;
-  background-color: $headerBackgroundColor;
+  padding: $sizeXL $sizeL;
   border-bottom: 1px solid $headerBorderColor;
 
   &__title {
@@ -137,23 +135,24 @@ a {
 .searchbox {
   @include limitWidth;
   display: flex;
-  border-radius: 6px;
-  border: 1px solid $searchboxBorderColor;
-  background: white;
   overflow: hidden;
   justify-content: center;
-  height: 80px;
+  height: 50px;
   align-items: stretch;
-  padding: 0.5rem;
 
   &__text-input {
     width: 100%;
-    border: none;
+    border-radius: 3px;
+    border: 1px solid $searchboxBorderColor;
     padding: 0 1em;
     outline: none;
 
     &::placeholder {
       color: #aaaaaa;
+    }
+
+    &.focus {
+      border: 1px solid $linkColor;
     }
   }
 
@@ -164,10 +163,6 @@ a {
     .live-filtering & {
       display: none;
     }
-  }
-
-  &.focus {
-    border: 1px solid $linkColor;
   }
 }
 
@@ -218,6 +213,7 @@ a {
   &__link {
     color: $facetLinkColor;
     position: relative;
+    text-decoration: none;
 
     &:after {
       content: "";
@@ -307,7 +303,7 @@ a {
     font-weight: 900;
     font-style: inherit;
 
-    &:before {
+    &:after {
       content: "";
       position: absolute;
       top: -3px;
@@ -336,6 +332,13 @@ a {
     font-size: 14px;
     flex: 0 1 50%;
     color: $resultKeyTextColor;
+
+    &:before {
+      content: '"';
+    }
+    &:after {
+      content: '": ';
+    }
   }
 
   &__value {
@@ -369,13 +372,12 @@ a {
   }
 
   &__details {
-    > li {
-      display: flex;
-
-      &:hover {
-        background-color: $fieldHoverColor;
-      }
-    }
+    max-height: 300px;
+    position: relative;
+    overflow: hidden;
+    overflow-y: auto;
+    padding: $sizeL;
+    background-color: $headerBackgroundColor;
   }
 
   &__footer {
