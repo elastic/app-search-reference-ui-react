@@ -14,10 +14,8 @@ export default class AppSearchDriver {
     results: [],
     resultsPerPage: 0,
     searchTerm: "",
-    sort: {
-      value: "",
-      direction: ""
-    },
+    sortDirection: "",
+    sortField: "",
     totalResults: 0
   };
 
@@ -64,41 +62,76 @@ export default class AppSearchDriver {
   }
 
   addFilter = (name, value) => {
-    const { filters, resultsPerPage, searchTerm, sort } = this.state;
+    const {
+      filters,
+      resultsPerPage,
+      searchTerm,
+      sortDirection,
+      sortField
+    } = this.state;
     this.updateSearchResults(
       searchTerm,
       1,
       [...filters, { [name]: value }],
       resultsPerPage,
-      sort
+      sortDirection,
+      sortField
     );
   };
 
   removeFilter = (name, value) => {
-    const { filters, resultsPerPage, searchTerm, sort } = this.state;
+    const {
+      filters,
+      resultsPerPage,
+      searchTerm,
+      sortDirection,
+      sortField
+    } = this.state;
     const updatedFilters = filters.filter(filter => !(filter[name] === value));
     this.updateSearchResults(
       searchTerm,
       1,
       updatedFilters,
       resultsPerPage,
-      sort
+      sortDirection,
+      sortField
     );
   };
 
   setResultsPerPage = resultsPerPage => {
-    const { filters, searchTerm, sort } = this.state;
-    this.updateSearchResults(searchTerm, 1, filters, resultsPerPage, sort);
+    const { filters, searchTerm, sortDirection, sortField } = this.state;
+    this.updateSearchResults(
+      searchTerm,
+      1,
+      filters,
+      resultsPerPage,
+      sortDirection,
+      sortField
+    );
   };
 
   setSearchTerm = searchTerm => {
-    const { resultsPerPage, sort } = this.state;
-    this.updateSearchResults(searchTerm, 1, [], resultsPerPage, sort);
+    const { resultsPerPage, sortDirection, sortField } = this.state;
+    this.updateSearchResults(
+      searchTerm,
+      1,
+      [],
+      resultsPerPage,
+      sortDirection,
+      sortField
+    );
   };
 
-  setSort = sort => {
+  setSort = (sortField, sortDirection) => {
     const { filters, resultsPerPage, searchTerm } = this.state;
-    this.updateSearchResults(searchTerm, 1, filters, resultsPerPage, sort);
+    this.updateSearchResults(
+      searchTerm,
+      1,
+      filters,
+      resultsPerPage,
+      sortDirection,
+      sortField
+    );
   };
 
   trackClickThrough = (documentId, tags = []) => {
@@ -113,14 +146,21 @@ export default class AppSearchDriver {
   };
 
   updatePage = current => {
-    const { filters, resultsPerPage, searchTerm, sort } = this.state;
+    const {
+      filters,
+      resultsPerPage,
+      searchTerm,
+      sortDirection,
+      sortField
+    } = this.state;
 
     this.updateSearchResults(
       searchTerm,
       current,
       filters,
       resultsPerPage,
-      sort
+      sortDirection,
+      sortField
     );
   };
 
@@ -129,7 +169,8 @@ export default class AppSearchDriver {
     current,
     filters,
     resultsPerPage,
-    sort
+    sortDirection,
+    sortField
   ) => {
     const searchOptions = {
       ...this.searchOptions,
@@ -142,13 +183,9 @@ export default class AppSearchDriver {
       }
     };
 
-    if (
-      Object.keys(sort).length > 0 &&
-      sort.value.length > 1 &&
-      sort.direction.length > 1
-    ) {
+    if (sortField && sortDirection) {
       searchOptions.sort = {
-        [sort.value]: sort.direction
+        [sortField]: sortDirection
       };
     }
 
@@ -161,7 +198,8 @@ export default class AppSearchDriver {
         results: resultList.results,
         resultsPerPage: resultsPerPage,
         searchTerm: searchTerm,
-        sort: sort,
+        sortDirection: sortDirection,
+        sortField: sortField,
         totalResults: resultList.info.meta.page.total_results
       });
 
@@ -170,19 +208,28 @@ export default class AppSearchDriver {
         filters,
         resultsPerPage,
         searchTerm,
-        sort
+        sortDirection,
+        sortField
       });
     });
   };
 
   updateSearchResultsFromCurrentState() {
-    const { searchTerm, current, filters, resultsPerPage, sort } = this.state;
+    const {
+      searchTerm,
+      current,
+      filters,
+      resultsPerPage,
+      sortDirection,
+      sortField
+    } = this.state;
     this.updateSearchResults(
       searchTerm,
       current,
       filters,
       resultsPerPage,
-      sort
+      sortDirection,
+      sortField
     );
   }
 }

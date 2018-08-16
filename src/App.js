@@ -18,10 +18,8 @@ function createDriver() {
     engineName,
     initialState: {
       resultsPerPage: 20,
-      sort: {
-        value: "",
-        direction: ""
-      }
+      sortDirection: "",
+      sortField: ""
     },
     searchOptions: buildSearchOptionsFromConfig()
   });
@@ -37,8 +35,8 @@ class App extends Component {
       <AppSearchProvider driver={createDriver()}>
         {({ searchTerm }) => (
           <div className={`reference-ui${searchTerm ? " active-search" : ""}`}>
-              <Header />
-              <Body />
+            <Header />
+            <Body />
           </div>
         )}
       </AppSearchProvider>

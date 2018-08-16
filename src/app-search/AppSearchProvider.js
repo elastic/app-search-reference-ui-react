@@ -25,7 +25,8 @@ class AppSearchProvider extends Component {
       results,
       resultsPerPage,
       searchTerm,
-      sort,
+      sortDirection,
+      sortField,
       totalResults
     } = this.state;
 
@@ -37,7 +38,8 @@ class AppSearchProvider extends Component {
       results: results,
       resultsPerPage: resultsPerPage,
       searchTerm: searchTerm,
-      sort: sort,
+      sortDirection: sortDirection,
+      sortField: sortField,
       totalResults: totalResults,
       addFilter: driver.addFilter,
       trackClickThrough: driver.trackClickThrough,

@@ -12,34 +12,46 @@ function findSortOption(sortOptions, sortString) {
   );
 }
 
-function formatOption(sortOption) {
+function formatValue(sortField, sortDirection) {
+  return `${sortField}|||${sortDirection}`;
+}
+
+function formatSelectOption(sortOption) {
   return {
     name: sortOption.name,
-    value: `${sortOption.value}|||${sortOption.direction}`
+    value: formatValue(sortOption.value, sortOption.direction)
   };
 }
 class SortingContainer extends Component {
   static propTypes = {
     // Injected
+    searchTerm: PropTypes.string.isRequired,
     setSort: PropTypes.func.isRequired,
-    sort: PropTypes.shape({ name: PropTypes.string, value: PropTypes.string })
-      .isRequired,
+    sortDirection: PropTypes.string.isRequired,
+    sortField: PropTypes.string.isRequired,
     // Passed
     sortOptions: PropTypes.arrayOf(SortOption).isRequired
   };
 
   render() {
-    const { searchTerm, setSort, sort, sortOptions } = this.props;
+    const {
+      searchTerm,
+      setSort,
+      sortDirection,
+      sortField,
+      sortOptions
+    } = this.props;
 
     if (!searchTerm) return null;
 
     return (
       <Sorting
         onChange={e => {
-          setSort(findSortOption(sortOptions, e.currentTarget.value));
+          const sortOption = findSortOption(sortOptions, e.currentTarget.value);
+          setSort(sortOption.value, sortOption.direction);
         }}
-        options={sortOptions.map(formatOption)}
-        value={formatOption(sort).value}
+        options={sortOptions.map(formatSelectOption)}
+        value={formatValue(sortField, sortDirection)}
       />
     );
   }

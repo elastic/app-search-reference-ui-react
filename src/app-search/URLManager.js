@@ -1,6 +1,5 @@
 import createHistory from "history/createBrowserHistory";
 import queryString from "query-string";
-import { create } from "../types/SortOption";
 
 function isNumeric(num) {
   return !isNaN(num);
@@ -46,17 +45,14 @@ function parseSearchTermFromQueryParams(queryParams) {
 }
 
 function parseSortFromQueryParams(queryParams) {
-  const sortBy = toSingleValue(queryParams["sort-by"]);
+  const sortField = toSingleValue(queryParams["sort-field"]);
   const sortDirection = toSingleValue(queryParams["sort-direction"]);
 
-  if (sortBy) {
-    return create({
-      value: sortBy,
-      direction: sortDirection
-    });
+  if (sortField) {
+    return [sortField, sortDirection];
   }
 
-  return;
+  return [];
 }
 
 function parseSizeFromQueryParams(queryParams) {
@@ -69,7 +65,8 @@ function paramsToState(queryParams) {
     filters: parseFiltersFromQueryParams(queryParams),
     searchTerm: parseSearchTermFromQueryParams(queryParams),
     resultsPerPage: parseSizeFromQueryParams(queryParams),
-    sort: parseSortFromQueryParams(queryParams)
+    sortField: parseSortFromQueryParams(queryParams)[0],
+    sortDirection: parseSortFromQueryParams(queryParams)[1]
   };
 
   return Object.keys(state).reduce((acc, key) => {
@@ -80,7 +77,14 @@ function paramsToState(queryParams) {
 }
 
 function stateToParams(state) {
-  const { searchTerm, current, filters, resultsPerPage, sort } = state;
+  const {
+    searchTerm,
+    current,
+    filters,
+    resultsPerPage,
+    sortDirection,
+    sortField
+  } = state;
   const params = {};
 
   filters.forEach(filter => {
@@ -91,9 +95,9 @@ function stateToParams(state) {
   if (current > 1) params.current = current;
   if (searchTerm) params.q = searchTerm;
   if (resultsPerPage) params.size = resultsPerPage;
-  if (sort && sort.value) {
-    params["sort-by"] = sort.value;
-    params["sort-direction"] = sort.direction;
+  if (sortField) {
+    params["sort-field"] = sortField;
+    params["sort-direction"] = sortDirection;
   }
 
   return params;
