@@ -1,4 +1,5 @@
 import * as SwiftypeAppSearch from "swiftype-app-search-javascript";
+import URLManager from "./URLManager";
 
 /*
  * A framework agnostic state manager for App Search apps
@@ -26,13 +27,21 @@ export default class AppSearchDriver {
   }) {
     this.onStateChange = function() {};
     this.searchOptions = searchOptions || {};
-    this.state = { ...this.state, ...initialState };
+
+    this.URLManager = new URLManager();
+    const urlState = this.URLManager.getStateFromURL();
+
+    this.state = { ...this.state, ...initialState, ...urlState };
 
     this.client = SwiftypeAppSearch.createClient({
       hostIdentifier: hostIdentifier,
       apiKey: searchKey,
       engineName: engineName
     });
+
+    if (this.state.searchTerm) {
+      this.updateSearchResultsFromCurrentState();
+    }
   }
 
   subscribeToStateChanges(onStateChange) {
@@ -154,4 +163,15 @@ export default class AppSearchDriver {
       });
     });
   };
+
+  updateSearchResultsFromCurrentState() {
+    const { searchTerm, current, filters, resultsPerPage, sort } = this.state;
+    this.updateSearchResults(
+      searchTerm,
+      current,
+      filters,
+      resultsPerPage,
+      sort
+    );
+  }
 }

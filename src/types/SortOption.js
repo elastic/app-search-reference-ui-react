@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
 
+const DIRECTIONS = ["asc", "desc", ""];
+
 export default PropTypes.shape({
   // A display name, like "Name"
   name: PropTypes.string,
@@ -10,6 +12,10 @@ export default PropTypes.shape({
 });
 
 export function create({ name, value, direction }) {
+  if (!DIRECTIONS.includes(direction)) {
+    direction = "";
+  }
+
   return {
     name,
     value,
