@@ -19,8 +19,8 @@ A complete list of configuration options can be found [below](#config).
 
 ### If you just downloaded this via the generator
 
-You'll need to install [yarn](https://yarnpkg.com/en/). Once you have "yarn"
-installed, you should be able to use the `yarn` command from within your
+You'll need to install [npm](https://www.npmjs.com/). Once you have "npm"
+installed, you should be able to use the `npm` command from within your
 terminal.
 
 Run the following commands to start this application:
@@ -32,10 +32,10 @@ Run the following commands to start this application:
 cd ~/Downloads/app-search-reference-ui
 
 # Run this to set everything up
-yarn
+npm install
 
 # Run this to start your application and open it up in a new browser window
-yarn start
+npm start
 ```
 
 #### Updating configuration
