@@ -20,26 +20,28 @@ function filterSearchParameters(state) {
   };
 }
 
+const DEFAULT_STATE = {
+  // Search Parameters
+  current: 1,
+  filters: [],
+  resultsPerPage: 0,
+  searchTerm: "",
+  sortDirection: "",
+  sortField: "",
+  // Result data
+  facets: {},
+  requestId: "",
+  results: [],
+  totalResults: 0
+};
+
 /*
  * The Driver is a framework agnostic state manager for App Search apps. Meaning,
  * it is the source of truth for state in this React App, but it has no
  * dependencies on React itself.
  */
 export default class AppSearchDriver {
-  state = {
-    // Search Parameters
-    current: 1,
-    filters: [],
-    resultsPerPage: 0,
-    searchTerm: "",
-    sortDirection: "",
-    sortField: "",
-    // Result data
-    facets: {},
-    requestId: "",
-    results: [],
-    totalResults: 0
-  };
+  state = DEFAULT_STATE;
 
   /**
    *
@@ -61,14 +63,17 @@ export default class AppSearchDriver {
   }) {
     this.subscriptions = [];
     this.searchOptions = searchOptions || {};
-    this.URLManager = new URLManager();
     this.client = SwiftypeAppSearch.createClient({
       hostIdentifier: hostIdentifier,
       apiKey: searchKey,
       engineName: engineName
     });
-    const urlState = this.URLManager.getStateFromURL();
 
+    this.URLManager = new URLManager();
+    const urlState = this.URLManager.getStateFromURL();
+    this.URLManager.onURLStateChange(urlState => {
+      this._updateSearchResults({ ...DEFAULT_STATE, ...urlState }, true);
+    });
     // We filter these here, because the only state that should be allowed
     // to be passed in, is search parameter state. Results, etc, should not
     // be allowed to be passed in, that should be generated based on the
@@ -89,14 +94,10 @@ export default class AppSearchDriver {
     }
   }
 
-  _updateSearchResults = ({
-    current,
-    filters,
-    resultsPerPage,
-    searchTerm,
-    sortDirection,
-    sortField
-  }) => {
+  _updateSearchResults = (
+    { current, filters, resultsPerPage, searchTerm, sortDirection, sortField },
+    skipPushToUrl = false
+  ) => {
     const searchOptions = {
       ...this.searchOptions,
       page: {
@@ -128,14 +129,16 @@ export default class AppSearchDriver {
         totalResults: resultList.info.meta.page.total_results
       });
 
-      this.URLManager.pushStateToURL({
-        current,
-        filters,
-        resultsPerPage,
-        searchTerm,
-        sortDirection,
-        sortField
-      });
+      if (!skipPushToUrl) {
+        this.URLManager.pushStateToURL({
+          current,
+          filters,
+          resultsPerPage,
+          searchTerm,
+          sortDirection,
+          sortField
+        });
+      }
     });
   };
 
