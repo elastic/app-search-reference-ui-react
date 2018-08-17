@@ -2,7 +2,6 @@ import React, { Component } from "react";
 
 import Header from "./components/Header";
 import Body from "./components/Body";
-
 import AppSearchProvider from "./app-search/AppSearchProvider";
 import AppSearchDriver from "./app-search/AppSearchDriver";
 import {
@@ -29,12 +28,23 @@ class App extends Component {
   render() {
     const config = getConfig();
 
-    if (!config) return <div>No config found</div>;
+    if (!config) {
+      return (
+        <div>
+          No config found. Be sure to provide configuration by either including
+          a src/config/engine.json file, or including window.appConfig.
+        </div>
+      );
+    }
 
     return (
       <AppSearchProvider driver={createDriver()}>
-        {({ searchTerm }) => (
-          <div className={`reference-ui${searchTerm ? " active-search" : ""}`}>
+        {({ searchTerm, results }) => (
+          <div
+            className={`reference-ui${
+              searchTerm || results.length > 0 ? " active-search" : ""
+            }`}
+          >
             <Header />
             <Body />
           </div>

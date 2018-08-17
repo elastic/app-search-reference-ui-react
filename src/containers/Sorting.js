@@ -25,6 +25,7 @@ function formatSelectOption(sortOption) {
 class SortingContainer extends Component {
   static propTypes = {
     // Injected
+    results: PropTypes.arrayOf(PropTypes.object).isRequired,
     searchTerm: PropTypes.string.isRequired,
     setSort: PropTypes.func.isRequired,
     sortDirection: PropTypes.string.isRequired,
@@ -35,6 +36,7 @@ class SortingContainer extends Component {
 
   render() {
     const {
+      results,
       searchTerm,
       setSort,
       sortDirection,
@@ -42,7 +44,7 @@ class SortingContainer extends Component {
       sortOptions
     } = this.props;
 
-    if (!searchTerm) return null;
+    if (!searchTerm && results.length === 0) return null;
 
     return (
       <Sorting

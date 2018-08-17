@@ -12,7 +12,7 @@ function limitedTo100Pages(totalResults, resultsPerPage) {
   return Math.min(resultsPerPage * 100, totalResults);
 }
 
-function Paging({ current, updatePage, resultsPerPage, totalResults }) {
+function Paging({ current, resultsPerPage, setCurrent, totalResults }) {
   if (totalResults === 0) return null;
 
   return (
@@ -21,7 +21,7 @@ function Paging({ current, updatePage, resultsPerPage, totalResults }) {
         pageSize={resultsPerPage}
         current={current}
         total={limitedTo100Pages(totalResults, resultsPerPage)}
-        onChange={updatePage}
+        onChange={setCurrent}
       />
     </div>
   );
@@ -29,8 +29,9 @@ function Paging({ current, updatePage, resultsPerPage, totalResults }) {
 
 Paging.propTypes = {
   current: PropTypes.number.isRequired,
-  updatePage: PropTypes.func.isRequired,
   resultsPerPage: PropTypes.number.isRequired,
+  searchTerm: PropTypes.string.isRequired,
+  setCurrent: PropTypes.func.isRequired,
   totalResults: PropTypes.number.isRequired
 };
 

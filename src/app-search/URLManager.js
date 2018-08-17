@@ -131,10 +131,7 @@ export default class URLManager {
   }
 
   getStateFromURL() {
-    const state = paramsToState(
-      queryString.parse(this.history.location.search)
-    );
-    return state;
+    return paramsToState(queryString.parse(this.history.location.search));
   }
 
   pushStateToURL(state) {
@@ -146,6 +143,4 @@ export default class URLManager {
       { some: "state" }
     );
   }
-
-  onURLStateChange() {}
 }

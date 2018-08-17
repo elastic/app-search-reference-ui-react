@@ -7,20 +7,27 @@ import PagingInfo from "../components/PagingInfo";
 class PagingInfoContainer extends Component {
   static propTypes = {
     current: PropTypes.number.isRequired,
+    results: PropTypes.arrayOf(PropTypes.object).isRequired,
     resultsPerPage: PropTypes.number.isRequired,
     searchTerm: PropTypes.string.isRequired,
     totalResults: PropTypes.number.isRequired
   };
 
   render() {
-    const { current, resultsPerPage, searchTerm, totalResults } = this.props;
+    const {
+      current,
+      results,
+      resultsPerPage,
+      searchTerm,
+      totalResults
+    } = this.props;
     const start = totalResults === 0 ? 0 : (current - 1) * resultsPerPage + 1;
     const end =
       totalResults <= resultsPerPage
         ? totalResults
         : start + resultsPerPage - 1;
 
-    if (!searchTerm) return null;
+    if (!searchTerm && results.length === 0) return null;
 
     return (
       <PagingInfo

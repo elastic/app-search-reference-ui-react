@@ -3,6 +3,13 @@ import React, { Component } from "react";
 
 import AppSearchContext from "./AppSearchContext";
 
+/**
+ * The AppSearchProvider is the glue that connects the AppSearchDriver to
+ * our React App. It "subscribes" to the driver in order to be
+ * notified of state updates, and then passes that state down to child
+ * components in a React Context. It will also pass down "actions" from the
+ * AppSearchDriver, which allow child components to update state.
+ */
 class AppSearchProvider extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
@@ -31,23 +38,26 @@ class AppSearchProvider extends Component {
     } = this.state;
 
     const providerValue = {
-      current: current,
-      facets: facets,
-      filters: filters,
-      requestId: requestId,
-      results: results,
-      resultsPerPage: resultsPerPage,
-      searchTerm: searchTerm,
-      sortDirection: sortDirection,
-      sortField: sortField,
-      totalResults: totalResults,
+      // Search Parameters
+      current,
+      filters,
+      resultsPerPage,
+      searchTerm,
+      sortDirection,
+      sortField,
+      // Result data
+      facets,
+      requestId,
+      results,
+      totalResults,
+      // Actions
       addFilter: driver.addFilter,
       trackClickThrough: driver.trackClickThrough,
       removeFilter: driver.removeFilter,
+      setCurrent: driver.setCurrent,
       setResultsPerPage: driver.setResultsPerPage,
       setSearchTerm: driver.setSearchTerm,
-      setSort: driver.setSort,
-      updatePage: driver.updatePage
+      setSort: driver.setSort
     };
 
     return (
