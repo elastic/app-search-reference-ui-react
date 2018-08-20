@@ -3,23 +3,21 @@
 The Reference UI is a configurable, generic UI meant to work with
 any [App Search](https://www.elastic.co/cloud/app-search-service) Engine. It
 can serve as a simple demo, a functional test for your Engine data,
-and also a code reference to use when building out your own App Search
+or as a code reference when building out your own App Search
 UI.
 
 The project can be configured via a JSON [config file](src/config/engine.json),
-which allows you to easily control things like:
+which allows you to easily control things like...
 
-- What Engine this UI runs against
-- What fields are displayed
-- What filters are used
+- The Engine the UI runs against
+- Which fields are displayed
+- The filters that are used
 
-A complete list of configuration options can be found [below](#config).
+The README assumes that you have generated this code from within the App Search dashboard.
 
 ## Setup
 
-### If you just downloaded this via the Dashboard
-
-You'll need to install [npm](https://www.npmjs.com/). Once you have "npm"
+You will need to install [npm](https://www.npmjs.com/). Once you have "npm"
 installed, you should be able to use the `npm` command from within your
 terminal.
 
@@ -38,16 +36,38 @@ npm install
 npm start
 ```
 
-#### Updating configuration
+### Updating configuration
 
 If you would like to make configuration changes, there is no need to regenerate
 this app from your App Search Dashboard! You can simply open up the
 [engine.json](src/config/engine.json) file, update the [options](#config),
-and restart this app.
+and then restart this app.
 
-### If you're checking this project out directly from github
+### Configuration options <a id="config"></a>
 
-Follow the previous steps, but you'll also need to configure
+The following is a complete list of options available for configuration in [engine.json](src/config/engine.json).
+
+| option | value type | required/optional | source
+| --- | --- | --- | --- |
+| `engineName` | String | required | Found in your [App Search Dashboard](http://app.swiftype.com/as). |
+| `hostIdentifier` | String | required | Found in your [App Search Dashboard](http://app.swiftype.com/as). |
+| `searchKey` | String | required | Found in your [App Search Dashboard](http://app.swiftype.com/as). |
+| `fields` | Array[String] | required | A list of fields that will be searched and displayed within your results. |
+| `titleField` | String | optional | The field to display as the title in results. |
+| `urlField` | String | optional | A field with a url to use as a link in results. |
+| `urlFieldTemplate` | String | optional |  Instead of urlField, you can provide a URL "template" here, which lets you build a URL from other fields. ex: "https://www.example.com/{{id}}". |
+| `sortFields` | Array[String] | required |  A list of fields that will be used for sort options. |
+| `facets` | Array[String] | required |  A list of fields that will be available as "facet" filters. Read more about facets within the [App Search documentation](https://swiftype.com/documentation/app-search/guides/facets). |
+
+### External configuration
+
+If you are embedding this app inside of another page, and you would like to
+source the configuration from outside of the `engine.json` file,
+you can simply write the configuration directly to `window.appConfig`.
+
+### If you are checking this project out directly from GitHub... <a id="github"></a>
+
+You can follow the previous steps, but then you will need to configure
 [engine.json](src/config/engine.json).
 
 To do so, make a copy of [engine.json.example](src/config/engine.json.example),
@@ -56,23 +76,3 @@ rename it to `engine.json` and configure with your Engine's specific details.
 ```bash
 cp src/config/engine.json.example src/config/engine.json
 ```
-
-## Configuration options <a id="config"></a>
-
-The following is a complete list of options available for configuraiton in [engine.json](src/config/engine.json).
-
-- engineName - (String) Found in your [App Search Dashboard](http://app.swiftype.com/as)
-- hostIdentifier - (String) Found in your [App Search Dashboard](http://app.swiftype.com/as)
-- searchKey - (String) Found in your [App Search Dashboard](http://app.swiftype.com/as)
-- fields - (Array[String]) A list of fields that will be searched, and also displayed in results
-- titleField - (String)(Optional) The field to display as the title in results
-- urlField - (String)(Optional) A field with a url to use as a link in results
-- urlFieldTemplate - (String)(Optional) Instead of urlField, you can provide a URL "template" here, which lets you build a URL from other fields. ex: "http://www.example.com/{{id}}"
-- sortFields - (Array[String]) A list of fields that will be used for sort options
-- facets - (Array[String]) A list of fields that will be available as "facet" filters
-
-## External configuration
-
-If you are embedding this app inside of another page, and you'd like to
-source the configuration from outside of the `engine.json` file,
-you can simply write the configuration directly to `window.appConfig`.
