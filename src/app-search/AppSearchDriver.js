@@ -41,20 +41,31 @@ const DEFAULT_STATE = {
  * The Driver is a framework agnostic state manager for App Search apps. Meaning,
  * it is the source of truth for state in this React App, but it has no
  * dependencies on React itself.
+ *
+ * The public interface of the Driver can be thought about in the following
+ * way:
+ *
+ * Ways to GET state:
+ * - getState - Get the initial app state
+ * - subscribeToStateChanges - Get updated state whenever it changes
+ *
+ * Ways to SET state, or "Actions" as we refer to them elsewhere
+ * - addFilter, etc, will typically update the state and trigger new queries
+ *
  */
 export default class AppSearchDriver {
   state = DEFAULT_STATE;
 
   /**
    *
-   * @param options {*}
-   *
+   * @param options Object
    * engineName  - Engine to query, found in your App Search Dashboard
    * hostIdentifier - Credential found in your App Search Dashboard
-   * initialState - This lets you set initial search parameters
+   * initialState - This lets you set initial search parameters, ex:
+   *   `searchTerm: "test"`
    * searchKey - Credential found in your App Search Dashboard
-   * searchOptions - A low level configuration which let's you configure
-   * the options used on the Search API endpoint
+   * searchOptions - A low level configuration which lets you configure
+   *   the options used on the Search API endpoint, ex: `result_fields`
    */
   constructor({
     engineName,
@@ -76,10 +87,11 @@ export default class AppSearchDriver {
     this.URLManager.onURLStateChange(urlState => {
       this._updateSearchResults({ ...DEFAULT_STATE, ...urlState }, true);
     });
-    // We filter these here, because the only state that should be allowed
-    // to be passed in, is search parameter state. Results, etc, should not
-    // be allowed to be passed in, that should be generated based on the
-    // provided search parameters.
+
+    // We filter these here to disallow anything other than valid search
+    // parameters to be passed in initial state, or url state. `results`, etc,
+    // should not be allowed to be passed in, that should be generated based on
+    // the results of the query
     const searchParameters = filterSearchParameters({
       ...this.state,
       ...initialState,
@@ -88,15 +100,15 @@ export default class AppSearchDriver {
 
     // Initialize the state without calling _setState, because we don't
     // want to trigger an update callback, we're just initializing the state
-    // to the correct default values.
+    // to the correct default values for the initial UI render
     this.state = {
       ...this.state,
       ...searchParameters
     };
 
-    // We'll trigger an initial search if initial parameters contains
+    // We'll trigger an initial search if initial parameters contain
     // a search term or filters, otherwise, we'll just save their selections
-    // in state as defaults.
+    // in state as initial values.
     if (searchParameters.searchTerm || searchParameters.filters.length > 0) {
       this._updateSearchResults(searchParameters);
     }
@@ -310,6 +322,13 @@ export default class AppSearchDriver {
     });
   };
 
+  /**
+   * Set the current page
+   *
+   * Will trigger new search
+   *
+   * @param current Integer
+   */
   setCurrent = current => {
     const {
       filters,

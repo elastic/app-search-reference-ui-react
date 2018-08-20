@@ -4,10 +4,10 @@ import { create } from "../types/SortOption";
 /**
  * This file abstracts most logic around the configuration of the Reference UI.
  *
- * Configuration is an important part of the "reusability" and "genericness" of the
- * Reference UI, but if you are using this app as a starting point for own
- * project, everything related to configuration can largely be thrown away. To that
- * end, this file attempts to contain most of that logic to one place.
+ * Configuration is an important part of the "reusability" and "generic-ness" of
+ * the Reference UI, but if you are using this app as a starting point for own
+ * project, everything related to configuration can largely be thrown away. To
+ * that end, this file attempts to contain most of that logic to one place.
  */
 
 export function getConfig() {
