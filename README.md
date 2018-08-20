@@ -2,12 +2,12 @@
 
 The Reference UI is a configurable, generic UI meant to work with
 any [App Search](https://www.elastic.co/cloud/app-search-service) Engine. It
-serves as both a functional reference to test changes you make to your Engine,
+can serve as a simple demo, a functional test for your Engine data,
 and also a code reference to use when building out your own App Search
 UI.
 
 The project can be configured via a JSON [config file](src/config/engine.json),
-which allows you to easily control things like
+which allows you to easily control things like:
 
 - What Engine this UI runs against
 - What fields are displayed
@@ -17,7 +17,7 @@ A complete list of configuration options can be found [below](#config).
 
 ## Setup
 
-### If you just downloaded this via the generator
+### If you just downloaded this via the Dashboard
 
 You'll need to install [npm](https://www.npmjs.com/). Once you have "npm"
 installed, you should be able to use the `npm` command from within your
@@ -42,8 +42,8 @@ npm start
 
 If you would like to make configuration changes, there is no need to regenerate
 this app from your App Search Dashboard! You can simply open up the
-[engine.json](src/config/engine.json) file, update the [options](#config), and restart
-this app.
+[engine.json](src/config/engine.json) file, update the [options](#config),
+and restart this app.
 
 ### If you're checking this project out directly from github
 
