@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
 import React from "react";
 
+import FacetOption from "../types/FacetOption";
+
 function Facet({ name, onRemove, onSelect, options, value }) {
   return (
     <div className="facet">
@@ -47,7 +49,7 @@ Facet.propTypes = {
   name: PropTypes.string.isRequired,
   onRemove: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
-  options: PropTypes.arrayOf(PropTypes.object).isRequired,
+  options: PropTypes.arrayOf(FacetOption).isRequired,
   value: PropTypes.string
 };
 

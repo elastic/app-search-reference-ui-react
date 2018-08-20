@@ -6,7 +6,10 @@ function Facets({ children }) {
 }
 
 Facets.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.element).isRequired
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.element),
+    PropTypes.element
+  ]).isRequired
 };
 
 export default Facets;

@@ -20,6 +20,8 @@ export function getConfig() {
   ) {
     return window.appConfig;
   }
+
+  return {};
 }
 
 function toLowerCase(string) {

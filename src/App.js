@@ -28,7 +28,7 @@ class App extends Component {
   render() {
     const config = getConfig();
 
-    if (!config) {
+    if (!config.engineName) {
       return (
         <div>
           No config found. Be sure to provide configuration by either including
