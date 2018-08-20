@@ -21,14 +21,16 @@ function filterSearchParameters(state) {
 }
 
 const DEFAULT_STATE = {
-  // Search Parameters
+  // Search Parameters -- This is state that represents the input that was
+  // used to produce the current query results. It is always in sync
+  // with the Results State
   current: 1,
   filters: [],
   resultsPerPage: 0,
   searchTerm: "",
   sortDirection: "",
   sortField: "",
-  // Result data
+  // Results State -- This state represents the results of the current query
   facets: {},
   requestId: "",
   results: [],
@@ -84,13 +86,19 @@ export default class AppSearchDriver {
       ...urlState
     });
 
+    // Initialize the state without calling _setState, because we don't
+    // want to trigger an update callback, we're just initializing the state
+    // to the correct default values.
+    this.state = {
+      ...this.state,
+      ...searchParameters
+    };
+
     // We'll trigger an initial search if initial parameters contains
     // a search term or filters, otherwise, we'll just save their selections
     // in state as defaults.
     if (searchParameters.searchTerm || searchParameters.filters.length > 0) {
       this._updateSearchResults(searchParameters);
-    } else {
-      this._setState(searchParameters);
     }
   }
 
