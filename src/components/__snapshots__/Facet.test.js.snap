@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly when a value is not selected 1`] = `
+<div
+  className="facet"
+>
+  <div>
+    <div
+      className="facet__title"
+    >
+      Facet
+    </div>
+    <ul
+      className="facet__list"
+    >
+      <li
+        className="facet__item"
+        key="1"
+      >
+        <a
+          className="facet__link"
+          href="/"
+          onClick={[Function]}
+        >
+          1
+        </a>
+         
+        <span
+          className="facet__count"
+        >
+          1
+        </span>
+      </li>
+      <li
+        className="facet__item"
+        key="2"
+      >
+        <a
+          className="facet__link"
+          href="/"
+          onClick={[Function]}
+        >
+          2
+        </a>
+         
+        <span
+          className="facet__count"
+        >
+          1
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`renders correctly when a value is selected 1`] = `
+<div
+  className="facet"
+>
+  <div>
+    <div
+      className="facet__title"
+    >
+      Facet
+    </div>
+    <ul
+      className="facet__list"
+    >
+      <li
+        className="facet__selected"
+      >
+        value
+         
+        <span
+          className="facet__remove"
+        >
+          (
+          <a
+            href="/"
+            onClick={[Function]}
+          >
+            Remove
+          </a>
+          )
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>
+`;

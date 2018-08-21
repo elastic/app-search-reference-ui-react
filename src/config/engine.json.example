@@ -1,0 +1,20 @@
+{
+  "engineName": "your-engine-name",
+  "hostIdentifier": "host-XXXXX",
+  "searchKey": "search-XXXXXXXXXXXXXXXXXXXXXXX",
+  "fields": [
+    "id",
+    "title",
+    "anotherField",
+    "someField",
+    "created"
+  ],
+  "titleField": "title",
+  "urlField": "url",
+  "urlFieldTemplate": "http://www.example.com/{{id}}",
+  "sortFields": [
+    "title",
+    "anotherField"
+  ],
+  "facets": ["anotherField", "someField"]
+}
