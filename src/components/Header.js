@@ -1,6 +1,6 @@
 import React from "react";
 
-import SearchBox from "../containers/SearchBox";
+import { SearchBox } from "../containers";
 
 export default function Header() {
   return (

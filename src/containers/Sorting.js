@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 
 import withAppSearch from "../app-search/withAppSearch";
-import Sorting from "../components/Sorting";
+import { Sorting } from "../components";
 import SortOption from "../types/SortOption";
 
 function findSortOption(sortOptions, sortString) {

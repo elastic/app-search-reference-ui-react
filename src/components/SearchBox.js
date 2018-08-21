@@ -8,7 +8,7 @@ function SearchBox(props) {
   return (
     <form className="searchbox" onSubmit={onSubmit}>
       <input
-        className={"searchbox__text-input " + focusedClass}
+        className={`searchbox__text-input ${focusedClass}`}
         onChange={onChange}
         type="text"
         value={value}

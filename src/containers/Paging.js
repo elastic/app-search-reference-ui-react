@@ -6,7 +6,7 @@ import "rc-pagination/assets/index.css";
 
 import withAppSearch from "../app-search/withAppSearch";
 
-// App search is currently limited to 100 pages, so we need to make sure
+// App Search is currently limited to 100 pages, so we need to make sure
 // that our pager only shows up to 100 pages.
 function limitedTo100Pages(totalResults, resultsPerPage) {
   return Math.min(resultsPerPage * 100, totalResults);

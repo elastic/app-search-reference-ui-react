@@ -11,6 +11,10 @@ import { create } from "../types/SortOption";
  */
 
 export function getConfig() {
+  if (process.env.NODE_ENV === "test") {
+    return {};
+  }
+
   if (config.engineName) return config;
 
   if (
@@ -33,7 +37,8 @@ function capitalizeFirstLetter(string) {
 }
 
 export function getTitleField() {
-  // Use "title" field as the title field if a user hasn't specified one
+  // If no title field configuration has been provided, we attempt
+  // to use a "title" field, if one exists
   return getConfig().titleField || "title";
 }
 
@@ -88,8 +93,10 @@ export function stripUnnecessaryResultFields(resultFields) {
         toLowerCase(getTitleField()),
         toLowerCase(getUrlField())
       ].includes(toLowerCase(n))
-    )
+    ) {
       return acc;
+    }
+
     acc[n] = resultFields[n];
     return acc;
   }, {});
@@ -125,7 +132,7 @@ export function buildSearchOptionsFromConfig() {
   }, undefined);
 
   return {
-    facets: facets,
+    facets,
     result_fields: resultFields,
     search_fields: searchFields
   };

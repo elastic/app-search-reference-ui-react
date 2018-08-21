@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
-import Header from "./components/Header";
-import Body from "./components/Body";
+import { Body, Header } from "./components";
 import AppSearchProvider from "./app-search/AppSearchProvider";
 import AppSearchDriver from "./app-search/AppSearchDriver";
 import {

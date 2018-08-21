@@ -1,15 +1,14 @@
 import * as SwiftypeAppSearch from "swiftype-app-search-javascript";
 import URLManager from "./URLManager";
 
-function filterSearchParameters(state) {
-  const {
-    current,
-    filters,
-    resultsPerPage,
-    searchTerm,
-    sortDirection,
-    sortField
-  } = state;
+function filterSearchParameters({
+  current,
+  filters,
+  resultsPerPage,
+  searchTerm,
+  sortDirection,
+  sortField
+}) {
   return {
     current,
     filters,
@@ -25,6 +24,7 @@ const DEFAULT_STATE = {
   // used to produce the current query results. It is always in sync
   // with the Results State
   current: 1,
+  error: "",
   filters: [],
   resultsPerPage: 0,
   searchTerm: "",
@@ -114,10 +114,19 @@ export default class AppSearchDriver {
     }
   }
 
-  _updateSearchResults = (
-    { current, filters, resultsPerPage, searchTerm, sortDirection, sortField },
-    skipPushToUrl = false
-  ) => {
+  _updateSearchResults = (searchParameters, skipPushToUrl = false) => {
+    const {
+      current,
+      filters,
+      resultsPerPage,
+      searchTerm,
+      sortDirection,
+      sortField
+    } = {
+      ...this.state,
+      ...searchParameters
+    };
+
     const searchOptions = {
       ...this.searchOptions,
       page: {
@@ -135,31 +144,39 @@ export default class AppSearchDriver {
       };
     }
 
-    return this.client.search(searchTerm, searchOptions).then(resultList => {
-      this._setState({
-        current: resultList.info.meta.page.current,
-        facets: resultList.info.facets,
-        filters: filters,
-        requestId: resultList.info.meta.request_id,
-        results: resultList.results,
-        resultsPerPage: resultsPerPage,
-        searchTerm: searchTerm,
-        sortDirection: sortDirection,
-        sortField: sortField,
-        totalResults: resultList.info.meta.page.total_results
-      });
-
-      if (!skipPushToUrl) {
-        this.URLManager.pushStateToURL({
-          current,
+    return this.client.search(searchTerm, searchOptions).then(
+      resultList => {
+        this._setState({
+          current: resultList.info.meta.page.current,
+          error: "",
+          facets: resultList.info.facets,
           filters,
+          requestId: resultList.info.meta.request_id,
+          results: resultList.results,
           resultsPerPage,
           searchTerm,
           sortDirection,
-          sortField
+          sortField,
+          totalResults: resultList.info.meta.page.total_results
+        });
+
+        if (!skipPushToUrl) {
+          this.URLManager.pushStateToURL({
+            current,
+            filters,
+            resultsPerPage,
+            searchTerm,
+            sortDirection,
+            sortField
+          });
+        }
+      },
+      error => {
+        this._setState({
+          error: `An unexpected error occurred: ${error.message}`
         });
       }
-    });
+    );
   };
 
   _setState(newState) {
@@ -179,10 +196,27 @@ export default class AppSearchDriver {
   }
 
   /**
+   * Retrieves all available acitons
+   *
+   * @returns Object All actions
+   */
+  getActions() {
+    return {
+      addFilter: this.addFilter,
+      removeFilter: this.removeFilter,
+      setResultsPerPage: this.setResultsPerPage,
+      setSearchTerm: this.setSearchTerm,
+      setSort: this.setSort,
+      setCurrent: this.setCurrent,
+      trackClickThrough: this.trackClickThrough
+    };
+  }
+
+  /**
    * Retrieve current state. Typically used on app initialization. Subsequent
    * state updates should come through subscription.
    *
-   * @returns Current state
+   * @returns Object Current state
    */
   getState() {
     // We return a copy of state here, because we want to ensure the state
@@ -199,20 +233,10 @@ export default class AppSearchDriver {
    * @param value String field value to filter on
    */
   addFilter = (name, value) => {
-    const {
-      filters,
-      resultsPerPage,
-      searchTerm,
-      sortDirection,
-      sortField
-    } = this.state;
+    const { filters } = this.state;
     this._updateSearchResults({
       current: 1,
-      filters: [...filters, { [name]: value }],
-      resultsPerPage,
-      searchTerm,
-      sortDirection,
-      sortField
+      filters: [...filters, { [name]: value }]
     });
   };
 
@@ -225,21 +249,11 @@ export default class AppSearchDriver {
    * @param value String field value for filter to remove
    */
   removeFilter = (name, value) => {
-    const {
-      filters,
-      resultsPerPage,
-      searchTerm,
-      sortDirection,
-      sortField
-    } = this.state;
+    const { filters } = this.state;
     const updatedFilters = filters.filter(filter => !(filter[name] === value));
     this._updateSearchResults({
       current: 1,
-      filters: updatedFilters,
-      resultsPerPage,
-      searchTerm,
-      sortDirection,
-      sortField
+      filters: updatedFilters
     });
   };
 
@@ -251,14 +265,9 @@ export default class AppSearchDriver {
    * @param resultsPerPage Integer
    */
   setResultsPerPage = resultsPerPage => {
-    const { filters, searchTerm, sortDirection, sortField } = this.state;
     this._updateSearchResults({
       current: 1,
-      filters,
-      resultsPerPage,
-      searchTerm,
-      sortDirection,
-      sortField
+      resultsPerPage
     });
   };
 
@@ -270,14 +279,10 @@ export default class AppSearchDriver {
    * @param searchTerm String
    */
   setSearchTerm = searchTerm => {
-    const { resultsPerPage, sortDirection, sortField } = this.state;
     this._updateSearchResults({
       current: 1,
       filters: [],
-      resultsPerPage,
-      searchTerm,
-      sortDirection,
-      sortField
+      searchTerm
     });
   };
 
@@ -290,12 +295,8 @@ export default class AppSearchDriver {
    * @param sortDirection String ["asc"|"desc"]
    */
   setSort = (sortField, sortDirection) => {
-    const { filters, resultsPerPage, searchTerm } = this.state;
     this._updateSearchResults({
       current: 1,
-      filters: filters,
-      resultsPerPage,
-      searchTerm,
       sortDirection,
       sortField
     });
@@ -330,21 +331,8 @@ export default class AppSearchDriver {
    * @param current Integer
    */
   setCurrent = current => {
-    const {
-      filters,
-      resultsPerPage,
-      searchTerm,
-      sortDirection,
-      sortField
-    } = this.state;
-
     this._updateSearchResults({
-      current,
-      filters,
-      resultsPerPage,
-      searchTerm,
-      sortDirection,
-      sortField
+      current
     });
   };
 }

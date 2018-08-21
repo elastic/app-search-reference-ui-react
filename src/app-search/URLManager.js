@@ -6,8 +6,7 @@ function isNumeric(num) {
 }
 
 function toSingleValue(val) {
-  if (Array.isArray(val)) val = val[val.length - 1];
-  return val;
+  return Array.isArray(val) ? val[val.length - 1] : val;
 }
 
 function toSingleValueInteger(num) {
@@ -48,10 +47,7 @@ function parseSortFromQueryParams(queryParams) {
   const sortField = toSingleValue(queryParams["sort-field"]);
   const sortDirection = toSingleValue(queryParams["sort-direction"]);
 
-  if (sortField) {
-    return [sortField, sortDirection];
-  }
-
+  if (sortField) return [sortField, sortDirection];
   return [];
 }
 
@@ -76,15 +72,14 @@ function paramsToState(queryParams) {
   }, {});
 }
 
-function stateToParams(state) {
-  const {
-    searchTerm,
-    current,
-    filters,
-    resultsPerPage,
-    sortDirection,
-    sortField
-  } = state;
+function stateToParams({
+  searchTerm,
+  current,
+  filters,
+  resultsPerPage,
+  sortDirection,
+  sortField
+}) {
   const params = {};
 
   filters.forEach(filter => {
@@ -104,8 +99,7 @@ function stateToParams(state) {
 }
 
 function stateToQueryString(state) {
-  const params = stateToParams(state);
-  return queryString.stringify(params);
+  return queryString.stringify(stateToParams(state));
 }
 
 /**
@@ -147,14 +141,13 @@ export default class URLManager {
     );
   }
 
-  onURLStateChange(func) {
+  onURLStateChange(callback) {
     this.history.listen(location => {
-      if ("?" + this.lastPushSearchString === location.search) {
-        // If this URL is updated as a result of a pushState request, we don't
-        // want to notify that the URL changed.
-        return;
-      }
-      func(paramsToState(queryString.parse(location.search)));
+      // If this URL is updated as a result of a pushState request, we don't
+      // want to notify that the URL changed.
+      if (`?${this.lastPushSearchString}` === location.search) return;
+
+      callback(paramsToState(queryString.parse(location.search)));
     });
   }
 }

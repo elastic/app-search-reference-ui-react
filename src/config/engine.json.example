@@ -15,6 +15,6 @@
   "sortFields": [
     "title",
     "anotherField"
-  ]
+  ],
   "facets": ["anotherField", "someField"]
 }

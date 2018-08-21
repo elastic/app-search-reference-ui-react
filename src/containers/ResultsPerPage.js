@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 
 import withAppSearch from "../app-search/withAppSearch";
-import ResultsPerPage from "../components/ResultsPerPage";
+import { ResultsPerPage } from "../components";
 
 class ResultsPerPageContainer extends Component {
   static propTypes = {

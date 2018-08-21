@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 
 import withAppSearch from "../app-search/withAppSearch";
-import SearchBox from "../components/SearchBox";
+import { SearchBox } from "../components";
 
 export class SearchBoxContainer extends Component {
   static propTypes = {

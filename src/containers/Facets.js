@@ -2,8 +2,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 
 import withAppSearch from "../app-search/withAppSearch";
-import Facets from "../components/Facets";
-import Facet from "../components/Facet";
+import { Facet, Facets } from "../components";
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);

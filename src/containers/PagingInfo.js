@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 
 import withAppSearch from "../app-search/withAppSearch";
-import PagingInfo from "../components/PagingInfo";
+import { PagingInfo } from "../components";
 
 class PagingInfoContainer extends Component {
   static propTypes = {

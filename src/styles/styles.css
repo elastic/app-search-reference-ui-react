@@ -345,15 +345,20 @@ a {
     font-weight: 400;
     text-align: center; }
 
-.initial-state-message {
+.initial-state-message,
+.search-error {
   margin: auto;
   display: flex;
   justify-content: center;
   align-items: center;
   height: calc(100vh - 180px);
   color: #888888; }
-  .active-search .initial-state-message {
-    display: none; }
+
+.active-search .initial-state-message {
+  display: none; }
+
+.search-error {
+  color: red; }
 
 .searchbox {
   max-width: 1300px;

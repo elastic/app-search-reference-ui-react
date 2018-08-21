@@ -23,14 +23,15 @@ function Result({ fields, onClickLink, title, url }) {
       </div>
       <div className="result__body">
         <ul className="result__details">
-          {Object.keys(fields).map(key => {
-            return (
-              <li key={key}>
-                <span className="result__key">{key}</span>{" "}
-                <span className="result__value" dangerouslySetInnerHTML={{ __html: fields[key] }} />
-              </li>
-            );
-          })}
+          {Object.keys(fields).map(key => (
+            <li key={key}>
+              <span className="result__key">{key}</span>{" "}
+              <span
+                className="result__value"
+                dangerouslySetInnerHTML={{ __html: fields[key] }}
+              />
+            </li>
+          ))}
         </ul>
       </div>
     </li>

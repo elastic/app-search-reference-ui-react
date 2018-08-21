@@ -19,7 +19,11 @@ import AppSearchContext from "./AppSearchContext";
 class AppSearchProvider extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
-    driver: PropTypes.object.isRequired
+    driver: PropTypes.shape({
+      getActions: PropTypes.func.isRequired,
+      getState: PropTypes.func.isRequired,
+      subscribeToStateChanges: PropTypes.func.isRequired
+    }).isRequired
   };
 
   constructor(props) {
@@ -30,40 +34,10 @@ class AppSearchProvider extends Component {
 
   render() {
     const { children, driver } = this.props;
-    const {
-      current,
-      facets,
-      filters,
-      requestId,
-      results,
-      resultsPerPage,
-      searchTerm,
-      sortDirection,
-      sortField,
-      totalResults
-    } = this.state;
 
     const providerValue = {
-      // Search Parameters
-      current,
-      filters,
-      resultsPerPage,
-      searchTerm,
-      sortDirection,
-      sortField,
-      // Result State
-      facets,
-      requestId,
-      results,
-      totalResults,
-      // Actions
-      addFilter: driver.addFilter,
-      trackClickThrough: driver.trackClickThrough,
-      removeFilter: driver.removeFilter,
-      setCurrent: driver.setCurrent,
-      setResultsPerPage: driver.setResultsPerPage,
-      setSearchTerm: driver.setSearchTerm,
-      setSort: driver.setSort
+      ...this.state,
+      ...driver.getActions()
     };
 
     return (
