@@ -1,6 +1,7 @@
 {
   "name": "app-search-reference-ui-react",
   "version": "0.1.0",
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "history": "^4.7.2",
