@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<Results>
+  <Result
+    fields={
+      Object {
+        "Foo": "<em>foo</em>",
+      }
+    }
+    key="result-id"
+    onClickLink={[Function]}
+    title="<em>title</em>"
+  />
+  <Result
+    fields={
+      Object {
+        "Bar": "<em>bar</em>",
+      }
+    }
+    key="result-id"
+    onClickLink={[Function]}
+    title="<em>title</em>"
+  />
+</Results>
+`;

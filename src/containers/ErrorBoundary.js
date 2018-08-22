@@ -4,12 +4,9 @@ import React, { Component } from "react";
 import withAppSearch from "../app-search/withAppSearch";
 import { ErrorBoundary } from "../components";
 
-class ErrorBoundaryContainer extends Component {
+export class ErrorBoundaryContainer extends Component {
   static propTypes = {
-    children: PropTypes.oneOfType([
-      PropTypes.arrayOf(PropTypes.element),
-      PropTypes.element
-    ]).isRequired,
+    children: PropTypes.node.isRequired,
     error: PropTypes.string.isRequired
   };
 

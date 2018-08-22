@@ -3,6 +3,7 @@ import React, { Component } from "react";
 
 import withAppSearch from "../app-search/withAppSearch";
 import { Facet, Facets } from "../components";
+import { FacetDetail } from "../types";
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -14,11 +15,11 @@ function findFacetValueInFilters(name, filters) {
   return Object.values(filter)[0];
 }
 
-class FacetsContainer extends Component {
+export class FacetsContainer extends Component {
   static propTypes = {
     addFilter: PropTypes.func.isRequired,
     filters: PropTypes.arrayOf(PropTypes.object).isRequired,
-    facets: PropTypes.object.isRequired,
+    facets: PropTypes.objectOf(FacetDetail).isRequired,
     removeFilter: PropTypes.func.isRequired
   };
 

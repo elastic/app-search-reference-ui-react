@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import withAppSearch from "../app-search/withAppSearch";
 import { PagingInfo } from "../components";
 
-class PagingInfoContainer extends Component {
+export class PagingInfoContainer extends Component {
   static propTypes = {
     current: PropTypes.number.isRequired,
     results: PropTypes.arrayOf(PropTypes.object).isRequired,
