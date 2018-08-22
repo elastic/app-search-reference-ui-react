@@ -133,12 +133,9 @@ export default class URLManager {
   pushStateToURL(state) {
     const searchString = stateToQueryString(state);
     this.lastPushSearchString = searchString;
-    this.history.push(
-      {
-        search: `?${searchString}`
-      },
-      { some: "state" }
-    );
+    this.history.push({
+      search: `?${searchString}`
+    });
   }
 
   onURLStateChange(callback) {

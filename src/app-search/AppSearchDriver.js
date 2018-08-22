@@ -19,7 +19,7 @@ function filterSearchParameters({
   };
 }
 
-const DEFAULT_STATE = {
+export const DEFAULT_STATE = {
   // Search Parameters -- This is state that represents the input that was
   // used to produce the current query results. It is always in sync
   // with the Results State
@@ -66,27 +66,38 @@ export default class AppSearchDriver {
    * searchKey - Credential found in your App Search Dashboard
    * searchOptions - A low level configuration which lets you configure
    *   the options used on the Search API endpoint, ex: `result_fields`
+   * trackURLState - Boolean, track state in the url or not?
    */
   constructor({
     engineName,
     hostIdentifier,
     initialState,
     searchKey,
-    searchOptions
+    searchOptions,
+    trackUrlState = true
   }) {
+    if (!engineName || !hostIdentifier || !searchKey) {
+      throw Error("engineName, hostIdentifier, and searchKey are required");
+    }
     this.subscriptions = [];
     this.searchOptions = searchOptions || {};
+    this.trackUrlState = trackUrlState;
     this.client = SwiftypeAppSearch.createClient({
       hostIdentifier: hostIdentifier,
       apiKey: searchKey,
       engineName: engineName
     });
 
-    this.URLManager = new URLManager();
-    const urlState = this.URLManager.getStateFromURL();
-    this.URLManager.onURLStateChange(urlState => {
-      this._updateSearchResults({ ...DEFAULT_STATE, ...urlState }, true);
-    });
+    let urlState;
+    if (trackUrlState) {
+      this.URLManager = new URLManager();
+      urlState = this.URLManager.getStateFromURL();
+      this.URLManager.onURLStateChange(urlState => {
+        this._updateSearchResults({ ...DEFAULT_STATE, ...urlState }, true);
+      });
+    } else {
+      urlState = {};
+    }
 
     // We filter these here to disallow anything other than valid search
     // parameters to be passed in initial state, or url state. `results`, etc,
@@ -147,7 +158,7 @@ export default class AppSearchDriver {
     return this.client.search(searchTerm, searchOptions).then(
       resultList => {
         this._setState({
-          current: resultList.info.meta.page.current,
+          current: current,
           error: "",
           facets: resultList.info.facets,
           filters,
@@ -160,7 +171,7 @@ export default class AppSearchDriver {
           totalResults: resultList.info.meta.page.total_results
         });
 
-        if (!skipPushToUrl) {
+        if (!skipPushToUrl && this.trackUrlState) {
           this.URLManager.pushStateToURL({
             current,
             filters,
