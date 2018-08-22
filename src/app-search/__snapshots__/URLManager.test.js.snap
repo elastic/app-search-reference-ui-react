@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`#getStateFromURL will correctly handle multiple instances of the same parameter 1`] = `
+Object {
+  "filters": Array [
+    Object {
+      "dependencies": Array [
+        "underscore",
+        "another",
+      ],
+    },
+    Object {
+      "keywords": "node",
+    },
+  ],
+  "resultsPerPage": 20,
+  "searchTerm": "node",
+  "sortDirection": "asc",
+  "sortField": "name",
+}
+`;
+
+exports[`#getStateFromURL will ignore unrecognized parameters 1`] = `
+Object {
+  "searchTerm": "test",
+}
+`;
+
+exports[`#getStateFromURL will parse the current state from the URL 1`] = `
+Object {
+  "filters": Array [
+    Object {
+      "dependencies": "underscore",
+    },
+    Object {
+      "keywords": "node",
+    },
+  ],
+  "resultsPerPage": 20,
+  "searchTerm": "node",
+  "sortDirection": "asc",
+  "sortField": "name",
+}
+`;
+
+exports[`#onURLStateChange will call provided callback with updated state when url changes 1`] = `
+Object {
+  "filters": Array [
+    Object {
+      "dependencies": "underscore",
+    },
+    Object {
+      "keywords": "node",
+    },
+  ],
+  "resultsPerPage": 20,
+  "searchTerm": "node",
+  "sortDirection": "asc",
+  "sortField": "name",
+}
+`;
