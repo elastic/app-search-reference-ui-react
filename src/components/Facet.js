@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-import FacetOption from "../types/FacetOption";
+import { FacetOption } from "../types";
 
 function Facet({ name, onRemove, onSelect, options, value }) {
   return (

@@ -1,8 +1,7 @@
 import PropTypes from "prop-types";
 
 const DIRECTIONS = ["asc", "desc", ""];
-
-export default PropTypes.shape({
+const SortOption = PropTypes.shape({
   // A display name, like "Name"
   name: PropTypes.string,
   // A field name, like "name".
@@ -11,7 +10,7 @@ export default PropTypes.shape({
   direction: PropTypes.oneOf(["asc", "desc", ""])
 });
 
-export function create({ name, value, direction }) {
+SortOption.create = function({ name, value, direction }) {
   if (!DIRECTIONS.includes(direction)) {
     direction = "";
   }
@@ -21,4 +20,6 @@ export function create({ name, value, direction }) {
     value,
     direction
   };
-}
+};
+
+export default SortOption;

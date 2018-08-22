@@ -40,6 +40,12 @@ export class SearchBoxContainer extends Component {
     setSearchTerm(value);
   };
 
+  handleChange = e => {
+    this.setState({
+      value: e.currentTarget.value
+    });
+  };
+
   render() {
     const { isFocused, value } = this.state;
     const { inputProps } = this.props;
@@ -58,12 +64,6 @@ export class SearchBoxContainer extends Component {
       />
     );
   }
-
-  handleChange = e => {
-    this.setState({
-      value: e.currentTarget.value
-    });
-  };
 }
 
 export default withAppSearch(SearchBoxContainer);

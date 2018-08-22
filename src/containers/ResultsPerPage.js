@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import withAppSearch from "../app-search/withAppSearch";
 import { ResultsPerPage } from "../components";
 
-class ResultsPerPageContainer extends Component {
+export class ResultsPerPageContainer extends Component {
   static propTypes = {
     results: PropTypes.arrayOf(PropTypes.object).isRequired,
     resultsPerPage: PropTypes.number.isRequired,

@@ -25,10 +25,15 @@ function formatResultFields(result) {
     return acc;
   }, {});
 }
-class ResultsContainer extends Component {
+export class ResultsContainer extends Component {
   static propTypes = {
-    error: PropTypes.string.isRequired,
-    results: PropTypes.arrayOf(PropTypes.object).isRequired,
+    results: PropTypes.arrayOf(
+      PropTypes.shape({
+        data: PropTypes.object.isRequired,
+        getRaw: PropTypes.func.isRequired,
+        getSnippet: PropTypes.func.isRequired
+      })
+    ).isRequired,
     trackClickThrough: PropTypes.func.isRequired
   };
 
@@ -38,10 +43,7 @@ class ResultsContainer extends Component {
   };
 
   render() {
-    const { error, results } = this.props;
-    if (error) {
-      return <div>{error}</div>;
-    }
+    const { results } = this.props;
 
     return (
       <Results>

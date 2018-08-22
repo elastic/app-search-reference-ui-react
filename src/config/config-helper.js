@@ -1,5 +1,5 @@
 import config from "../config/engine.json";
-import { create } from "../types/SortOption";
+import { SortOption } from "../types";
 
 /**
  * This file abstracts most logic around the configuration of the Reference UI.
@@ -141,21 +141,21 @@ export function buildSearchOptionsFromConfig() {
 export function buildSortOptionsFromConfig() {
   const config = getConfig();
   return [
-    create({
+    SortOption.create({
       name: "Sort results",
       value: "",
       direction: ""
     }),
     ...(config.sortFields || []).reduce((acc, sortField) => {
       acc.push(
-        create({
+        SortOption.create({
           name: `${capitalizeFirstLetter(sortField)} ASC`,
           value: sortField,
           direction: "asc"
         })
       );
       acc.push(
-        create({
+        SortOption.create({
           name: `${capitalizeFirstLetter(sortField)} DESC`,
           value: sortField,
           direction: "desc"

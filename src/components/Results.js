@@ -6,10 +6,7 @@ function Results({ children }) {
 }
 
 Results.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.element),
-    PropTypes.element
-  ]).isRequired
+  children: PropTypes.node.isRequired
 };
 
 export default Results;

@@ -4,54 +4,56 @@ exports[`renders correctly 1`] = `
 <div
   className="reference-ui-body"
 >
-  <div
-    className="initial-state-message"
-  >
-    Type a search above to begin.
-  </div>
-  <div
-    className="search-results"
-  >
+  <Component>
     <div
-      className="sidebar"
+      className="initial-state-message"
     >
-      <Component
-        sortOptions={
-          Array [
-            Object {
-              "direction": "",
-              "name": "Sort results",
-              "value": "",
-            },
-          ]
-        }
-      />
-      <Component />
+      Type a search above to begin.
     </div>
     <div
-      className="results"
+      className="search-results"
     >
       <div
-        className="results__header"
+        className="sidebar"
+      >
+        <Component
+          sortOptions={
+            Array [
+              Object {
+                "direction": "",
+                "name": "Sort results",
+                "value": "",
+              },
+            ]
+          }
+        />
+        <Component />
+      </div>
+      <div
+        className="results"
       >
         <div
-          className="meta"
+          className="results__header"
+        >
+          <div
+            className="meta"
+          >
+            <Component />
+            <Component />
+          </div>
+        </div>
+        <div
+          className="results__body"
         >
           <Component />
+        </div>
+        <div
+          className="results__footer"
+        >
           <Component />
         </div>
       </div>
-      <div
-        className="results__body"
-      >
-        <Component />
-      </div>
-      <div
-        className="results__footer"
-      >
-        <Component />
-      </div>
     </div>
-  </div>
+  </Component>
 </div>
 `;

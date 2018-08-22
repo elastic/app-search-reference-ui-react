@@ -12,7 +12,12 @@ function limitedTo100Pages(totalResults, resultsPerPage) {
   return Math.min(resultsPerPage * 100, totalResults);
 }
 
-function Paging({ current, resultsPerPage, setCurrent, totalResults }) {
+export function PagingContainer({
+  current,
+  resultsPerPage,
+  setCurrent,
+  totalResults
+}) {
   if (totalResults === 0) return null;
 
   return (
@@ -27,12 +32,11 @@ function Paging({ current, resultsPerPage, setCurrent, totalResults }) {
   );
 }
 
-Paging.propTypes = {
+PagingContainer.propTypes = {
   current: PropTypes.number.isRequired,
   resultsPerPage: PropTypes.number.isRequired,
-  searchTerm: PropTypes.string.isRequired,
   setCurrent: PropTypes.func.isRequired,
   totalResults: PropTypes.number.isRequired
 };
 
-export default withAppSearch(Paging);
+export default withAppSearch(PagingContainer);
