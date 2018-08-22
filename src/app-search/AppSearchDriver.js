@@ -141,7 +141,7 @@ export default class AppSearchDriver {
     const searchOptions = {
       ...this.searchOptions,
       page: {
-        current: current,
+        current,
         size: resultsPerPage
       },
       filters: {
@@ -158,7 +158,7 @@ export default class AppSearchDriver {
     return this.client.search(searchTerm, searchOptions).then(
       resultList => {
         this._setState({
-          current: current,
+          current,
           error: "",
           facets: resultList.info.facets,
           filters,
