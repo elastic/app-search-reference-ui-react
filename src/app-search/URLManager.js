@@ -1,5 +1,5 @@
 import createHistory from "history/createBrowserHistory";
-import queryString from "query-string";
+import queryString from "qs";
 
 function isNumeric(num) {
   return !isNaN(num);
@@ -99,7 +99,7 @@ function stateToParams({
 }
 
 function stateToQueryString(state) {
-  return queryString.stringify(stateToParams(state));
+  return queryString.stringify(stateToParams(state), { indices: false });
 }
 
 /**
@@ -127,7 +127,12 @@ export default class URLManager {
   }
 
   getStateFromURL() {
-    return paramsToState(queryString.parse(this.history.location.search));
+    debugger;
+    return paramsToState(
+      queryString.parse(this.history.location.search, {
+        ignoreQueryPrefix: true
+      })
+    );
   }
 
   pushStateToURL(state) {
@@ -144,7 +149,13 @@ export default class URLManager {
       // want to notify that the URL changed.
       if (`?${this.lastPushSearchString}` === location.search) return;
 
-      callback(paramsToState(queryString.parse(location.search)));
+      callback(
+        paramsToState(
+          queryString.parse(location.search, {
+            ignoreQueryPrefix: true
+          })
+        )
+      );
     });
   }
 }
