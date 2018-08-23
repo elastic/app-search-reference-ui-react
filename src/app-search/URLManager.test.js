@@ -65,7 +65,7 @@ describe("#pushStateToURL", () => {
     });
     const queryString = manager.history.push.mock.calls[0][0].search;
     expect(queryString).toEqual(
-      "?f-dependencies=underscore&f-dependencies=another&f-keywords=node&q=node&size=20&sort-direction=asc&sort-field=name"
+      "?f-dependencies=underscore&f-dependencies=another&f-keywords=node&q=node&size=20&sort-field=name&sort-direction=asc"
     );
   });
 });

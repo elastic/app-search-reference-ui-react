@@ -6,7 +6,7 @@
   "dependencies": {
     "history": "^4.7.2",
     "prop-types": "^15.6.2",
-    "query-string": "^6.1.0",
+    "qs": "^6.5.2",
     "rc-pagination": "^1.16.5",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
