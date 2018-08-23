@@ -26,7 +26,7 @@ export const DEFAULT_STATE = {
   current: 1,
   error: "",
   filters: [],
-  resultsPerPage: 0,
+  resultsPerPage: 20,
   searchTerm: "",
   sortDirection: "",
   sortField: "",
@@ -125,7 +125,7 @@ export default class AppSearchDriver {
     }
   }
 
-  _updateSearchResults = (searchParameters, skipPushToUrl = false) => {
+  _updateSearchResults(searchParameters, skipPushToUrl = false) {
     const {
       current,
       filters,
@@ -188,7 +188,7 @@ export default class AppSearchDriver {
         });
       }
     );
-  };
+  }
 
   _setState(newState) {
     const state = { ...this.state, ...newState };

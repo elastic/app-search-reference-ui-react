@@ -127,7 +127,6 @@ export default class URLManager {
   }
 
   getStateFromURL() {
-    debugger;
     return paramsToState(
       queryString.parse(this.history.location.search, {
         ignoreQueryPrefix: true
