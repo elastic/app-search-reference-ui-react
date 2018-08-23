@@ -14,11 +14,6 @@ function createDriver() {
     hostIdentifier,
     searchKey,
     engineName,
-    initialState: {
-      resultsPerPage: 20,
-      sortDirection: "",
-      sortField: ""
-    },
     searchOptions: buildSearchOptionsFromConfig()
   });
 }
