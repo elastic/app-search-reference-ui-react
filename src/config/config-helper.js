@@ -122,6 +122,28 @@ export function buildSearchOptionsFromConfig() {
     return acc;
   }, undefined);
 
+  // We can't use url or title fields unless they're actually
+  // in the reuslts.
+  if (config.urlField) {
+    resultFields[config.urlField] = {
+      raw: {},
+      snippet: {
+        size: 100,
+        fallback: true
+      }
+    };
+  }
+
+  if (config.titleField) {
+    resultFields[config.titleField] = {
+      raw: {},
+      snippet: {
+        size: 100,
+        fallback: true
+      }
+    };
+  }
+
   const facets = (config.facets || []).reduce((acc, n) => {
     acc = acc || {};
     acc[n] = {
