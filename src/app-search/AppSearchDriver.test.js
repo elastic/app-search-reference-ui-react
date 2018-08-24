@@ -15,6 +15,18 @@ const resultList = {
   results: [{}, {}]
 };
 
+const resultListWithoutFacets = {
+  info: {
+    meta: {
+      page: {
+        total_results: 1000
+      },
+      request_id: "12345"
+    }
+  },
+  results: [{}, {}]
+};
+
 const params = {
   engineName: "some-engine",
   hostIdentifier: "host-XXXX",
@@ -29,6 +41,11 @@ const mockClient = {
 
 beforeAll(() => {
   SwiftypeAppSearch.createClient.mockReturnValue(mockClient);
+});
+
+beforeEach(() => {
+  mockClient.search = jest.fn().mockReturnValue({ then: cb => cb(resultList) });
+  mockClient.click = jest.fn().mockReturnValue({ then: () => {} });
 });
 
 it("can be initialized", () => {
@@ -59,6 +76,30 @@ it("will use initial state if provided", () => {
   expect(stateAfterCreation).toEqual({
     ...DEFAULT_STATE,
     ...initialState
+  });
+});
+
+it("will default facets to {} in state if facets is missing from the response", () => {
+  const initialState = {
+    searchTerm: "test"
+  };
+
+  mockClient.search = jest
+    .fn()
+    .mockReturnValue({ then: cb => cb(resultListWithoutFacets) });
+
+  const driver = new AppSearchDriver({
+    ...params,
+    initialState
+  });
+  const stateAfterCreation = driver.getState();
+
+  expect(stateAfterCreation).toEqual({
+    ...DEFAULT_STATE,
+    ...initialState,
+    requestId: "12345",
+    results: [{}, {}],
+    totalResults: 1000
   });
 });
 
