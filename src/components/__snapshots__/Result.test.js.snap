@@ -6,6 +6,87 @@ exports[`renders correctly when there is a URL 1`] = `
 >
   <div
     className="result__header"
+  />
+  <div
+    className="result__body"
+  >
+    <ul
+      className="result__details"
+    >
+      <li
+        key="field"
+      >
+        <span
+          className="result__key"
+        >
+          field
+        </span>
+         
+        <span
+          className="result__value"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "value",
+            }
+          }
+        />
+      </li>
+    </ul>
+  </div>
+</li>
+`;
+
+exports[`renders correctly when there is a title 1`] = `
+<li
+  className="result"
+>
+  <div
+    className="result__header"
+  >
+    <span
+      className="result__title"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "Title",
+        }
+      }
+    />
+  </div>
+  <div
+    className="result__body"
+  >
+    <ul
+      className="result__details"
+    >
+      <li
+        key="field"
+      >
+        <span
+          className="result__key"
+        >
+          field
+        </span>
+         
+        <span
+          className="result__value"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "value",
+            }
+          }
+        />
+      </li>
+    </ul>
+  </div>
+</li>
+`;
+
+exports[`renders correctly when there is a title and url 1`] = `
+<li
+  className="result"
+>
+  <div
+    className="result__header"
   >
     <a
       className="result__title"
@@ -47,22 +128,13 @@ exports[`renders correctly when there is a URL 1`] = `
 </li>
 `;
 
-exports[`renders correctly when there is not a URL 1`] = `
+exports[`renders correctly when there is not a URL or title 1`] = `
 <li
   className="result"
 >
   <div
     className="result__header"
-  >
-    <span
-      className="result__title"
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "Title",
-        }
-      }
-    />
-  </div>
+  />
   <div
     className="result__body"
   >
