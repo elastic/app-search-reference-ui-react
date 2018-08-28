@@ -153,11 +153,11 @@ export function buildSearchOptionsFromConfig() {
     return acc;
   }, undefined);
 
-  return {
-    facets,
-    result_fields: resultFields,
-    search_fields: searchFields
-  };
+  const searchOptions = {};
+  if (facets) searchOptions.facets = facets;
+  searchOptions.result_fields = resultFields;
+  searchOptions.search_fields = searchFields;
+  return searchOptions;
 }
 
 export function buildSortOptionsFromConfig() {

@@ -160,7 +160,7 @@ export default class AppSearchDriver {
         this._setState({
           current,
           error: "",
-          facets: resultList.info.facets,
+          facets: resultList.info.facets || {},
           filters,
           requestId: resultList.info.meta.request_id,
           results: resultList.results,
