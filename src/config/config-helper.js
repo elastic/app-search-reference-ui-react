@@ -53,11 +53,7 @@ export function getUrlFieldTemplate() {
 export function getResultTitle(result) {
   const titleField = getTitleField();
 
-  return (
-    result.getSnippet(titleField) ||
-    result.getRaw(titleField) ||
-    result.getRaw("id") // As a last resort, just show ID if nothing else
-  );
+  return result.getSnippet(titleField);
 }
 
 export function getResultUrl(result) {

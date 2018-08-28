@@ -3,8 +3,7 @@ import Result from "./Result";
 import { shallow } from "enzyme";
 
 const requiredProps = {
-  fields: { field: "value" },
-  title: "Title"
+  fields: { field: "value" }
 };
 
 it("renders correctly when there is a URL", () => {
@@ -14,7 +13,19 @@ it("renders correctly when there is a URL", () => {
   expect(wrapper).toMatchSnapshot();
 });
 
-it("renders correctly when there is not a URL", () => {
+it("renders correctly when there is not a URL or title", () => {
   const wrapper = shallow(<Result {...requiredProps} />);
+  expect(wrapper).toMatchSnapshot();
+});
+
+it("renders correctly when there is a title", () => {
+  const wrapper = shallow(<Result {...requiredProps} title="Title" />);
+  expect(wrapper).toMatchSnapshot();
+});
+
+it("renders correctly when there is a title and url", () => {
+  const wrapper = shallow(
+    <Result {...requiredProps} title="Title" url="http://www.example.com" />
+  );
   expect(wrapper).toMatchSnapshot();
 });

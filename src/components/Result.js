@@ -5,21 +5,23 @@ function Result({ fields, onClickLink, title, url }) {
   return (
     <li className="result">
       <div className="result__header">
-        {!url && (
-          <span
-            className="result__title"
-            dangerouslySetInnerHTML={{ __html: title }}
-          />
-        )}
-        {url && (
-          <a
-            className="result__title"
-            dangerouslySetInnerHTML={{ __html: title }}
-            href={url}
-            onClick={onClickLink}
-            target="_blank"
-          />
-        )}
+        {title &&
+          !url && (
+            <span
+              className="result__title"
+              dangerouslySetInnerHTML={{ __html: title }}
+            />
+          )}
+        {title &&
+          url && (
+            <a
+              className="result__title"
+              dangerouslySetInnerHTML={{ __html: title }}
+              href={url}
+              onClick={onClickLink}
+              target="_blank"
+            />
+          )}
       </div>
       <div className="result__body">
         <ul className="result__details">
@@ -40,7 +42,7 @@ function Result({ fields, onClickLink, title, url }) {
 
 Result.propTypes = {
   fields: PropTypes.object.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   url: PropTypes.string
 };
 

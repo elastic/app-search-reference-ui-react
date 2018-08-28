@@ -19,7 +19,7 @@ function capitalizeFirstLetter(string) {
 */
 function formatResultFields(result) {
   return Object.keys(result.data).reduce((acc, n) => {
-    let value = result.getSnippet(n) || result.getRaw(n);
+    let value = result.getSnippet(n);
     value = Array.isArray(value) ? value.join(", ") : value;
     acc[`${capitalizeFirstLetter(n)}`] = value;
     return acc;
