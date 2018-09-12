@@ -4,7 +4,7 @@ import { shallow } from "enzyme";
 
 const params = {
   addFilter: jest.fn(),
-  filters: [{ field: "value" }],
+  filters: [{ field: ["value"] }],
   facets: {
     field: [
       {

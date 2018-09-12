@@ -1,6 +1,13 @@
 import createHistory from "history/createBrowserHistory";
 import queryString from "qs";
 
+function typeOfFilter(filterValue) {
+  const firstFilterValue = filterValue[0];
+  if (typeof firstFilterValue === "string") return "value";
+  if (firstFilterValue.to || firstFilterValue.from) return "range";
+  return "";
+}
+
 function isNumeric(num) {
   return !isNaN(num);
 }
@@ -20,12 +27,27 @@ function toInteger(num) {
 
 function parseFiltersFromQueryParams(queryParams) {
   const filters = Object.keys(queryParams).reduce((acc, paramName) => {
-    if (paramName.startsWith("f-")) {
+    if (paramName.startsWith("fv-")) {
       let paramValue = queryParams[paramName];
       if (!paramValue) return acc;
-      const filterName = paramName.replace("f-", "");
+      const filterName = paramName.replace("fv-", "");
       acc.push({
-        [filterName]: paramValue
+        [filterName]: Array.isArray(paramValue) ? paramValue : [paramValue]
+      });
+    }
+    if (paramName.startsWith("fr-")) {
+      let paramValue = queryParams[paramName];
+      if (!paramValue) return acc;
+      const filterName = paramName.replace("fr-", "");
+      const value = Array.isArray(paramValue) ? paramValue : [paramValue];
+      acc.push({
+        [filterName]: value.map(v => {
+          const [from, to] = v.split("_");
+          return {
+            ...(from && { from: Number(from) }),
+            ...(to && { to: Number(to) })
+          };
+        })
       });
     }
     return acc;
@@ -83,8 +105,15 @@ function stateToParams({
   const params = {};
 
   filters.forEach(filter => {
-    const key = Object.keys(filter)[0];
-    params[`f-${key}`] = filter[key];
+    const [key, value] = Object.entries(filter)[0];
+    const valueType = typeOfFilter(value);
+    if (valueType === "range") {
+      params[`fr-${key}`] = value.map(
+        rangeValue => `${rangeValue.from || ""}_${rangeValue.to || ""}`
+      );
+    } else {
+      params[`fv-${key}`] = value;
+    }
   });
 
   if (current > 1) params.current = current;

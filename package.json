@@ -4,6 +4,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "date-fns": "^1.29.0",
     "history": "^4.7.2",
     "prop-types": "^15.6.2",
     "qs": "^6.5.2",
@@ -11,7 +12,7 @@
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-scripts": "1.1.4",
-    "swiftype-app-search-javascript": "^1.4.0"
+    "swiftype-app-search-javascript": "^2.0.0"
   },
   "scripts": {
     "build-css": "node-sass-chokidar src/ -o src/",

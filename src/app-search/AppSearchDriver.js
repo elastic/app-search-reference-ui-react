@@ -1,5 +1,5 @@
-import * as SwiftypeAppSearch from "swiftype-app-search-javascript";
 import URLManager from "./URLManager";
+import { format } from "date-fns";
 
 function filterSearchParameters({
   current,
@@ -19,6 +19,25 @@ function filterSearchParameters({
   };
 }
 
+function removeSingleFilterValue(filters, name, value) {
+  return filters.reduce((acc, filter) => {
+    if (filter[name]) {
+      const currentFilterValues = filter[name];
+      const updatedFilterValues = currentFilterValues.filter(
+        filterValue => !matchFilter(filterValue, value)
+      );
+      if (updatedFilterValues.length > 0) {
+        return acc.concat({
+          [name]: updatedFilterValues
+        });
+      } else {
+        return acc;
+      }
+    }
+    return acc.concat(filter);
+  }, []);
+}
+
 export const DEFAULT_STATE = {
   // Search Parameters -- This is state that represents the input that was
   // used to produce the current query results. It is always in sync
@@ -26,6 +45,7 @@ export const DEFAULT_STATE = {
   current: 1,
   error: "",
   filters: [],
+  isLoading: false,
   resultsPerPage: 20,
   searchTerm: "",
   sortDirection: "",
@@ -34,8 +54,100 @@ export const DEFAULT_STATE = {
   facets: {},
   requestId: "",
   results: [],
-  totalResults: 0
+  resultSearchTerm: "",
+  totalResults: 0,
+  wasSearched: false
 };
+
+/*
+ * This temporarily fixes a core issue we have with filtering.
+ * Our data structure for filters are the "OR" format for the App Search
+ * API:
+ *
+ *  ```
+ *  filters: {
+ *   all: [
+ *    {author: ["Clinton", "Shay"]}
+ *   ]
+ *  }
+ *  ```
+ *
+ * However, the intent is for them to be AND filters. So we need
+ * to do a quick change in formatting before applying them.
+ *
+ *  ```
+ *   filters: {
+ *    all: [
+ *     {author: "Clinton"},
+ *     {author: "Shay"}
+ *    ]
+ *   }
+ *  ```
+ *
+ * Ultimately, we should choose our own data structures in the driver
+ * that don't mirror the API. But they will need to support AND vs OR.
+ */
+function formatORFiltersAsAND(filters = []) {
+  return filters.reduce((acc, filter) => {
+    const name = Object.keys(filter)[0];
+    const values = Object.values(filter)[0];
+    return acc.concat(values.map(v => ({ [name]: v })));
+  }, []);
+}
+
+/*
+ * There's this weird thing where facet values for dates come back as an integer
+ * from the API, but the API expects them as parameters formatted as date
+ * strings.
+ */
+function convertRangeFiltersToDateString(filters = []) {
+  const val = filters.map(filter => {
+    return Object.entries(filter).reduce((acc, [filterName, filterValues]) => {
+      return {
+        ...acc,
+        [filterName]: filterValues.map(filterValue => {
+          if (!filterValue.from && !filterValue.to) {
+            return filterValue;
+          }
+
+          return {
+            ...(filterValue.from && {
+              from: format(new Date(filterValue.from))
+            }),
+            ...(filterValue.to && { to: format(new Date(filterValue.to)) })
+          };
+        })
+      };
+    }, {});
+  });
+
+  return val;
+}
+
+function removeConditionalFacets(facets = {}, filters = []) {
+  return Object.entries(facets).reduce((acc, [facetKey, facet]) => {
+    if (
+      facet.conditional &&
+      typeof facet.conditional === "function" &&
+      !facet.conditional({ filters })
+    ) {
+      return acc;
+    }
+
+    acc[facetKey] = facet;
+    return acc;
+  }, {});
+}
+
+function matchFilter(filter1, filter2) {
+  return (
+    filter1 === filter2 ||
+    (filter1.from &&
+      filter1.from === filter2.from &&
+      filter1.to &&
+      filter1.to === filter2.to)
+  );
+}
 
 /*
  * The Driver is a framework agnostic state manager for App Search apps. Meaning,
@@ -59,36 +171,29 @@ export default class AppSearchDriver {
   /**
    *
    * @param options Object
-   * engineName  - Engine to query, found in your App Search Dashboard
-   * hostIdentifier - Credential found in your App Search Dashboard
+   * apiConnector - Connector for a particular search API
+   * facetConfig - Configuration for facets, based on format specified in API documentation
    * initialState - This lets you set initial search parameters, ex:
    *   `searchTerm: "test"`
-   * searchKey - Credential found in your App Search Dashboard
    * searchOptions - A low level configuration which lets you configure
    *   the options used on the Search API endpoint, ex: `result_fields`
    * trackURLState - Boolean, track state in the url or not?
    */
   constructor({
-    endpointBase = "",
-    engineName,
-    hostIdentifier,
+    apiConnector,
+    facetConfig,
     initialState,
-    searchKey,
     searchOptions,
     trackUrlState = true
   }) {
-    if (!engineName || !hostIdentifier || !searchKey) {
-      throw Error("engineName, hostIdentifier, and searchKey are required");
+    if (!apiConnector) {
+      throw Error("apiConnector required");
     }
+    this.apiConnector = apiConnector;
+    this.facetConfig = facetConfig;
     this.subscriptions = [];
     this.searchOptions = searchOptions || {};
     this.trackUrlState = trackUrlState;
-    this.client = SwiftypeAppSearch.createClient({
-      hostIdentifier,
-      apiKey: searchKey,
-      engineName,
-      endpointBase
-    });
 
     let urlState;
     if (trackUrlState) {
@@ -131,6 +236,7 @@ export default class AppSearchDriver {
     const {
       current,
       filters,
+      isLoading,
       resultsPerPage,
       searchTerm,
       sortDirection,
@@ -140,14 +246,17 @@ export default class AppSearchDriver {
       ...searchParameters
     };
 
+    if (isLoading) return;
+
     const searchOptions = {
       ...this.searchOptions,
       page: {
         current,
         size: resultsPerPage
       },
+      facets: removeConditionalFacets(this.facetConfig, filters),
       filters: {
-        all: filters
+        all: formatORFiltersAsAND(convertRangeFiltersToDateString(filters))
       }
     };
 
@@ -157,20 +266,27 @@ export default class AppSearchDriver {
       };
     }
 
-    return this.client.search(searchTerm, searchOptions).then(
+    this._setState({
+      current,
+      error: "",
+      filters,
+      isLoading: true,
+      resultsPerPage,
+      searchTerm,
+      sortDirection,
+      sortField
+    });
+
+    return this.apiConnector.search(searchTerm, searchOptions).then(
       resultList => {
         this._setState({
-          current,
-          error: "",
           facets: resultList.info.facets || {},
-          filters,
+          isLoading: false,
           requestId: resultList.info.meta.request_id,
           results: resultList.results,
-          resultsPerPage,
-          searchTerm,
-          sortDirection,
-          sortField,
-          totalResults: resultList.info.meta.page.total_results
+          resultSearchTerm: searchTerm,
+          totalResults: resultList.info.meta.page.total_results,
+          wasSearched: true
         });
 
         if (!skipPushToUrl && this.trackUrlState) {
@@ -216,7 +332,9 @@ export default class AppSearchDriver {
   getActions() {
     return {
       addFilter: this.addFilter,
+      clearFilters: this.clearFilters,
       removeFilter: this.removeFilter,
+      setFilter: this.setFilter,
       setResultsPerPage: this.setResultsPerPage,
       setSearchTerm: this.setSearchTerm,
       setSort: this.setSort,
@@ -238,7 +356,7 @@ export default class AppSearchDriver {
   }
 
   /**
-   * Filter results
+   * Filter results - Adds to current filter value
    *
    * Will trigger new search
    *
@@ -247,9 +365,38 @@ export default class AppSearchDriver {
    */
   addFilter = (name, value) => {
     const { filters } = this.state;
+
+    const existingFilterValues = (filters.find(f => f[name]) || {})[name] || [];
+
+    const newFilterValues = existingFilterValues.find(existing =>
+      matchFilter(existing, value)
+    )
+      ? existingFilterValues
+      : existingFilterValues.concat(value);
+
+    const filtersWithoutTargetFilter = filters.filter(f => !f[name]);
+
     this._updateSearchResults({
       current: 1,
-      filters: [...filters, { [name]: value }]
+      filters: [...filtersWithoutTargetFilter, { [name]: newFilterValues }]
+    });
+  };
+
+  /**
+   * Filter results - Replaces current filter value
+   *
+   * Will trigger new search
+   *
+   * @param name String field name to filter on
+   * @param value String field value to filter on
+   */
+  setFilter = (name, value) => {
+    let { filters } = this.state;
+    filters = filters.filter(filter => Object.keys(filter)[0] !== name);
+
+    this._updateSearchResults({
+      current: 1,
+      filters: [...filters, { [name]: [value] }]
     });
   };
 
@@ -259,11 +406,36 @@ export default class AppSearchDriver {
    * Will trigger new search
    *
    * @param name String field name for filter to remove
-   * @param value String field value for filter to remove
+   * @param value String (Optional) field value for filter to remove
    */
   removeFilter = (name, value) => {
     const { filters } = this.state;
-    const updatedFilters = filters.filter(filter => !(filter[name] === value));
+
+    const updatedFilters = value
+      ? removeSingleFilterValue(filters, name, value)
+      : filters.filter(filter => !filter[name]);
+
+    this._updateSearchResults({
+      current: 1,
+      filters: updatedFilters
+    });
+  };
+
+  /**
+   * Remove all filters
+   *
+   * Will trigger new search
+   *
+   * @param except Array[String] field name of any filters that should remain
+   */
+  clearFilters = (except = []) => {
+    const { filters } = this.state;
+
+    const updatedFilters = filters.filter(filter => {
+      const filterField = Object.keys(filter)[0];
+      return except.includes(filterField);
+    });
+
     this._updateSearchResults({
       current: 1,
       filters: updatedFilters
@@ -328,7 +500,7 @@ export default class AppSearchDriver {
   trackClickThrough = (documentId, tags = []) => {
     const { requestId, searchTerm } = this.state;
 
-    this.client.click({
+    this.apiConnector.click({
       query: searchTerm,
       documentId,
       requestId,

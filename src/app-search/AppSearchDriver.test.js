@@ -1,6 +1,15 @@
 import AppSearchDriver, { DEFAULT_STATE } from "./AppSearchDriver";
 import * as SwiftypeAppSearch from "swiftype-app-search-javascript";
+import AppSearchAPIConnector from "./AppSearchAPIConnector";
+
 jest.mock("swiftype-app-search-javascript");
+
+const mockClient = {
+  search: jest.fn().mockReturnValue({ then: cb => cb(resultList) }),
+  click: jest.fn().mockReturnValue(Promise.resolve())
+};
+
+SwiftypeAppSearch.createClient.mockReturnValue(mockClient);
 
 const resultList = {
   info: {
@@ -28,20 +37,13 @@ const resultListWithoutFacets = {
 };
 
 const params = {
-  engineName: "some-engine",
-  hostIdentifier: "host-XXXX",
-  searchKey: "search-XXXXX",
+  apiConnector: new AppSearchAPIConnector({
+    engineName: "some-engine",
+    hostIdentifier: "host-XXXX",
+    searchKey: "search-XXXXX"
+  }),
   trackUrlState: false
 };
-
-const mockClient = {
-  search: jest.fn().mockReturnValue({ then: cb => cb(resultList) }),
-  click: jest.fn().mockReturnValue(Promise.resolve())
-};
-
-beforeAll(() => {
-  SwiftypeAppSearch.createClient.mockReturnValue(mockClient);
-});
 
 beforeEach(() => {
   mockClient.search = jest.fn().mockReturnValue({ then: cb => cb(resultList) });
@@ -98,14 +100,16 @@ it("will default facets to {} in state if facets is missing from the response", 
     ...DEFAULT_STATE,
     ...initialState,
     requestId: "12345",
+    resultSearchTerm: "test",
     results: [{}, {}],
-    totalResults: 1000
+    totalResults: 1000,
+    wasSearched: true
   });
 });
 
 it("will trigger a search if searchTerm or filters are provided in initial state", () => {
   const initialState = {
-    filters: [{ initial: "value" }],
+    filters: [{ initial: ["value"] }],
     searchTerm: "test"
   };
 
@@ -118,9 +122,11 @@ it("will trigger a search if searchTerm or filters are provided in initial state
   expect(stateAfterCreation).toEqual({
     ...DEFAULT_STATE,
     ...initialState,
+    resultSearchTerm: "test",
     requestId: "12345",
     results: [{}, {}],
-    totalResults: 1000
+    totalResults: 1000,
+    wasSearched: true
   });
 });
 
@@ -152,7 +158,7 @@ describe("#setSearchTerm", () => {
       filters: [
         // RESET
         {
-          filter1: "value1"
+          filter1: ["value1"]
         }
       ],
       resultsPerPage: 60, // KEEP
@@ -177,15 +183,16 @@ describe("#setSearchTerm", () => {
       ...stateAfterCreation, // KEPT
       current: 1, // RESET
       filters: [], // RESET
+      resultSearchTerm: "test", // UPDATED
       searchTerm: "test" // UPDATED
     });
   });
 });
 
 describe("#addFilter", () => {
-  it("Updates state", () => {
+  function doTest(name, value, initialFilters, expectedFilters) {
     const initialState = {
-      filters: [{ initial: "value" }], // UPDATE
+      filters: initialFilters, // UPDATE
       current: 2, // RESET
       resultsPerPage: 60, // KEEP
       sortField: "name", // KEEP
@@ -203,20 +210,123 @@ describe("#addFilter", () => {
       updatedState = newState;
     });
 
-    driver.addFilter("test", "value");
+    driver.addFilter(name, value);
 
     expect(updatedState).toEqual({
       ...stateAfterCreation, // KEPT
       current: 1, // RESET
-      filters: [{ initial: "value" }, { test: "value" }] // UPDATED
+      filters: expectedFilters // UPDATED
     });
+  }
+
+  it("Adds a new filter", () => {
+    doTest(
+      "test",
+      "value",
+      [{ initial: ["value"] }],
+      [{ initial: ["value"] }, { test: ["value"] }]
+    );
+  });
+
+  it("Adds an additional filter", () => {
+    doTest(
+      "test",
+      "value2",
+      [{ initial: ["value"] }, { test: ["value"] }],
+      [{ initial: ["value"] }, { test: ["value", "value2"] }]
+    );
+  });
+
+  it("Won't add a duplicate filter", () => {
+    doTest(
+      "test",
+      "value",
+      [{ initial: ["value"] }, { test: ["value"] }],
+      [{ initial: ["value"] }, { test: ["value"] }]
+    );
+  });
+
+  it("Supports range filters", () => {
+    doTest(
+      "test",
+      {
+        from: 20,
+        to: 100
+      },
+      [{ initial: ["value"] }],
+      [{ initial: ["value"] }, { test: [{ from: 20, to: 100 }] }]
+    );
+  });
+
+  it("Adds an additional range filter", () => {
+    doTest(
+      "test",
+      { from: 5, to: 6 },
+      [{ initial: [{ from: 20, to: 100 }] }, { test: [{ from: 4, to: 5 }] }],
+      [
+        { initial: [{ from: 20, to: 100 }] },
+        { test: [{ from: 4, to: 5 }, { from: 5, to: 6 }] }
+      ]
+    );
+  });
+
+  it("Won't add a duplicate range filter", () => {
+    doTest(
+      "test",
+      {
+        from: 20,
+        to: 100
+      },
+      [{ initial: ["value"] }, { test: [{ from: 20, to: 100 }] }],
+      [{ initial: ["value"] }, { test: [{ from: 20, to: 100 }] }]
+    );
+  });
+});
+
+describe("#setFilter", () => {
+  function doTest(name, value, initialFilters, expectedFilters) {
+    const initialState = {
+      filters: initialFilters, // UPDATE
+      current: 2, // RESET
+      resultsPerPage: 60, // KEEP
+      sortField: "name", // KEEP
+      sortDirection: "asc" // KEEP
+    };
+
+    const driver = new AppSearchDriver({
+      ...params,
+      initialState
+    });
+    const stateAfterCreation = driver.getState();
+
+    let updatedState;
+    driver.subscribeToStateChanges(newState => {
+      updatedState = newState;
+    });
+
+    driver.setFilter(name, value);
+
+    expect(updatedState).toEqual({
+      ...stateAfterCreation, // KEPT
+      current: 1, // RESET
+      filters: expectedFilters // UPDATED
+    });
+  }
+
+  it("Adds a new filter and removes old filters", () => {
+    doTest(
+      "test",
+      "value2",
+      [{ initial: ["value"] }],
+      [{ initial: ["value"] }, { test: ["value2"] }]
+    );
   });
 });
 
 describe("#removeFilter", () => {
-  it("Updates state", () => {
+  function doTest(name, value, initialFilters, expectedFilters) {
     const initialState = {
-      filters: [{ initial: "value" }, { test: "value" }], // UPDATE
+      filters: initialFilters, // UPDATE
       current: 2, // RESET
       resultsPerPage: 60, // KEEP
       sortField: "name", // KEEP
@@ -234,20 +344,124 @@ describe("#removeFilter", () => {
       updatedState = newState;
     });
 
-    driver.removeFilter("test", "value");
+    driver.removeFilter(name, value);
 
     expect(updatedState).toEqual({
       ...stateAfterCreation, // KEPT
       current: 1, // RESET
-      filters: [{ initial: "value" }] // UPDATED
+      filters: expectedFilters //UPDATED
     });
+  }
+
+  it("Removes just 1 filter value", () => {
+    doTest(
+      "test",
+      "value",
+      [
+        { initial: ["value"] },
+        { test: ["anotherValue", "value", "someOtherValue"] }
+      ],
+      [{ initial: ["value"] }, { test: ["anotherValue", "someOtherValue"] }]
+    );
+  });
+
+  it("Removes all filters", () => {
+    doTest(
+      "test",
+      undefined,
+      [
+        { initial: ["value"] },
+        { test: ["anotherValue", "value", "someOtherValue"] }
+      ],
+      [{ initial: ["value"] }]
+    );
+  });
+
+  it("Removes all filters when last value", () => {
+    doTest(
+      "test",
+      "value",
+      [{ initial: ["value"] }, { test: ["value"] }],
+      [{ initial: ["value"] }]
+    );
+  });
+
+  it("Removes just 1 range filter value", () => {
+    doTest(
+      "test",
+      {
+        from: 20,
+        to: 100
+      },
+      [
+        { initial: [{ from: 20, to: 100 }] },
+        { test: ["anotherValue", { from: 20, to: 100 }, "someOtherValue"] }
+      ],
+      [
+        { initial: [{ from: 20, to: 100 }] },
+        { test: ["anotherValue", "someOtherValue"] }
+      ]
+    );
+  });
+});
+
+describe("#clearFilters", () => {
+  function doTest(except, initialFilters, expectedFilters) {
+    const initialState = {
+      filters: initialFilters, // UPDATE
+      current: 2, // RESET
+      resultsPerPage: 60, // KEEP
+      sortField: "name", // KEEP
+      sortDirection: "asc" // KEEP
+    };
+
+    const driver = new AppSearchDriver({
+      ...params,
+      initialState
+    });
+    const stateAfterCreation = driver.getState();
+
+    let updatedState;
+    driver.subscribeToStateChanges(newState => {
+      updatedState = newState;
+    });
+
+    driver.clearFilters(except);
+
+    expect(updatedState).toEqual({
+      ...stateAfterCreation, // KEPT
+      current: 1, // RESET
+      filters: expectedFilters //UPDATED
+    });
+  }
+
+  it("Removes all filters", () => {
+    doTest(
+      [],
+      [
+        ({ initial: ["value"] },
+        { test: ["anotherValue", "value", "someOtherValue"] })
+      ],
+      []
+    );
+  });
+
+  it("Removes all except the filters listed in 'except'", () => {
+    doTest(
+      ["initial"],
+      [
+        { initial: ["value"] },
+        { test: ["anotherValue", "value", "someOtherValue"] }
+      ],
+      [{ initial: ["value"] }]
+    );
   });
 });
 
 describe("#setCurrent", () => {
   it("Updates state", () => {
     const initialState = {
-      filters: [{ initial: "value" }], // KEEP
+      filters: [{ initial: ["value"] }], // KEEP
       searchTerm: "test", // KEEP
       current: 1, // UPDATE
       resultsPerPage: 60, // KEEP
@@ -278,7 +492,7 @@ describe("#setCurrent", () => {
 describe("#setSort", () => {
   it("Updates state", () => {
     const initialState = {
-      filters: [{ initial: "value" }], // KEEP
+      filters: [{ initial: ["value"] }], // KEEP
       searchTerm: "test", // KEEP
       current: 3, // RESET
       resultsPerPage: 60, // KEPT
@@ -311,7 +525,7 @@ describe("#setSort", () => {
 describe("#setResultsPerPage", () => {
   it("Updates state", () => {
     const initialState = {
-      filters: [{ initial: "value" }], // KEEP
+      filters: [{ initial: ["value"] }], // KEEP
       searchTerm: "test", // KEEP
       current: 3, // RESET
       resultsPerPage: 60, // UPDATE

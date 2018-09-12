@@ -9,7 +9,7 @@ export class PagingInfoContainer extends Component {
     current: PropTypes.number.isRequired,
     results: PropTypes.arrayOf(PropTypes.object).isRequired,
     resultsPerPage: PropTypes.number.isRequired,
-    searchTerm: PropTypes.string.isRequired,
+    resultSearchTerm: PropTypes.string.isRequired,
     totalResults: PropTypes.number.isRequired
   };
 
@@ -18,7 +18,7 @@ export class PagingInfoContainer extends Component {
       current,
       results,
       resultsPerPage,
-      searchTerm,
+      resultSearchTerm,
       totalResults
     } = this.props;
     const start = totalResults === 0 ? 0 : (current - 1) * resultsPerPage + 1;
@@ -27,12 +27,12 @@ export class PagingInfoContainer extends Component {
         ? totalResults
         : start + resultsPerPage - 1;
 
-    if (!searchTerm && results.length === 0) return null;
+    if (!resultSearchTerm && results.length === 0) return null;
 
     return (
       <PagingInfo
         end={end}
-        searchTerm={searchTerm}
+        searchTerm={resultSearchTerm}
         start={start}
         totalResults={totalResults}
       />

@@ -3,7 +3,10 @@ import React, { Component } from "react";
 import { Body, Header } from "./components";
 import AppSearchProvider from "./app-search/AppSearchProvider";
 import AppSearchDriver from "./app-search/AppSearchDriver";
+import AppSearchAPIConnector from "./app-search/AppSearchAPIConnector";
+
 import {
+  buildFacetConfigFromConfig,
   buildSearchOptionsFromConfig,
   getConfig
 } from "./config/config-helper";
@@ -11,10 +14,13 @@ import {
 function createDriver() {
   const { hostIdentifier, searchKey, endpointBase, engineName } = getConfig();
   return new AppSearchDriver({
-    hostIdentifier,
-    searchKey,
-    endpointBase,
-    engineName,
+    apiConnector: new AppSearchAPIConnector({
+      hostIdentifier,
+      searchKey,
+      endpointBase,
+      engineName
+    }),
+    facetConfig: buildFacetConfigFromConfig(),
     searchOptions: buildSearchOptionsFromConfig()
   });
 }

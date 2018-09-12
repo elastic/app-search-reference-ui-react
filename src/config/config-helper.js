@@ -140,6 +140,15 @@ export function buildSearchOptionsFromConfig() {
     };
   }
 
+  const searchOptions = {};
+  searchOptions.result_fields = resultFields;
+  searchOptions.search_fields = searchFields;
+  return searchOptions;
+}
+
+export function buildFacetConfigFromConfig() {
+  const config = getConfig();
+
   const facets = (config.facets || []).reduce((acc, n) => {
     acc = acc || {};
     acc[n] = {
@@ -149,11 +158,7 @@ export function buildSearchOptionsFromConfig() {
     return acc;
   }, undefined);
 
-  const searchOptions = {};
-  if (facets) searchOptions.facets = facets;
-  searchOptions.result_fields = resultFields;
-  searchOptions.search_fields = searchFields;
-  return searchOptions;
+  return facets;
 }
 
 export function buildSortOptionsFromConfig() {
