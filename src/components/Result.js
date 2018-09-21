@@ -42,6 +42,7 @@ function Result({ fields, onClickLink, title, url }) {
 
 Result.propTypes = {
   fields: PropTypes.object.isRequired,
+  onClickLink: PropTypes.func.isRequired,
   title: PropTypes.string,
   url: PropTypes.string
 };

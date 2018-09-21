@@ -3,7 +3,8 @@ import Result from "./Result";
 import { shallow } from "enzyme";
 
 const requiredProps = {
-  fields: { field: "value" }
+  fields: { field: "value" },
+  onClickLink: () => {}
 };
 
 it("renders correctly when there is a URL", () => {
