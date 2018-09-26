@@ -9,10 +9,11 @@ import {
 } from "./config/config-helper";
 
 function createDriver() {
-  const { hostIdentifier, searchKey, engineName } = getConfig();
+  const { hostIdentifier, searchKey, endpointBase, engineName } = getConfig();
   return new AppSearchDriver({
     hostIdentifier,
     searchKey,
+    endpointBase,
     engineName,
     searchOptions: buildSearchOptionsFromConfig()
   });
