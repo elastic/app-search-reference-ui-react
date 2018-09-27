@@ -69,6 +69,7 @@ export default class AppSearchDriver {
    * trackURLState - Boolean, track state in the url or not?
    */
   constructor({
+    endpointBase = "",
     engineName,
     hostIdentifier,
     initialState,
@@ -83,9 +84,10 @@ export default class AppSearchDriver {
     this.searchOptions = searchOptions || {};
     this.trackUrlState = trackUrlState;
     this.client = SwiftypeAppSearch.createClient({
-      hostIdentifier: hostIdentifier,
+      hostIdentifier,
       apiKey: searchKey,
-      engineName: engineName
+      engineName,
+      endpointBase
     });
 
     let urlState;
