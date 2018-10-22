@@ -188,3 +188,25 @@ configuration, it should be no surprise that there is a fair amount of logic
 around that. Configuration logic is not very useful for a code reference,
 so the majority of that logic is encapsulated here to keep other code
 references clean.
+
+## Customization
+
+It should be feasible to use this project as a starting point for your
+own implementation. Here are a few places to look to make changes:
+
+- The styles for the entire project can be found in [src/styles](src/styles).
+  Simple style tweaks changes can be made here, or you could replace these styles
+  with your own.
+- [src/components](src/components) contains the view templates for
+  components. Structural HTML changes can be made here.
+- If you find that you have different data or behavior requirements for
+  existing components, you can customize the component Containers in
+  [src/containers](src/containers).
+- If you find you have requirements that none of the existing components
+  satisfy, you could create an entirely new component and/or container. Use the
+  `withAppSearch` HOC in order to access any action or state.
+- Lastly, if you find there is a core action or state missing, you may
+  consider updating the core logic in [src/app-search](src/app-search).
+
+Lastly, we accept PRs! If you make a customization that you think would benefit
+others, please feel free to contribute it back.
