@@ -47,17 +47,17 @@ and then restart this app.
 
 The following is a complete list of options available for configuration in [engine.json](src/config/engine.json).
 
-| option | value type | required/optional | source
-| --- | --- | --- | --- |
-| `engineName` | String | required | Found in your [App Search Dashboard](http://app.swiftype.com/as). |
-| `hostIdentifier` | String | required | Found in your [App Search Dashboard](http://app.swiftype.com/as). |
-| `searchKey` | String | required | Found in your [App Search Dashboard](http://app.swiftype.com/as). |
-| `fields` | Array[String] | required | A list of fields that will be searched and displayed within your results. |
-| `titleField` | String | optional | The field to display as the title in results. |
-| `urlField` | String | optional | A field with a url to use as a link in results. |
-| `urlFieldTemplate` | String | optional |  Instead of urlField, you can provide a URL "template" here, which lets you build a URL from other fields. ex: "https://www.example.com/{{id}}". |
-| `sortFields` | Array[String] | required |  A list of fields that will be used for sort options. |
-| `facets` | Array[String] | required |  A list of fields that will be available as "facet" filters. Read more about facets within the [App Search documentation](https://swiftype.com/documentation/app-search/guides/facets). |
+| option             | value type    | required/optional | source                                                                                                                                                                                 |
+| ------------------ | ------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `engineName`       | String        | required          | Found in your [App Search Dashboard](http://app.swiftype.com/as).                                                                                                                      |
+| `hostIdentifier`   | String        | required          | Found in your [App Search Dashboard](http://app.swiftype.com/as).                                                                                                                      |
+| `searchKey`        | String        | required          | Found in your [App Search Dashboard](http://app.swiftype.com/as).                                                                                                                      |
+| `fields`           | Array[String] | required          | A list of fields that will be searched and displayed within your results.                                                                                                              |
+| `titleField`       | String        | optional          | The field to display as the title in results.                                                                                                                                          |
+| `urlField`         | String        | optional          | A field with a url to use as a link in results.                                                                                                                                        |
+| `urlFieldTemplate` | String        | optional          | Instead of urlField, you can provide a URL "template" here, which lets you build a URL from other fields. ex: "https://www.example.com/{{id}}".                                        |
+| `sortFields`       | Array[String] | required          | A list of fields that will be used for sort options.                                                                                                                                   |
+| `facets`           | Array[String] | required          | A list of fields that will be available as "facet" filters. Read more about facets within the [App Search documentation](https://swiftype.com/documentation/app-search/guides/facets). |
 
 ### External configuration
 
@@ -76,3 +76,115 @@ rename it to `engine.json` and configure with your Engine's specific details.
 ```bash
 cp src/config/engine.json.example src/config/engine.json
 ```
+
+## Understanding the Reference UI Code
+
+In addition to previewing your data in a UI, this project can also be used as a code reference. Here's a quick primer on this project's code setup, to help you understand how it's put together.
+
+Logically, the pieces of this application fit together like this:
+
+```
+  ------------------
+  | App Search API |
+  ------------------
+      ^
+      |
+      |
+    ( State manager )       ( Syncs state with URL )
+  -------------------      --------------
+  | AppSearchDriver | <--> | URLManager |
+  -------------------      --------------
+      |
+      | actions / state
+      v
+  ---------------------
+  | AppSearchProvider |  ( Driver to React glue )
+  ---------------------
+      |
+      | context
+      v
+  --------------
+  | Containers |  ( Behavior )
+  --------------
+      |
+      |
+  --------------
+  | Components |  ( View )
+  --------------
+```
+
+That corresponds to the code and file structure in the following way:
+
+**src/app-search**
+
+This holds the `AppSearchDriver`, the `URLManager`, and `AppSearchProvider`
+from the diagram above. This is where all of the core application logic lives.
+The interface to all of this logic is a set of "actions" and "state" that are
+passed down in a React [Context](https://reactjs.org/docs/context.html). Those
+actions and state are then consumed by Components and Containers.
+
+If you've used Redux before, this concept should sound familiar.
+
+_state_ - All of the core "state" of the applications is managed in a single store
+at the top level. ex:
+
+```
+{
+  current: 1, // The current page in pagination
+  searchTerm: "", // The current search term
+  results: [], // Results of the current search
+  ...
+}
+```
+
+_actions_ - Actions are how you change the state:
+
+```
+  addFilter: () => { ... },
+  removeFilter: () => { ... },
+  setSearchTerm: : () => { ... },
+```
+
+Calling an action will typically:
+
+1. Make a call the App Search API with the new query details.
+2. Update `results` in state with the results of the new query.
+3. Update the url with the new query details.
+4. Notify listeners that state changed (i.e., pass updated `results` as props
+   to components so they can re-render)
+
+So, for instance, a `SearchBox` component might be wired up to call the
+`setSearchTerm` action with updated terms any time a user submits a search box
+value. A `Results` component could then simply iterate through the `results`
+from state to render search results.
+
+Everything in this directory for now should be thought of as a separate library.
+The goal eventually is to actually separate this out into a library of it's own,
+so when composing a UI you'd simply need to focus on creating components
+from actions and state, and not all of the plumbing that goes into managing
+that state. For now though, it's included in this reference as a pattern
+that can be followed.
+
+**src/containers**
+
+Components in this UI are separated into "Containers" and "Components". These
+can be thought of as "Logic" and "View", respectively.
+
+"Containers" are "connected" to the "context" via a "Higher Order Component"
+(HOC) `withAppSearch`. This HOC simply exposes all state and actions as `props`.
+A consuming Container simply accesses those actions and state, composes
+appropriate handlers and data as props and passes them to the appropriate
+Component.
+
+**src/components**
+
+Components are simply view templates. They take `props` and render
+them in markup. They have no state of their own.
+
+**src/config**
+
+Being that this is a "generic" UI that is usable with any engine via
+configuration, it should be no surprise that there is a fair amount of logic
+around that. Configuration logic is not very useful for a code reference,
+so the majority of that logic is encapsulated here to keep other code
+references clean.
