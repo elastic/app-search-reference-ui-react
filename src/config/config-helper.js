@@ -160,7 +160,7 @@ export function buildSortOptionsFromConfig() {
   const config = getConfig();
   return [
     SortOption.create({
-      name: "Sort results",
+      name: "Relevance",
       value: "",
       direction: ""
     }),

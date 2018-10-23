@@ -210,3 +210,7 @@ own implementation. Here are a few places to look to make changes:
 
 Lastly, we accept PRs! If you make a customization that you think would benefit
 others, please feel free to contribute it back.
+
+## Questions, Feedback, Issues, Contributions
+
+This project can be found at https://github.com/swiftype/app-search-reference-ui-react.
