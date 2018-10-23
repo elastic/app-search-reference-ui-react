@@ -21,7 +21,7 @@ exports[`renders correctly 1`] = `
             Array [
               Object {
                 "direction": "",
-                "name": "Sort results",
+                "name": "Relevance",
                 "value": "",
               },
             ]
