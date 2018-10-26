@@ -9,6 +9,15 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+function htmlEscape(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
 /*
   Our `Result` component expects result fields to be formatted in an object
   like:
@@ -19,7 +28,9 @@ function capitalizeFirstLetter(string) {
 */
 function formatResultFields(result) {
   return Object.keys(result.data).reduce((acc, n) => {
-    let value = result.getSnippet(n);
+    // Fallback to raw values here, because non-string fields
+    // will not have a snippet fallback. Raw values MUST be html escaped.
+    let value = result.getSnippet(n) || htmlEscape(result.getRaw(n));
     value = Array.isArray(value) ? value.join(", ") : value;
     acc[`${capitalizeFirstLetter(n)}`] = value;
     return acc;
