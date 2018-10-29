@@ -21,7 +21,16 @@ describe("#getStateFromURL", () => {
   it("will parse the current state from the URL", () => {
     const manager = createManager();
     manager.history.location.search =
-      "?f-dependencies=underscore&f-keywords=node&q=node&size=20&sort-direction=asc&sort-field=name";
+      "?fv-dependencies=underscore&fv-keywords=node&q=node&size=20&sort-direction=asc&sort-field=name";
+
+    const state = manager.getStateFromURL();
+    expect(state).toMatchSnapshot();
+  });
+
+  it("will parse range filter types", () => {
+    const manager = createManager();
+    manager.history.location.search =
+      "?fr-date=12_4000&fr-date=_4000&fr-cost=50_&fv-keywords=node";
 
     const state = manager.getStateFromURL();
     expect(state).toMatchSnapshot();
@@ -39,7 +48,7 @@ describe("#getStateFromURL", () => {
   it("will correctly handle multiple instances of the same parameter", () => {
     const manager = createManager();
     manager.history.location.search =
-      "f-dependencies=underscore&f-dependencies=another&f-keywords=node&q=bad&q=node&size=bad&size=20&sort-direction=bad&sort-direction=asc&sort-field=bad&sort-field=name";
+      "fv-dependencies=underscore&fv-dependencies=another&fv-keywords=node&q=bad&q=node&size=bad&size=20&sort-direction=bad&sort-direction=asc&sort-field=bad&sort-field=name";
 
     const state = manager.getStateFromURL();
     expect(state).toMatchSnapshot();
@@ -55,7 +64,7 @@ describe("#pushStateToURL", () => {
           dependencies: ["underscore", "another"]
         },
         {
-          keywords: "node"
+          keywords: ["node"]
         }
       ],
       resultsPerPage: 20,
@@ -65,7 +74,40 @@ describe("#pushStateToURL", () => {
     });
     const queryString = manager.history.push.mock.calls[0][0].search;
     expect(queryString).toEqual(
-      "?f-dependencies=underscore&f-dependencies=another&f-keywords=node&q=node&size=20&sort-field=name&sort-direction=asc"
+      "?fv-dependencies=underscore&fv-dependencies=another&fv-keywords=node&q=node&size=20&sort-field=name&sort-direction=asc"
+    );
+  });
+
+  it("will update the url with range filter types", () => {
+    const manager = createManager();
+    manager.pushStateToURL({
+      filters: [
+        {
+          date: [
+            {
+              from: 12,
+              to: 4000
+            },
+            {
+              to: 4000
+            }
+          ]
+        },
+        {
+          cost: [
+            {
+              from: 50
+            }
+          ]
+        },
+        {
+          keywords: "node"
+        }
+      ]
+    });
+    const queryString = manager.history.push.mock.calls[0][0].search;
+    expect(queryString).toEqual(
+      "?fr-date=12_4000&fr-date=_4000&fr-cost=50_&fv-keywords=node"
     );
   });
 });
@@ -82,7 +124,7 @@ describe("#onURLStateChange", () => {
     // Simulate state change
     manager.history.listen.mock.calls[0][0]({
       search:
-        "?f-dependencies=underscore&f-keywords=node&q=node&size=20&sort-direction=asc&sort-field=name"
+        "?fv-dependencies=underscore&fv-keywords=node&q=node&size=20&sort-direction=asc&sort-field=name"
     });
 
     expect(newState).toMatchSnapshot();

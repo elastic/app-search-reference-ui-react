@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 
-import withAppSearch from "../app-search/withAppSearch";
+import { withSearch } from "../search-lib";
 import { SearchBox } from "../components";
 
 export class SearchBoxContainer extends Component {
@@ -66,4 +66,4 @@ export class SearchBoxContainer extends Component {
   }
 }
 
-export default withAppSearch(SearchBoxContainer);
+export default withSearch(SearchBoxContainer);

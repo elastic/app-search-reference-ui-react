@@ -1,7 +1,7 @@
 # App Search Reference UI
 
 The Reference UI is a configurable, generic UI meant to work with
-any [App Search](https://www.elastic.co/cloud/app-search-service) Engine. It
+any [App Search](https://www.elastic.co/cloud/search-lib-service) Engine. It
 can serve as a simple demo, a functional test for your Engine data,
 or as a code reference when building out your own App Search
 UI.
@@ -27,7 +27,7 @@ Run the following commands to start this application:
 # Run the `cd` command to change the current directory to the
 # location of your downloaded Reference UI. Replace the path
 # below with the actual path of your project.
-cd ~/Downloads/app-search-reference-ui
+cd ~/Downloads/search-lib-reference-ui
 
 # Run this to set everything up
 npm install
@@ -57,7 +57,7 @@ The following is a complete list of options available for configuration in [engi
 | `urlField`         | String        | optional          | A field with a url to use as a link in results.                                                                                                                                        |
 | `urlFieldTemplate` | String        | optional          | Instead of urlField, you can provide a URL "template" here, which lets you build a URL from other fields. ex: "https://www.example.com/{{id}}".                                        |
 | `sortFields`       | Array[String] | required          | A list of fields that will be used for sort options.                                                                                                                                   |
-| `facets`           | Array[String] | required          | A list of fields that will be available as "facet" filters. Read more about facets within the [App Search documentation](https://swiftype.com/documentation/app-search/guides/facets). |
+| `facets`           | Array[String] | required          | A list of fields that will be available as "facet" filters. Read more about facets within the [App Search documentation](https://swiftype.com/documentation/search-lib/guides/facets). |
 
 ### External configuration
 
@@ -71,7 +71,7 @@ You can follow the previous steps, but then you will need to configure
 [engine.json](src/config/engine.json).
 
 To do so, make a copy of [engine.json.example](src/config/engine.json.example),
-rename it to `engine.json` and configure with your Engine's specific details.
+rename it to `engine.json` and configure it with your Engine's specific details.
 
 ```bash
 cp src/config/engine.json.example src/config/engine.json
@@ -92,13 +92,13 @@ Logically, the pieces of this application fit together like this:
       |
     ( State manager )       ( Syncs state with URL )
   -------------------      --------------
-  | AppSearchDriver | <--> | URLManager |
+  | SearchDriver     | <--> | URLManager |
   -------------------      --------------
       |
       | actions / state
       v
   ---------------------
-  | AppSearchProvider |  ( Driver to React glue )
+  | SearchProvider    |  ( Driver to React glue )
   ---------------------
       |
       | context
@@ -115,9 +115,16 @@ Logically, the pieces of this application fit together like this:
 
 That corresponds to the code and file structure in the following way:
 
-**src/app-search**
+**src/search-lib**
 
-This holds the `AppSearchDriver`, the `URLManager`, and `AppSearchProvider`
+Everything in this directory for now should be thought of as a separate library.
+The goal eventually is to actually separate this out into a library of its own,
+so when composing a UI you'd simply need to focus on creating components
+from actions and state, and not all of the plumbing that goes into managing
+that state. For now though, it's included in this reference as a pattern
+that can be followed.
+
+This holds the `SearchDriver`, the `URLManager`, and `SearchProvider`
 from the diagram above. This is where all of the core application logic lives.
 The interface to all of this logic is a set of "actions" and "state" that are
 passed down in a React [Context](https://reactjs.org/docs/context.html). Those
@@ -158,20 +165,13 @@ So, for instance, a `SearchBox` component might be wired up to call the
 value. A `Results` component could then simply iterate through the `results`
 from state to render search results.
 
-Everything in this directory for now should be thought of as a separate library.
-The goal eventually is to actually separate this out into a library of it's own,
-so when composing a UI you'd simply need to focus on creating components
-from actions and state, and not all of the plumbing that goes into managing
-that state. For now though, it's included in this reference as a pattern
-that can be followed.
-
 **src/containers**
 
 Components in this UI are separated into "Containers" and "Components". These
 can be thought of as "Logic" and "View", respectively.
 
 "Containers" are "connected" to the "context" via a "Higher Order Component"
-(HOC) `withAppSearch`. This HOC simply exposes all state and actions as `props`.
+(HOC) `withSearch`. This HOC simply exposes all state and actions as `props`.
 A consuming Container simply accesses those actions and state, composes
 appropriate handlers and data as props and passes them to the appropriate
 Component.
@@ -195,8 +195,8 @@ It should be feasible to use this project as a starting point for your
 own implementation. Here are a few places to look to make changes:
 
 - The styles for the entire project can be found in [src/styles](src/styles).
-  Simple style tweaks changes can be made here, or you could replace these styles
-  with your own.
+  Simple style tweaks can be made here, or you could replace these styles
+  entirely with your own.
 - [src/components](src/components) contains the view templates for
   components. Structural HTML changes can be made here.
 - If you find that you have different data or behavior requirements for
@@ -204,9 +204,21 @@ own implementation. Here are a few places to look to make changes:
   [src/containers](src/containers).
 - If you find you have requirements that none of the existing components
   satisfy, you could create an entirely new component and/or container. Use the
-  `withAppSearch` HOC in order to access any action or state.
+  [withSearch.js](src/search-lib/withSearch.js) HOC in order to access any action or state.
+- The SearchDriver can be configured directly in [App.js](src/App.js) to do things like:
+
+  - Optimize your API calls
+  - Add additional facets and customize facet behavior
+  - Disable URL State management
+
+  A full list of configuration options can be found in [SearchDriver.js](src/search-lib/SearchDriver.js)
+
+- Eject from 'configuration'. You may choose to to delete the entire [src/config](src/config) directory, which holds the configuration logic that makes this a
+  generic UI. If you're using this as your own, production application, you likely
+  won't need this.
+
 - Lastly, if you find there is a core action or state missing, you may
-  consider updating the core logic in [src/app-search](src/app-search).
+  consider updating the core logic in [src/search-lib](src/search-lib).
 
 Lastly, we accept PRs! If you make a customization that you think would benefit
 others, please feel free to contribute it back.

@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 
-import withAppSearch from "../app-search/withAppSearch";
+import { withSearch } from "../search-lib";
 import { Facet, Facets } from "../components";
-import { FacetDetail } from "../types";
+import { FacetDetail, Filter } from "../types";
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -12,13 +12,13 @@ function capitalizeFirstLetter(string) {
 function findFacetValueInFilters(name, filters) {
   const filter = filters.find(f => Object.keys(f)[0] === name);
   if (!filter) return;
-  return Object.values(filter)[0];
+  return Object.values(filter)[0][0];
 }
 
 export class FacetsContainer extends Component {
   static propTypes = {
     addFilter: PropTypes.func.isRequired,
-    filters: PropTypes.arrayOf(PropTypes.object).isRequired,
+    filters: PropTypes.arrayOf(Filter).isRequired,
     facets: PropTypes.objectOf(FacetDetail).isRequired,
     removeFilter: PropTypes.func.isRequired
   };
@@ -57,4 +57,4 @@ export class FacetsContainer extends Component {
   }
 }
 
-export default withAppSearch(FacetsContainer);
+export default withSearch(FacetsContainer);

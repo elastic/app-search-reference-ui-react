@@ -6,7 +6,7 @@ const params = {
   current: 1,
   results: [{}, {}],
   resultsPerPage: 20,
-  searchTerm: "test",
+  resultSearchTerm: "test",
   totalResults: 100
 };
 
@@ -20,7 +20,7 @@ it("renders empty when it doesn't have enough data", () => {
     <PagingInfoContainer
       {...{
         ...params,
-        searchTerm: "",
+        resultSearchTerm: "",
         results: []
       }}
     />

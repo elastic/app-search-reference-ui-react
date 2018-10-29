@@ -1,6 +1,13 @@
 import createHistory from "history/createBrowserHistory";
 import queryString from "qs";
 
+function typeOfFilter(filterValue) {
+  const firstFilterValue = filterValue[0];
+  if (typeof firstFilterValue === "string") return "value";
+  if (firstFilterValue.to || firstFilterValue.from) return "range";
+  return "";
+}
+
 function isNumeric(num) {
   return !isNaN(num);
 }
@@ -20,12 +27,27 @@ function toInteger(num) {
 
 function parseFiltersFromQueryParams(queryParams) {
   const filters = Object.keys(queryParams).reduce((acc, paramName) => {
-    if (paramName.startsWith("f-")) {
+    if (paramName.startsWith("fv-")) {
       let paramValue = queryParams[paramName];
       if (!paramValue) return acc;
-      const filterName = paramName.replace("f-", "");
+      const filterName = paramName.replace("fv-", "");
       acc.push({
-        [filterName]: paramValue
+        [filterName]: Array.isArray(paramValue) ? paramValue : [paramValue]
+      });
+    }
+    if (paramName.startsWith("fr-")) {
+      let paramValue = queryParams[paramName];
+      if (!paramValue) return acc;
+      const filterName = paramName.replace("fr-", "");
+      const value = Array.isArray(paramValue) ? paramValue : [paramValue];
+      acc.push({
+        [filterName]: value.map(v => {
+          const [from, to] = v.split("_");
+          return {
+            ...(from && { from: Number(from) }),
+            ...(to && { to: Number(to) })
+          };
+        })
       });
     }
     return acc;
@@ -83,8 +105,15 @@ function stateToParams({
   const params = {};
 
   filters.forEach(filter => {
-    const key = Object.keys(filter)[0];
-    params[`f-${key}`] = filter[key];
+    const [key, value] = Object.entries(filter)[0];
+    const valueType = typeOfFilter(value);
+    if (valueType === "range") {
+      params[`fr-${key}`] = value.map(
+        rangeValue => `${rangeValue.from || ""}_${rangeValue.to || ""}`
+      );
+    } else {
+      params[`fv-${key}`] = value;
+    }
   });
 
   if (current > 1) params.current = current;
@@ -104,18 +133,18 @@ function stateToQueryString(state) {
 
 /**
  * The URL Manager is responsible for synchronizing state between
- * AppSearchDriver and the URL. There are 3 main cases we handle when
+ * SearchDriver and the URL. There are 3 main cases we handle when
  * synchronizing:
  *
- * 1. When the app loads, AppSearchDriver will need to
+ * 1. When the app loads, SearchDriver will need to
  * read the current state from the URL, in order to perform the search
  * expressed by the query string. `getStateFromURL` is used for this case.
  *
  * 2. When the URL changes as a result of `pushState` or `replaceState`,
- * AppSearchDriver will need to be notified and given the updated state, so that
+ * SearchDriver will need to be notified and given the updated state, so that
  * it can re-run the current search. `onURLStateChange` is used for this case.
  *
- * 3. When state changes internally in the AppSearchDriver, as a result of an
+ * 3. When state changes internally in the SearchDriver, as a result of an
  * Action, it will need to notify the URLManager of the change. `pushStateToURL`
  * is used for this case.
  */
