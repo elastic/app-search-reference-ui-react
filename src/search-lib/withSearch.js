@@ -1,18 +1,18 @@
 import React from "react";
 
-import AppSearchConsumer from "../app-search/AppSearchConsumer";
+import SearchConsumer from "./SearchConsumer";
 
 /**
  * This is a Higher Order Component that is used to expose (as `props`) all
- * state and Actions provided by the AppSearchProvider to "container"
+ * state and Actions provided by the SearchProvider to "container"
  * components.
  */
-export default function withAppSearch(Component) {
+export default function withSearch(Component) {
   return function(props) {
     return (
-      <AppSearchConsumer>
+      <SearchConsumer>
         {context => <Component {...context} {...props} />}
-      </AppSearchConsumer>
+      </SearchConsumer>
     );
   };
 }

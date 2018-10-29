@@ -4,7 +4,7 @@ import React from "react";
 
 import "rc-pagination/assets/index.css";
 
-import withAppSearch from "../app-search/withAppSearch";
+import { withSearch } from "../search-lib";
 
 // App Search is currently limited to 100 pages, so we need to make sure
 // that our pager only shows up to 100 pages.
@@ -39,4 +39,4 @@ PagingContainer.propTypes = {
   totalResults: PropTypes.number.isRequired
 };
 
-export default withAppSearch(PagingContainer);
+export default withSearch(PagingContainer);

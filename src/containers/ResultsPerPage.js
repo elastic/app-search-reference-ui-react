@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 
-import withAppSearch from "../app-search/withAppSearch";
+import { withSearch } from "../search-lib";
 import { ResultsPerPage } from "../components";
 
 export class ResultsPerPageContainer extends Component {
@@ -34,4 +34,4 @@ export class ResultsPerPageContainer extends Component {
   }
 }
 
-export default withAppSearch(ResultsPerPageContainer);
+export default withSearch(ResultsPerPageContainer);

@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 
-import withAppSearch from "../app-search/withAppSearch";
+import { withSearch } from "../search-lib";
 import { ErrorBoundary } from "../components";
 
 export class ErrorBoundaryContainer extends Component {
@@ -15,4 +15,4 @@ export class ErrorBoundaryContainer extends Component {
   }
 }
 
-export default withAppSearch(ErrorBoundaryContainer);
+export default withSearch(ErrorBoundaryContainer);

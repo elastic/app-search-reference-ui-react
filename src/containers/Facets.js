@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 
-import withAppSearch from "../app-search/withAppSearch";
+import { withSearch } from "../search-lib";
 import { Facet, Facets } from "../components";
 import { FacetDetail, Filter } from "../types";
 
@@ -57,4 +57,4 @@ export class FacetsContainer extends Component {
   }
 }
 
-export default withAppSearch(FacetsContainer);
+export default withSearch(FacetsContainer);

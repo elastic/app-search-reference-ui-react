@@ -1,4 +1,4 @@
-import AppSearchDriver, { DEFAULT_STATE } from "./AppSearchDriver";
+import SearchDriver, { DEFAULT_STATE } from "./SearchDriver";
 import * as SwiftypeAppSearch from "swiftype-app-search-javascript";
 import AppSearchAPIConnector from "./AppSearchAPIConnector";
 
@@ -51,13 +51,13 @@ beforeEach(() => {
 });
 
 it("can be initialized", () => {
-  const driver = new AppSearchDriver(params);
-  expect(driver).toBeInstanceOf(AppSearchDriver);
+  const driver = new SearchDriver(params);
+  expect(driver).toBeInstanceOf(SearchDriver);
 });
 
 it("will throw when missing required parameters", () => {
   expect(() => {
-    new AppSearchDriver({});
+    new SearchDriver({});
   }).toThrow();
 });
 
@@ -69,7 +69,7 @@ it("will use initial state if provided", () => {
     sortDirection: "asc"
   };
 
-  const driver = new AppSearchDriver({
+  const driver = new SearchDriver({
     ...params,
     initialState
   });
@@ -90,7 +90,7 @@ it("will default facets to {} in state if facets is missing from the response", 
     .fn()
     .mockReturnValue({ then: cb => cb(resultListWithoutFacets) });
 
-  const driver = new AppSearchDriver({
+  const driver = new SearchDriver({
     ...params,
     initialState
   });
@@ -113,7 +113,7 @@ it("will trigger a search if searchTerm or filters are provided in initial state
     searchTerm: "test"
   };
 
-  const driver = new AppSearchDriver({
+  const driver = new SearchDriver({
     ...params,
     initialState
   });
@@ -132,14 +132,14 @@ it("will trigger a search if searchTerm or filters are provided in initial state
 
 describe("#getState", () => {
   it("returns the current state", () => {
-    const driver = new AppSearchDriver(params);
+    const driver = new SearchDriver(params);
     expect(driver.getState()).toEqual(DEFAULT_STATE);
   });
 });
 
 describe("#getActions", () => {
   it("returns the current state", () => {
-    const driver = new AppSearchDriver(params);
+    const driver = new SearchDriver(params);
     const actions = driver.getActions();
     expect(actions.addFilter).toBeInstanceOf(Function);
     expect(actions.removeFilter).toBeInstanceOf(Function);
@@ -166,7 +166,7 @@ describe("#setSearchTerm", () => {
       sortDirection: "asc" // KEEP
     };
 
-    const driver = new AppSearchDriver({
+    const driver = new SearchDriver({
       ...params,
       initialState
     });
@@ -199,7 +199,7 @@ describe("#addFilter", () => {
       sortDirection: "asc" // KEEP
     };
 
-    const driver = new AppSearchDriver({
+    const driver = new SearchDriver({
       ...params,
       initialState
     });
@@ -293,7 +293,7 @@ describe("#setFilter", () => {
       sortDirection: "asc" // KEEP
     };
 
-    const driver = new AppSearchDriver({
+    const driver = new SearchDriver({
       ...params,
       initialState
     });
@@ -333,7 +333,7 @@ describe("#removeFilter", () => {
       sortDirection: "asc" // KEEP
     };
 
-    const driver = new AppSearchDriver({
+    const driver = new SearchDriver({
       ...params,
       initialState
     });
@@ -415,7 +415,7 @@ describe("#clearFilters", () => {
       sortDirection: "asc" // KEEP
     };
 
-    const driver = new AppSearchDriver({
+    const driver = new SearchDriver({
       ...params,
       initialState
     });
@@ -469,7 +469,7 @@ describe("#setCurrent", () => {
       sortDirection: "asc" // KEEP
     };
 
-    const driver = new AppSearchDriver({
+    const driver = new SearchDriver({
       ...params,
       initialState
     });
@@ -500,7 +500,7 @@ describe("#setSort", () => {
       sortDirection: "asc" // UPDATE
     };
 
-    const driver = new AppSearchDriver({
+    const driver = new SearchDriver({
       ...params,
       initialState
     });
@@ -533,7 +533,7 @@ describe("#setResultsPerPage", () => {
       sortDirection: "asc" // KEEP
     };
 
-    const driver = new AppSearchDriver({
+    const driver = new SearchDriver({
       ...params,
       initialState
     });

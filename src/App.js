@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 
 import { Body, Header } from "./components";
-import AppSearchProvider from "./app-search/AppSearchProvider";
-import AppSearchDriver from "./app-search/AppSearchDriver";
-import AppSearchAPIConnector from "./app-search/AppSearchAPIConnector";
+import {
+  SearchProvider,
+  SearchDriver,
+  AppSearchAPIConnector
+} from "./search-lib";
 
 import {
   buildFacetConfigFromConfig,
@@ -13,7 +15,7 @@ import {
 
 function createDriver() {
   const { hostIdentifier, searchKey, endpointBase, engineName } = getConfig();
-  return new AppSearchDriver({
+  return new SearchDriver({
     apiConnector: new AppSearchAPIConnector({
       hostIdentifier,
       searchKey,
@@ -39,7 +41,7 @@ class App extends Component {
     }
 
     return (
-      <AppSearchProvider driver={createDriver()}>
+      <SearchProvider driver={createDriver()}>
         {({ searchTerm, results }) => (
           <div
             className={`reference-ui${
@@ -50,7 +52,7 @@ class App extends Component {
             <Body />
           </div>
         )}
-      </AppSearchProvider>
+      </SearchProvider>
     );
   }
 }

@@ -1,7 +1,7 @@
 # App Search Reference UI
 
 The Reference UI is a configurable, generic UI meant to work with
-any [App Search](https://www.elastic.co/cloud/app-search-service) Engine. It
+any [App Search](https://www.elastic.co/cloud/search-lib-service) Engine. It
 can serve as a simple demo, a functional test for your Engine data,
 or as a code reference when building out your own App Search
 UI.
@@ -27,7 +27,7 @@ Run the following commands to start this application:
 # Run the `cd` command to change the current directory to the
 # location of your downloaded Reference UI. Replace the path
 # below with the actual path of your project.
-cd ~/Downloads/app-search-reference-ui
+cd ~/Downloads/search-lib-reference-ui
 
 # Run this to set everything up
 npm install
@@ -57,7 +57,7 @@ The following is a complete list of options available for configuration in [engi
 | `urlField`         | String        | optional          | A field with a url to use as a link in results.                                                                                                                                        |
 | `urlFieldTemplate` | String        | optional          | Instead of urlField, you can provide a URL "template" here, which lets you build a URL from other fields. ex: "https://www.example.com/{{id}}".                                        |
 | `sortFields`       | Array[String] | required          | A list of fields that will be used for sort options.                                                                                                                                   |
-| `facets`           | Array[String] | required          | A list of fields that will be available as "facet" filters. Read more about facets within the [App Search documentation](https://swiftype.com/documentation/app-search/guides/facets). |
+| `facets`           | Array[String] | required          | A list of fields that will be available as "facet" filters. Read more about facets within the [App Search documentation](https://swiftype.com/documentation/search-lib/guides/facets). |
 
 ### External configuration
 
@@ -92,13 +92,13 @@ Logically, the pieces of this application fit together like this:
       |
     ( State manager )       ( Syncs state with URL )
   -------------------      --------------
-  | AppSearchDriver | <--> | URLManager |
+  | SearchDriver     | <--> | URLManager |
   -------------------      --------------
       |
       | actions / state
       v
   ---------------------
-  | AppSearchProvider |  ( Driver to React glue )
+  | SearchProvider    |  ( Driver to React glue )
   ---------------------
       |
       | context
@@ -115,7 +115,7 @@ Logically, the pieces of this application fit together like this:
 
 That corresponds to the code and file structure in the following way:
 
-**src/app-search**
+**src/search-lib**
 
 Everything in this directory for now should be thought of as a separate library.
 The goal eventually is to actually separate this out into a library of its own,
@@ -171,7 +171,7 @@ Components in this UI are separated into "Containers" and "Components". These
 can be thought of as "Logic" and "View", respectively.
 
 "Containers" are "connected" to the "context" via a "Higher Order Component"
-(HOC) `withAppSearch`. This HOC simply exposes all state and actions as `props`.
+(HOC) `withSearch`. This HOC simply exposes all state and actions as `props`.
 A consuming Container simply accesses those actions and state, composes
 appropriate handlers and data as props and passes them to the appropriate
 Component.
@@ -218,7 +218,7 @@ own implementation. Here are a few places to look to make changes:
   won't need this.
 
 - Lastly, if you find there is a core action or state missing, you may
-  consider updating the core logic in [src/app-search](src/app-search).
+  consider updating the core logic in [src/search-lib](src/search-lib).
 
 Lastly, we accept PRs! If you make a customization that you think would benefit
 others, please feel free to contribute it back.

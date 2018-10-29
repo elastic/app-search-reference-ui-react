@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 
-import withAppSearch from "../app-search/withAppSearch";
+import { withSearch } from "../search-lib";
 import { Sorting } from "../components";
 import { SortOption } from "../types";
 
@@ -59,4 +59,4 @@ export class SortingContainer extends Component {
   }
 }
 
-export default withAppSearch(SortingContainer);
+export default withSearch(SortingContainer);

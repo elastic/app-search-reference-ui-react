@@ -219,7 +219,7 @@ function matchFilter(filter1, filter2) {
  * - trackURLState: Boolean
  *   URL State management can be disabled completely
  */
-export default class AppSearchDriver {
+export default class SearchDriver {
   state = DEFAULT_STATE;
 
   constructor({

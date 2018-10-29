@@ -133,18 +133,18 @@ function stateToQueryString(state) {
 
 /**
  * The URL Manager is responsible for synchronizing state between
- * AppSearchDriver and the URL. There are 3 main cases we handle when
+ * SearchDriver and the URL. There are 3 main cases we handle when
  * synchronizing:
  *
- * 1. When the app loads, AppSearchDriver will need to
+ * 1. When the app loads, SearchDriver will need to
  * read the current state from the URL, in order to perform the search
  * expressed by the query string. `getStateFromURL` is used for this case.
  *
  * 2. When the URL changes as a result of `pushState` or `replaceState`,
- * AppSearchDriver will need to be notified and given the updated state, so that
+ * SearchDriver will need to be notified and given the updated state, so that
  * it can re-run the current search. `onURLStateChange` is used for this case.
  *
- * 3. When state changes internally in the AppSearchDriver, as a result of an
+ * 3. When state changes internally in the SearchDriver, as a result of an
  * Action, it will need to notify the URLManager of the change. `pushStateToURL`
  * is used for this case.
  */

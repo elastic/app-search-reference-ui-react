@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 
-import withAppSearch from "../app-search/withAppSearch";
+import { withSearch } from "../search-lib";
 import { PagingInfo } from "../components";
 
 export class PagingInfoContainer extends Component {
@@ -40,4 +40,4 @@ export class PagingInfoContainer extends Component {
   }
 }
 
-export default withAppSearch(PagingInfoContainer);
+export default withSearch(PagingInfoContainer);
