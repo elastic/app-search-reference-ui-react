@@ -1,8 +1,12 @@
 import * as SwiftypeAppSearch from "swiftype-app-search-javascript";
 
 /*
- * We mainly just need to filter out unsupported configuration values, like
- * `disjunctive`
+ * We simply pass our Facet configuration through to the App Search API
+ * call. There are, however, certain properties that the API does not
+ * support in that configuration. For that reason, we need to filter
+ * those properties out before passing them to the API.
+ *
+ * An example is 'disjunctive', and 'conditional'.
  */
 function toAPIFacetSyntax(facetConfig = {}) {
   return Object.entries(facetConfig).reduce((acc, [key, value]) => {
@@ -16,6 +20,12 @@ function toAPIFacetSyntax(facetConfig = {}) {
   }, {});
 }
 
+/*
+ * 'disjunctive' flags are embedded in individual facet configurations, like
+ * so:
+ *
+ * facets
+ */
 function getListOfDisjunctiveFacets(facetConfig = {}) {
   return Object.entries(facetConfig).reduce((acc, [key, value]) => {
     if (value && value.disjunctive === true) {

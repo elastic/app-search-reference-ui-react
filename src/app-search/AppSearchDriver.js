@@ -39,18 +39,17 @@ function removeSingleFilterValue(filters, name, value) {
 }
 
 export const DEFAULT_STATE = {
-  // Search Parameters -- This is state that represents the input that was
-  // used to produce the current query results. It is always in sync
-  // with the Results State
+  // Search Parameters -- This is state that represents the input state.
   current: 1,
-  error: "",
   filters: [],
-  isLoading: false,
   resultsPerPage: 20,
   searchTerm: "",
   sortDirection: "",
   sortField: "",
-  // Results State -- This state represents the results of the current query
+  // Result State -- This state represents state that is updated automatically
+  // as the result of changing input state.
+  error: "",
+  isLoading: false,
   facets: {},
   requestId: "",
   results: [],
@@ -60,7 +59,7 @@ export const DEFAULT_STATE = {
 };
 
 /*
- * This temporarily fixes a core issue we have with filtering.
+ * This fixes an issue with filtering.
  * Our data structure for filters are the "OR" format for the App Search
  * API:
  *
@@ -83,9 +82,6 @@ export const DEFAULT_STATE = {
  *    ]
  *   }
  *  ```
- *
- * Ultimately, we should choose our own data structures in the driver
- * that don't mirror the API. But they will need to support AND vs OR.
  */
 function formatORFiltersAsAND(filters = []) {
   return filters.reduce((acc, filter) => {
@@ -96,9 +92,9 @@ function formatORFiltersAsAND(filters = []) {
 }
 
 /*
- * There's this weird thing where facet values for dates come back as an integer
- * from the API, but the API expects them as parameters formatted as date
- * strings.
+ * Facet values for dates come back as Integer from the API. However, the API
+ * expects them as a formatted date String when applying that same value
+ * as a filter.
  */
 function convertRangeFiltersToDateString(filters = []) {
   const val = filters.map(filter => {
@@ -154,31 +150,78 @@ function matchFilter(filter1, filter2) {
  * it is the source of truth for state in this React App, but it has no
  * dependencies on React itself.
  *
- * The public interface of the Driver can be thought about in the following
- * way:
+ * The public interface of the Driver can be thought about as "state" and
+ * "actions."
  *
  * Ways to GET state:
  * - getState - Get the initial app state
- * - subscribeToStateChanges - Get updated state whenever it changes
+ * - subscribeToStateChanges - Get updated state whenever it changes.
  *
- * Ways to SET state, or "Actions" as we refer to them elsewhere
- * - addFilter, etc, will typically update the state and trigger new queries
+ * Ways to SET state, using actions. All actions can be found in 'getActions'.
  *
+ * const {addFilter} = getActions().
+ *
+ * addFilter, and most actions, will typically update the state and trigger
+ * new queries to be run against the search API.
+ *
+ * Configuration:
+ *
+ * - apiConnector: APIConnector
+ *   Instance of an API Connector. For instance, AppSearchAPIConnector
+ *
+ * - facetConfig: Facet
+ *   Configuration for Facet filters to be used within this application. The
+ *   syntax for Facet configuration follows the API syntax:
+ *   https://swiftype.com/documentation/app-search/api/search/facets. In
+ *   addition to the options provided by the API, the following per Facet
+ *   configuration is also available:
+ *     - conditional[function]
+ *       This facet will only be applied if the condition specified returns
+ *       true, based on the current applied filters.
+ *     - disjunctive[boolean]
+ *       When returning counts for disjunctive facets, the counts will be
+ *       returned as if no filter is applied on this field, even if one is
+ *       applied. A common use case for this is tabbed filters.
+ *
+ *   ex.
+ *   facetConfig: {
+ *     author: {
+ *       type: "value",
+ *       size: 40,
+ *       disjunctive: true,
+ *       conditional: ({ filters }) =>
+ *         ["blog", "videos"].includes(filters.filter(f => f["website_area"]))
+ *     }
+ *   }
+ *
+ * - initialState: Object
+ *   Set initial input state, or search parameters. For example, initializing
+ *   the search page with certain parameters already set:
+ *`
+ *   initialState: {
+ *     searchTerm: "test",
+ *     resultsPerPage: 40
+ *   }
+ *
+ *   Valid search parameters are:
+ *     current: Integer
+ *     filters: Array[Object]
+ *     resultsPerPage: Integer
+ *     searchTerm: String
+ *     sortDirection: String ["asc"|"desc"]
+ *     sortField: String
+ *
+ * - searchOptions: Object
+ *   This is low level configuration which lets you configure
+ *   the options used on the Search API endpoint, ex: `result_fields`.
+ *   https://swiftype.com/documentation/app-search/api/search
+ *
+ * - trackURLState: Boolean
+ *   URL State management can be disabled completely
  */
 export default class AppSearchDriver {
   state = DEFAULT_STATE;
 
-  /**
-   *
-   * @param options Object
-   * apiConnector - Connector for a particular search API
-   * facetConfig - Configuration for facets, based on format specified in API documentation
-   * initialState - This lets you set initial search parameters, ex:
-   *   `searchTerm: "test"`
-   * searchOptions - A low level configuration which lets you configure
-   *   the options used on the Search API endpoint, ex: `result_fields`
-   * trackURLState - Boolean, track state in the url or not?
-   */
   constructor({
     apiConnector,
     facetConfig,

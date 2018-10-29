@@ -71,7 +71,7 @@ You can follow the previous steps, but then you will need to configure
 [engine.json](src/config/engine.json).
 
 To do so, make a copy of [engine.json.example](src/config/engine.json.example),
-rename it to `engine.json` and configure with your Engine's specific details.
+rename it to `engine.json` and configure it with your Engine's specific details.
 
 ```bash
 cp src/config/engine.json.example src/config/engine.json
@@ -117,7 +117,14 @@ That corresponds to the code and file structure in the following way:
 
 **src/app-search**
 
-This holds the `AppSearchDriver`, the `URLManager`, and `AppSearchProvider`
+Everything in this directory for now should be thought of as a separate library.
+The goal eventually is to actually separate this out into a library of its own,
+so when composing a UI you'd simply need to focus on creating components
+from actions and state, and not all of the plumbing that goes into managing
+that state. For now though, it's included in this reference as a pattern
+that can be followed.
+
+This holds the `SearchDriver`, the `URLManager`, and `SearchProvider`
 from the diagram above. This is where all of the core application logic lives.
 The interface to all of this logic is a set of "actions" and "state" that are
 passed down in a React [Context](https://reactjs.org/docs/context.html). Those
@@ -158,13 +165,6 @@ So, for instance, a `SearchBox` component might be wired up to call the
 value. A `Results` component could then simply iterate through the `results`
 from state to render search results.
 
-Everything in this directory for now should be thought of as a separate library.
-The goal eventually is to actually separate this out into a library of it's own,
-so when composing a UI you'd simply need to focus on creating components
-from actions and state, and not all of the plumbing that goes into managing
-that state. For now though, it's included in this reference as a pattern
-that can be followed.
-
 **src/containers**
 
 Components in this UI are separated into "Containers" and "Components". These
@@ -195,8 +195,8 @@ It should be feasible to use this project as a starting point for your
 own implementation. Here are a few places to look to make changes:
 
 - The styles for the entire project can be found in [src/styles](src/styles).
-  Simple style tweaks changes can be made here, or you could replace these styles
-  with your own.
+  Simple style tweaks can be made here, or you could replace these styles
+  entirely with your own.
 - [src/components](src/components) contains the view templates for
   components. Structural HTML changes can be made here.
 - If you find that you have different data or behavior requirements for
@@ -204,7 +204,19 @@ own implementation. Here are a few places to look to make changes:
   [src/containers](src/containers).
 - If you find you have requirements that none of the existing components
   satisfy, you could create an entirely new component and/or container. Use the
-  `withAppSearch` HOC in order to access any action or state.
+  [withSearch.js](src/search-lib/withSearch.js) HOC in order to access any action or state.
+- The SearchDriver can be configured directly in [App.js](src/App.js) to do things like:
+
+  - Optimize your API calls
+  - Add additional facets and customize facet behavior
+  - Disable URL State management
+
+  A full list of configuration options can be found in [SearchDriver.js](src/search-lib/SearchDriver.js)
+
+- Eject from 'configuration'. You may choose to to delete the entire [src/config](src/config) directory, which holds the configuration logic that makes this a
+  generic UI. If you're using this as your own, production application, you likely
+  won't need this.
+
 - Lastly, if you find there is a core action or state missing, you may
   consider updating the core logic in [src/app-search](src/app-search).
 
