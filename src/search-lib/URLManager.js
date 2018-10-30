@@ -177,6 +177,10 @@ export default class URLManager {
       // want to notify that the URL changed.
       if (`?${this.lastPushSearchString}` === location.search) return;
 
+      // Once we've decided to return based on lastPushSearchString, reset
+      // it so that we don't break back / forward button.
+      this.lastPushSearchString = "";
+
       callback(
         paramsToState(
           queryString.parse(location.search, {
