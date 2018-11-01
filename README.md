@@ -77,6 +77,20 @@ rename it to `engine.json` and configure it with your Engine's specific details.
 cp src/config/engine.json.example src/config/engine.json
 ```
 
+## Deploy and Share
+
+This app can be easily published to any server as static assets and served. We recommend [Netlify](https://www.netlify.com/), but you have other [options](https://facebook.github.io/create-react-app/docs/deployment) as well.
+
+To deploy:
+
+```
+npm run build
+npm install netlify-cli -g
+netlify deploy # enter ./build as the deploy path
+```
+
+You'll then simply follow the command prompt to log into Netlify and deploy your site. This can be
+
 ## Understanding the Reference UI Code
 
 In addition to previewing your data in a UI, this project can also be used as a code reference. Here's a quick primer on this project's code setup, to help you understand how it's put together.
