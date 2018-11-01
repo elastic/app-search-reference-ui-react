@@ -89,7 +89,7 @@ npm install netlify-cli -g
 netlify deploy # enter ./build as the deploy path
 ```
 
-You'll then simply follow the command prompt to log into Netlify and deploy your site. This can be
+You'll then simply follow the command prompt to log into Netlify and deploy your site. This can be completed in just a few minutes.
 
 ## Understanding the Reference UI Code
 
