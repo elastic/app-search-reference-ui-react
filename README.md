@@ -1,5 +1,7 @@
 # App Search Reference UI
 
+[![CircleCI](https://circleci.com/gh/swiftype/app-search-reference-ui-react.svg?style=svg)](https://circleci.com/gh/swiftype/app-search-reference-ui-react)
+
 The Reference UI is a configurable, generic UI meant to work with
 any [App Search](https://www.elastic.co/cloud/search-lib-service) Engine. It
 can serve as a simple demo, a functional test for your Engine data,
