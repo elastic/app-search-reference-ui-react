@@ -78,24 +78,3 @@ Object {
   "sortField": "name",
 }
 `;
-
-exports[`#onURLStateChange will call provided callback with updated state when url changes 1`] = `
-Object {
-  "filters": Array [
-    Object {
-      "dependencies": Array [
-        "underscore",
-      ],
-    },
-    Object {
-      "keywords": Array [
-        "node",
-      ],
-    },
-  ],
-  "resultsPerPage": 20,
-  "searchTerm": "node",
-  "sortDirection": "asc",
-  "sortField": "name",
-}
-`;

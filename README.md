@@ -1,5 +1,7 @@
 # App Search Reference UI
 
+[![CircleCI](https://circleci.com/gh/swiftype/app-search-reference-ui-react.svg?style=svg)](https://circleci.com/gh/swiftype/app-search-reference-ui-react)
+
 The Reference UI is a configurable, generic UI meant to work with
 any [App Search](https://www.elastic.co/cloud/search-lib-service) Engine. It
 can serve as a simple demo, a functional test for your Engine data,
@@ -89,7 +91,7 @@ npm install netlify-cli -g
 netlify deploy # enter ./build as the deploy path
 ```
 
-You'll then simply follow the command prompt to log into Netlify and deploy your site. This can be
+You'll then simply follow the command prompt to log into Netlify and deploy your site. This can be completed in just a few minutes.
 
 ## Understanding the Reference UI Code
 

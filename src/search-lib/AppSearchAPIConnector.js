@@ -11,7 +11,7 @@ import * as SwiftypeAppSearch from "swiftype-app-search-javascript";
 function toAPIFacetSyntax(facetConfig = {}) {
   return Object.entries(facetConfig).reduce((acc, [key, value]) => {
     acc[key] = Object.entries(value).reduce((propAcc, [propKey, propValue]) => {
-      if (["type", "size", "ranges"].includes(propKey)) {
+      if (!["disjunctive", "conditional"].includes(propKey)) {
         propAcc[propKey] = propValue;
       }
       return propAcc;
