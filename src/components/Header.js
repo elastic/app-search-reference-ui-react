@@ -1,6 +1,6 @@
 import React from "react";
 
-import { SearchBox } from "../containers";
+import { SearchBox } from "@elastic/react-search-ui";
 
 export default function Header() {
   return (

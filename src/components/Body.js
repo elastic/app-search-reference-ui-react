@@ -8,7 +8,8 @@ import {
   Results,
   ResultsPerPage,
   Sorting
-} from "../containers";
+} from "@elastic/react-search-ui";
+
 import { buildSortOptionsFromConfig } from "../config/config-helper";
 
 export default function Body() {

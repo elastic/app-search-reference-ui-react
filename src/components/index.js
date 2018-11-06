@@ -1,11 +1,2 @@
 export { default as Body } from "./Body";
-export { default as ErrorBoundary } from "./ErrorBoundary";
-export { default as Facet } from "./Facet";
-export { default as Facets } from "./Facets";
 export { default as Header } from "./Header";
-export { default as PagingInfo } from "./PagingInfo";
-export { default as Result } from "./Result";
-export { default as Results } from "./Results";
-export { default as ResultsPerPage } from "./ResultsPerPage";
-export { default as SearchBox } from "./SearchBox";
-export { default as Sorting } from "./Sorting";
