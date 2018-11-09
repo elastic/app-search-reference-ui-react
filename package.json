@@ -4,7 +4,9 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@elastic/react-search-components": "file:../search-ui/packages/react-search-components",
     "@elastic/react-search-ui": "file:../search-ui/packages/react-search-ui",
+    "@elastic/search-ui": "file:../search-ui/packages/search-ui",
     "@elastic/search-ui-app-search-connector": "file:../search-ui/packages/search-ui-app-search-connector",
     "date-fns": "^1.29.0",
     "history": "^4.7.2",

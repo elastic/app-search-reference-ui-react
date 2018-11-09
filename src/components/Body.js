@@ -1,14 +1,14 @@
 import React from "react";
-
 import {
   ErrorBoundary,
-  Facets,
   PagingInfo,
   Paging,
   Results,
   ResultsPerPage,
   Sorting
 } from "@elastic/react-search-ui";
+
+import Facets from "./Facets";
 
 import { buildSortOptionsFromConfig } from "../config/config-helper";
 
