@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders correctly 1`] = `
+exports[`renders correctly with sidebar 1`] = `
 <div
   className="reference-ui-body"
 >
@@ -15,6 +15,64 @@ exports[`renders correctly 1`] = `
     >
       <div
         className="sidebar"
+      >
+        <Component
+          sortOptions={
+            Array [
+              Object {
+                "direction": "",
+                "name": "Relevance",
+                "value": "",
+              },
+            ]
+          }
+        />
+        <Component />
+      </div>
+      <div
+        className="results"
+      >
+        <div
+          className="results__header"
+        >
+          <div
+            className="meta"
+          >
+            <Component />
+            <Component />
+          </div>
+        </div>
+        <div
+          className="results__body"
+        >
+          <Component />
+        </div>
+        <div
+          className="results__footer"
+        >
+          <Component />
+        </div>
+      </div>
+    </div>
+  </Component>
+</div>
+`;
+
+exports[`renders correctly without the sidebar 1`] = `
+<div
+  className="reference-ui-body"
+>
+  <Component>
+    <div
+      className="initial-state-message"
+    >
+      Type a search above to begin.
+    </div>
+    <div
+      className="search-results"
+    >
+      <div
+        className="sidebar hidden"
       >
         <Component
           sortOptions={

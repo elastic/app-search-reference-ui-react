@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 
 import {
@@ -9,9 +10,9 @@ import {
   ResultsPerPage,
   Sorting
 } from "../containers";
-import { getFacetFields, getSortFields, buildSortOptionsFromConfig } from "../config/config-helper";
+import { buildSortOptionsFromConfig } from "../config/config-helper";
 
-export default function Body() {
+function Body({ hasSidebar = true }) {
   return (
     <div className="reference-ui-body">
       <ErrorBoundary>
@@ -19,7 +20,7 @@ export default function Body() {
           Type a search above to begin.
         </div>
         <div className="search-results">
-          <div className={"sidebar" + (getFacetFields().length > 0 || getSortFields().length > 0 ? '' : ' hidden')}>
+          <div className={"sidebar" + (hasSidebar ? '' : ' hidden')}>
             <Sorting sortOptions={buildSortOptionsFromConfig()} />
             <Facets />
           </div>
@@ -42,3 +43,9 @@ export default function Body() {
     </div>
   );
 }
+
+Body.propTypes = {
+  hasSidebar: PropTypes.bool
+};
+
+export default Body;
