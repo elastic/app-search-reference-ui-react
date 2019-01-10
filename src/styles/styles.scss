@@ -181,6 +181,11 @@ a {
 
 .sidebar {
   flex: 0 1 30%;
+  padding-right: $sizeM;
+
+  &.hidden {
+    display: none;
+  }
 }
 
 .sorting {
@@ -289,21 +294,9 @@ a {
     justify-content: space-between;
     align-items: center;
   }
-
-  .active-search & {
-    padding: $sizeXL 0 0 $sizeXL;
-    border-left: 1px solid $resultsLeftBorderColor;
-  }
 }
 
 .result {
-  border-top: 1px solid $resultBorderColor;
-  padding: $sizeL 0;
-
-  & + & {
-    margin-top: 20px;
-  }
-
   em {
     position: relative;
     color: $textMatchColor;
@@ -331,6 +324,7 @@ a {
   &__title {
     font-size: 1.8em;
     font-weight: $fontWeightBold;
+    margin-top: $sizeL;
   }
 
   &__key {

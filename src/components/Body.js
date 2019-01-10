@@ -9,7 +9,7 @@ import {
   ResultsPerPage,
   Sorting
 } from "../containers";
-import { buildSortOptionsFromConfig } from "../config/config-helper";
+import { getFacetFields, getSortFields, buildSortOptionsFromConfig } from "../config/config-helper";
 
 export default function Body() {
   return (
@@ -19,7 +19,7 @@ export default function Body() {
           Type a search above to begin.
         </div>
         <div className="search-results">
-          <div className="sidebar">
+          <div className={"sidebar" + (getFacetFields().length > 0 || getSortFields().length > 0 ? '' : ' hidden')}>
             <Sorting sortOptions={buildSortOptionsFromConfig()} />
             <Facets />
           </div>
