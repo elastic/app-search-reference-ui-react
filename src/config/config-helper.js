@@ -46,6 +46,14 @@ export function getUrlField() {
   return getConfig().urlField;
 }
 
+export function getFacetFields() {
+  return getConfig().facets || [];
+}
+
+export function getSortFields() {
+  return getConfig().sortFields || [];
+}
+
 export function getUrlFieldTemplate() {
   return getConfig().urlFieldTemplate;
 }

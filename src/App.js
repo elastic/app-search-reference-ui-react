@@ -10,7 +10,9 @@ import {
 import {
   buildFacetConfigFromConfig,
   buildSearchOptionsFromConfig,
-  getConfig
+  getConfig,
+  getFacetFields,
+  getSortFields
 } from "./config/config-helper";
 
 function createDriver() {
@@ -49,7 +51,7 @@ class App extends Component {
             }`}
           >
             <Header />
-            <Body />
+            <Body hasSidebar={getFacetFields().length > 0 || getSortFields().length > 0 ? true : false} />
           </div>
         )}
       </SearchProvider>

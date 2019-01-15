@@ -297,11 +297,17 @@ export default class SearchDriver {
         current,
         size: resultsPerPage
       },
-      facets: removeConditionalFacets(this.facetConfig, filters),
       filters: {
         all: formatORFiltersAsAND(convertRangeFiltersToDateString(filters))
       }
     };
+
+    const facets = removeConditionalFacets(this.facetConfig, filters);
+    const numberOfFacets = Object.keys(facets).length;
+
+    if (numberOfFacets > 0) {
+      searchOptions.facets = facets;
+    }
 
     if (sortField && sortDirection) {
       searchOptions.sort = {
