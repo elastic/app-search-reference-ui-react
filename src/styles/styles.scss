@@ -110,6 +110,7 @@ a {
   padding: $sizeXL $sizeL;
   z-index: 1;
   border-bottom: 1px solid $headerBorderColor;
+  min-height: 115px;
 
   &__title {
     font-weight: $fontWeightNormal;
@@ -146,7 +147,7 @@ a {
   overflow: hidden;
   justify-content: center;
   align-items: stretch;
-  height: 100%;
+  // height: 100%;
 
   .outer-wrapper {
     position: relative;
@@ -195,6 +196,8 @@ a {
 
   &.query-suggest {
     overflow: visible;
+    position: absolute;
+    width: calc(100% - 3em);
 
     .searchbox__text-input {
       border-bottom: none;

@@ -341,7 +341,8 @@ a {
 .reference-ui-header {
   padding: 32px 24px;
   z-index: 1;
-  border-bottom: 1px solid #eeeeee; }
+  border-bottom: 1px solid #eeeeee;
+  min-height: 115px; }
   .reference-ui-header__title {
     font-weight: 400;
     text-align: center; }
@@ -368,8 +369,7 @@ a {
   display: flex;
   overflow: hidden;
   justify-content: center;
-  align-items: stretch;
-  height: 100%; }
+  align-items: stretch; }
   .searchbox .outer-wrapper {
     position: relative;
     width: 100%;
@@ -400,7 +400,9 @@ a {
     .live-filtering .searchbox__submit {
       display: none; }
   .searchbox.query-suggest {
-    overflow: visible; }
+    overflow: visible;
+    position: absolute;
+    width: calc(100% - 3em); }
     .searchbox.query-suggest .searchbox__text-input {
       border-bottom: none;
       border-bottom-left-radius: 0;
