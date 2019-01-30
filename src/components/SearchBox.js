@@ -20,7 +20,6 @@ function SearchBox(props) {
 
   return (
     <form className={"searchbox" + (querySuggestions.length > 0 ? " query-suggest" : "")} onSubmit={onSubmit}>
-      {/* <div className="outer-wrapper"> */}
         <div className="query-suggestions-wrapper">
           <input
             className={`searchbox__text-input ${focusedClass}`}
@@ -43,7 +42,6 @@ function SearchBox(props) {
             <li><a href="">Everglades</a></li>
           </ul>
         </div>
-      {/* </div> */}
       <input
         type="submit"
         value="Search"

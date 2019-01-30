@@ -402,7 +402,10 @@ a {
   .searchbox.query-suggest {
     overflow: visible;
     position: absolute;
-    width: calc(100% - 3em); }
+    width: calc(100% - 3em);
+    left: 0;
+    right: 0;
+    z-index: 1; }
     .searchbox.query-suggest .searchbox__text-input {
       border-bottom: none;
       border-bottom-left-radius: 0;
