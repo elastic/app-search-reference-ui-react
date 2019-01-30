@@ -31,11 +31,11 @@ function SearchBox(props) {
           className="button searchbox__submit"
         />
       </form>
-      <div>
-        {/* Using mousedown instead of click to ensure it has higher priority than
+      {showSuggestions && suggestions.length > 1 && (
+        <div>
+          {/* Using mousedown instead of click to ensure it has higher priority than
         blur handler*/}
-        {showSuggestions &&
-          suggestions.map(suggestion => (
+          {suggestions.map(suggestion => (
             <div
               onMouseDown={() => onSelectSuggestion(suggestion)}
               key={suggestion.suggestion}
@@ -43,7 +43,8 @@ function SearchBox(props) {
               {suggestion.suggestion}
             </div>
           ))}
-      </div>
+        </div>
+      )}
     </React.Fragment>
   );
 }

@@ -89,22 +89,20 @@ export class SearchBoxContainer extends Component {
     const { inputProps, querySuggestionResults } = this.props;
 
     return (
-      <React.Fragment>
-        <SearchBox
-          isFocused={isFocused}
-          onChange={this.handleChange}
-          onSelectSuggestion={this.handleSelectSuggestion}
-          onSubmit={this.handleSubmit}
-          showSuggestions={showSuggestions}
-          suggestions={querySuggestionResults}
-          value={value}
-          inputProps={{
-            onFocus: this.handleFocus,
-            onBlur: this.handleBlur,
-            ...inputProps
-          }}
-        />
-      </React.Fragment>
+      <SearchBox
+        isFocused={isFocused}
+        onChange={this.handleChange}
+        onSelectSuggestion={this.handleSelectSuggestion}
+        onSubmit={this.handleSubmit}
+        showSuggestions={showSuggestions}
+        suggestions={querySuggestionResults}
+        value={value}
+        inputProps={{
+          onFocus: this.handleFocus,
+          onBlur: this.handleBlur,
+          ...inputProps
+        }}
+      />
     );
   }
 }
