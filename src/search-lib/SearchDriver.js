@@ -1,5 +1,6 @@
 import URLManager from "./URLManager";
 import { format } from "date-fns";
+import { getConfig } from "../config/config-helper";
 
 function filterSearchParameters({
   current,
@@ -277,7 +278,18 @@ export default class SearchDriver {
   }
 
   _updateQuerySuggestionResults(searchTerm) {
-    this.apiConnector.querySuggestion(searchTerm).then(response => {
+    const options = {};
+    const fields = getConfig().querySuggestFields;
+
+    if (Array.isArray(fields) && fields.length > 0) {
+      options.types = {
+        documents: {
+          fields
+        }
+      };
+    }
+
+    this.apiConnector.querySuggestion(searchTerm, options).then(response => {
       this._setState({
         querySuggestionResults: response.results.documents
       });
