@@ -72,4 +72,8 @@ export default class AppSearchAPIConnector {
       disjunctiveFacets
     });
   }
+
+  querySuggestion(searchTerm, options = {}) {
+    return this.client.querySuggestion(searchTerm, options);
+  }
 }

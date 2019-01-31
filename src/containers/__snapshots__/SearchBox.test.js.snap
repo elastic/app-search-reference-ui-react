@@ -10,7 +10,9 @@ exports[`renders correctly 1`] = `
   }
   isFocused={false}
   onChange={[Function]}
+  onSelectSuggestion={[Function]}
   onSubmit={[Function]}
+  showSuggestions={false}
   value="test"
 />
 `;

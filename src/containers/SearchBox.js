@@ -11,8 +11,9 @@ export class SearchBoxContainer extends Component {
   };
 
   state = {
-    value: "",
-    isFocused: false
+    isFocused: false,
+    showSuggestions: false,
+    value: ""
   };
 
   constructor(props) {
@@ -20,15 +21,17 @@ export class SearchBoxContainer extends Component {
     this.state.value = props.searchTerm;
   }
 
-  handleFocus = e => {
+  handleFocus = () => {
     this.setState({
-      isFocused: true
+      isFocused: true,
+      showSuggestions: true
     });
   };
 
-  handleBlur = e => {
+  handleBlur = () => {
     this.setState({
-      isFocused: false
+      isFocused: false,
+      showSuggestions: false
     });
   };
 
@@ -37,24 +40,62 @@ export class SearchBoxContainer extends Component {
     const { value } = this.state;
 
     e.preventDefault();
-    setSearchTerm(value);
+    this.setState(
+      {
+        showSuggestions: false
+      },
+      () => {
+        setSearchTerm(value, {
+          refresh: true,
+          suggest: false
+        });
+      }
+    );
+  };
+
+  handleSelectSuggestion = suggestion => {
+    const { setSearchTerm } = this.props;
+
+    this.setState(
+      {
+        showSuggestions: false,
+        value: suggestion.suggestion
+      },
+      () => {
+        setSearchTerm(suggestion.suggestion, {
+          refresh: true,
+          suggest: false
+        });
+      }
+    );
   };
 
   handleChange = e => {
+    const { setSearchTerm } = this.props;
+
     this.setState({
-      value: e.currentTarget.value
+      value: e.currentTarget.value,
+      showSuggestions: true
+    });
+
+    setSearchTerm(e.currentTarget.value, {
+      refresh: false,
+      suggest: true
     });
   };
 
   render() {
-    const { isFocused, value } = this.state;
-    const { inputProps } = this.props;
+    const { isFocused, showSuggestions, value } = this.state;
+    const { inputProps, querySuggestionResults } = this.props;
 
     return (
       <SearchBox
         isFocused={isFocused}
         onChange={this.handleChange}
+        onSelectSuggestion={this.handleSelectSuggestion}
         onSubmit={this.handleSubmit}
+        showSuggestions={showSuggestions}
+        suggestions={querySuggestionResults}
         value={value}
         inputProps={{
           onFocus: this.handleFocus,

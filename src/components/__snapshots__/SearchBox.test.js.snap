@@ -5,13 +5,17 @@ exports[`renders correctly when \`isFocused\` is false 1`] = `
   className="searchbox"
   onSubmit={[Function]}
 >
-  <input
-    className="searchbox__text-input "
-    onChange={[Function]}
-    placeholder="Search your documents…"
-    type="text"
-    value="test"
-  />
+  <div
+    className="query-suggestions-wrapper"
+  >
+    <input
+      className="searchbox__text-input "
+      onChange={[Function]}
+      placeholder="Search your documents…"
+      type="text"
+      value="test"
+    />
+  </div>
   <input
     className="button searchbox__submit"
     type="submit"
@@ -25,13 +29,17 @@ exports[`renders correctly when \`isFocused\` is true 1`] = `
   className="searchbox"
   onSubmit={[Function]}
 >
-  <input
-    className="searchbox__text-input focus"
-    onChange={[Function]}
-    placeholder="Search your documents…"
-    type="text"
-    value="test"
-  />
+  <div
+    className="query-suggestions-wrapper"
+  >
+    <input
+      className="searchbox__text-input focus"
+      onChange={[Function]}
+      placeholder="Search your documents…"
+      type="text"
+      value="test"
+    />
+  </div>
   <input
     className="button searchbox__submit"
     type="submit"

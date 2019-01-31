@@ -1,5 +1,6 @@
 import URLManager from "./URLManager";
 import { format } from "date-fns";
+import { getConfig } from "../config/config-helper";
 
 function filterSearchParameters({
   current,
@@ -54,6 +55,7 @@ export const DEFAULT_STATE = {
   requestId: "",
   results: [],
   resultSearchTerm: "",
+  querySuggestionResults: [],
   totalResults: 0,
   wasSearched: false
 };
@@ -273,6 +275,25 @@ export default class SearchDriver {
     if (searchParameters.searchTerm || searchParameters.filters.length > 0) {
       this._updateSearchResults(searchParameters);
     }
+  }
+
+  _updateQuerySuggestionResults(searchTerm) {
+    const options = {};
+    const fields = getConfig().querySuggestFields;
+
+    if (Array.isArray(fields) && fields.length > 0) {
+      options.types = {
+        documents: {
+          fields
+        }
+      };
+    }
+
+    this.apiConnector.querySuggestion(searchTerm, options).then(response => {
+      this._setState({
+        querySuggestionResults: response.results.documents
+      });
+    });
   }
 
   _updateSearchResults(searchParameters, skipPushToUrl = false) {
@@ -512,12 +533,17 @@ export default class SearchDriver {
    *
    * @param searchTerm String
    */
-  setSearchTerm = searchTerm => {
-    this._updateSearchResults({
-      current: 1,
-      filters: [],
-      searchTerm
-    });
+  setSearchTerm = (searchTerm, { refresh = true, suggest = false } = {}) => {
+    if (suggest) {
+      this._updateQuerySuggestionResults(searchTerm);
+    }
+    if (refresh) {
+      this._updateSearchResults({
+        current: 1,
+        filters: [],
+        searchTerm
+      });
+    }
   };
 
   /**
