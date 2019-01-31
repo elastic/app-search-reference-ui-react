@@ -13,10 +13,13 @@ function SearchBox(props) {
     value
   } = props;
   const focusedClass = isFocused ? "focus" : "";
-
+  const shouldShowSuggestions = !!showSuggestions && suggestions.length > 0;
   return (
-    <React.Fragment>
-      <form className="searchbox" onSubmit={onSubmit}>
+    <form
+      className={"searchbox" + (shouldShowSuggestions ? " query-suggest" : "")}
+      onSubmit={onSubmit}
+    >
+      <div className="query-suggestions-wrapper">
         <input
           className={`searchbox__text-input ${focusedClass}`}
           onChange={onChange}
@@ -25,27 +28,32 @@ function SearchBox(props) {
           placeholder="Search your documents&#8230;"
           {...inputProps}
         />
-        <input
-          type="submit"
-          value="Search"
-          className="button searchbox__submit"
-        />
-      </form>
-      {showSuggestions && suggestions.length > 1 && (
-        <div>
-          {/* Using mousedown instead of click to ensure it has higher priority than
+        {shouldShowSuggestions && (
+          <ul className="query-suggestions">
+            {/* Using mousedown instead of click to ensure it has higher priority than
         blur handler*/}
-          {suggestions.map(suggestion => (
-            <div
-              onMouseDown={() => onSelectSuggestion(suggestion)}
-              key={suggestion.suggestion}
-            >
-              {suggestion.suggestion}
-            </div>
-          ))}
-        </div>
-      )}
-    </React.Fragment>
+            {suggestions.map(suggestion => (
+              <li key={suggestion.suggestion}>
+                <a
+                  onMouseDown={e => {
+                    e.preventDefault();
+                    onSelectSuggestion(suggestion);
+                  }}
+                  href=""
+                >
+                  {suggestion.suggestion}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+      <input
+        type="submit"
+        value="Search"
+        className="button searchbox__submit"
+      />
+    </form>
   );
 }
 
