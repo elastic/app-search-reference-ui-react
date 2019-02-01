@@ -3,7 +3,7 @@
 <p align="center"><a href="https://circleci.com/gh/swiftype/app-search-reference-ui-react"><img src="https://circleci.com/gh/swiftype/app-search-reference-ui-react.svg?style=svg" alt="CircleCI buidl"></a>
 <a href="https://github.com/swiftype/app-search-reference-ui-react/releases"><img src="https://img.shields.io/github/release/swiftype/app-search-reference-ui-react/all.svg?style=flat-square" alt="GitHub release" /></a></p>
 
-> A configurable, generic UI meant to work with
+> A configurable, generic search UI for
 any [Elastic App Search](https://www.elastic.co/cloud/search-lib-service) Engine.
 
 ## Contents
