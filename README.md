@@ -1,27 +1,32 @@
-# App Search Reference UI
+<p align="center"><img src="https://github.com/swiftype/app-search-reference-ui-react/blob/master/logo-app-search.png?raw=true" alt="Elastic App Search Logo"></p>
 
-[![CircleCI](https://circleci.com/gh/swiftype/app-search-reference-ui-react.svg?style=svg)](https://circleci.com/gh/swiftype/app-search-reference-ui-react)
+<p align="center"><a href="https://circleci.com/gh/swiftype/app-search-reference-ui-react"><img src="https://circleci.com/gh/swiftype/app-search-reference-ui-react.svg?style=svg" alt="CircleCI buidl"></a>
+<a href="https://github.com/swiftype/app-search-reference-ui-react/releases"><img src="https://img.shields.io/github/release/swiftype/app-search-reference-ui-react/all.svg?style=flat-square" alt="GitHub release" /></a></p>
 
-The Reference UI is a configurable, generic UI meant to work with
-any [App Search](https://www.elastic.co/cloud/search-lib-service) Engine. It
-can serve as a simple demo, a functional test for your Engine data,
-or as a code reference when building out your own App Search
-UI.
+> A configurable, generic UI meant to work with
+any [Elastic App Search](https://www.elastic.co/cloud/search-lib-service) Engine.
 
-The project can be configured via a JSON [config file](src/config/engine.json),
-which allows you to easily control things like...
+## Contents
 
-- The Engine the UI runs against
-- Which fields are displayed
-- The filters that are used
++ [Getting started](#getting-started-)
++ [Usage](#usage)
++ [FAQ](#faq-)
++ [Contribute](#contribute-)
++ [License](#license-)
+
+***
+
+## Getting started 🐣
+
+The Reference UI is great for:
+
++ search demos
++ functional tests of App Search Engine data
++ a starting point for new search experiences
+
+Requires [npm](https://www.npmjs.com/).
 
 The README assumes that you have generated this code from within the App Search dashboard.
-
-## Setup
-
-You will need to install [npm](https://www.npmjs.com/). Once you have "npm"
-installed, you should be able to use the `npm` command from within your
-terminal.
 
 Run the following commands to start this application:
 
@@ -38,10 +43,22 @@ npm install
 npm start
 ```
 
+## Usage
+
 ### Updating configuration
 
+The project can be configured via a JSON [config file](src/config/engine.json).
+
+You can easily control things like...
+
++ The Engine the UI runs against
++ Which fields are displayed
++ The filters that are used
+
 If you would like to make configuration changes, there is no need to regenerate
-this app from your App Search Dashboard! You can simply open up the
+this app from your App Search Dashboard!
+
+You can simply open up the
 [engine.json](src/config/engine.json) file, update the [options](#config),
 and then restart this app.
 
@@ -237,9 +254,29 @@ own implementation. Here are a few places to look to make changes:
 - Lastly, if you find there is a core action or state missing, you may
   consider updating the core logic in [src/search-lib](src/search-lib).
 
-Lastly, we accept PRs! If you make a customization that you think would benefit
-others, please feel free to contribute it back.
+## FAQ 🔮
 
-## Questions, Feedback, Issues, Contributions
+### Where do I report issues with the Reference UI?
 
-This project can be found at https://github.com/swiftype/app-search-reference-ui-react.
+If something is not working as expected, please open an [issue](https://github.com/swiftype/app-search-reference-ui-react/issues/new).
+
+### Where can I learn more about App Search?
+
+Your best bet is to read the [documentation](https://swiftype.com/documentation/app-search).
+
+### Where else can I go to get help?
+
+You can checkout the [Elastic App Search community discuss forums](https://discuss.elastic.co/c/app-search).
+
+## Contribute 🚀
+
+We welcome contributors to the project. Before you begin, a couple notes...
+
++ Before opening a pull request, please create an issue to [discuss the scope of your proposal](https://github.com/swiftype/app-search-reference-ui-react/issues).
++ Please write simple code and concise documentation, when appropriate.
+
+## License 📗
+
+[MIT](https://github.com/swiftype/app-search-reference-ui-react/blob/master/LICENSE.md) © [Elastic](https://github.com/elastic)
+
+Thank you to all the [contributors](https://github.com/swiftype/app-search-reference-ui-react/graphs/contributors)!
