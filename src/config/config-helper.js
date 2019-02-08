@@ -108,23 +108,29 @@ export function stripUnnecessaryResultFields(resultFields) {
 
 export function buildSearchOptionsFromConfig() {
   const config = getConfig();
-  const searchFields = (config.fields || []).reduce((acc, n) => {
-    acc = acc || {};
-    acc[n] = {};
-    return acc;
-  }, undefined);
+  const searchFields = (config.searchFields || config.fields || []).reduce(
+    (acc, n) => {
+      acc = acc || {};
+      acc[n] = {};
+      return acc;
+    },
+    undefined
+  );
 
-  const resultFields = (config.fields || []).reduce((acc, n) => {
-    acc = acc || {};
-    acc[n] = {
-      raw: {},
-      snippet: {
-        size: 100,
-        fallback: true
-      }
-    };
-    return acc;
-  }, undefined);
+  const resultFields = (config.resultFields || config.fields || []).reduce(
+    (acc, n) => {
+      acc = acc || {};
+      acc[n] = {
+        raw: {},
+        snippet: {
+          size: 100,
+          fallback: true
+        }
+      };
+      return acc;
+    },
+    undefined
+  );
 
   // We can't use url or title fields unless they're actually
   // in the reuslts.
