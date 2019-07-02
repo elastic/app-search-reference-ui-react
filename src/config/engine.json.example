@@ -7,7 +7,6 @@
   "querySuggestFields": ["title"],
   "titleField": "title",
   "urlField": "url",
-  "urlFieldTemplate": "http://www.example.com/{{id}}",
   "sortFields": ["title", "anotherField"],
   "facets": ["anotherField", "someField"]
 }
