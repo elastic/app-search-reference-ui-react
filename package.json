@@ -11,7 +11,7 @@
     "rc-pagination": "^1.16.5",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-scripts": "2.0.3",
+    "react-scripts": "3.0.1",
     "swiftype-app-search-javascript": "^2.3.0"
   },
   "scripts": {
