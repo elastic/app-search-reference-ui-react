@@ -11,7 +11,7 @@
     "rc-pagination": "^1.16.5",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-scripts": "1.1.4",
+    "react-scripts": "2.0.3",
     "swiftype-app-search-javascript": "^2.3.0"
   },
   "scripts": {
@@ -36,5 +36,11 @@
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
     ]
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
