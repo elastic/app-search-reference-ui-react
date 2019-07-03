@@ -23,7 +23,7 @@
     "start-dev": "npm-run-all -p watch-css start",
     "build-js": "node ./scripts/build-no-chunks.js",
     "build": "npm-run-all build-css build-js",
-    "test": "react-scripts test --env=jsdom",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "postinstall": "npm-run-all build-css"
   },
