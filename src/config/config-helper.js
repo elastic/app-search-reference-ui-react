@@ -1,5 +1,4 @@
 import config from "../config/engine.json";
-import { SortOption } from "../types";
 
 /**
  * This file abstracts most logic around the configuration of the Reference UI.
@@ -54,36 +53,10 @@ export function getSortFields() {
   return getConfig().sortFields || [];
 }
 
-export function getUrlFieldTemplate() {
-  return getConfig().urlFieldTemplate;
-}
-
 export function getResultTitle(result) {
   const titleField = getTitleField();
 
   return result.getSnippet(titleField);
-}
-
-export function getResultUrl(result) {
-  const urlField = getUrlField();
-  if (urlField) return result.getRaw(urlField);
-
-  const urlFieldTemplate = getUrlFieldTemplate();
-
-  if (urlFieldTemplate) {
-    const fieldValueReplacementRegex = /{{([^}]*)}}/g;
-    let compiledUrlField = urlFieldTemplate;
-    let match = fieldValueReplacementRegex.exec(urlFieldTemplate);
-
-    while (match != null) {
-      compiledUrlField = compiledUrlField.replace(
-        match[0],
-        result.getRaw(match[1])
-      );
-      match = fieldValueReplacementRegex.exec(urlFieldTemplate);
-    }
-    return compiledUrlField;
-  }
 }
 
 // Because if a field is configured to display as a "title", we don't want
@@ -178,27 +151,44 @@ export function buildFacetConfigFromConfig() {
 export function buildSortOptionsFromConfig() {
   const config = getConfig();
   return [
-    SortOption.create({
+    {
       name: "Relevance",
       value: "",
       direction: ""
-    }),
+    },
     ...(config.sortFields || []).reduce((acc, sortField) => {
-      acc.push(
-        SortOption.create({
-          name: `${capitalizeFirstLetter(sortField)} ASC`,
-          value: sortField,
-          direction: "asc"
-        })
-      );
-      acc.push(
-        SortOption.create({
-          name: `${capitalizeFirstLetter(sortField)} DESC`,
-          value: sortField,
-          direction: "desc"
-        })
-      );
+      acc.push({
+        name: `${capitalizeFirstLetter(sortField)} ASC`,
+        value: sortField,
+        direction: "asc"
+      });
+      acc.push({
+        name: `${capitalizeFirstLetter(sortField)} DESC`,
+        value: sortField,
+        direction: "desc"
+      });
       return acc;
     }, [])
   ];
+}
+
+export function buildAutocompleteQueryConfig() {
+  const querySuggestFields = getConfig().querySuggestFields;
+  if (
+    !querySuggestFields ||
+    !Array.isArray(querySuggestFields) ||
+    querySuggestFields.length === 0
+  ) {
+    return {};
+  }
+
+  return {
+    suggestions: {
+      types: {
+        documents: {
+          fields: getConfig().querySuggestFields
+        }
+      }
+    }
+  };
 }
