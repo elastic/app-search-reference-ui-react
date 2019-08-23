@@ -1,8 +1,5 @@
 <p align="center"><img src="https://github.com/elastic/app-search-reference-ui-react/blob/master/logo-app-search.png?raw=true" alt="Elastic App Search Logo"></p>
 
-<p align="center"><a href="https://circleci.com/gh/elastic/app-search-reference-ui-react"><img src="https://circleci.com/gh/elastic/app-search-reference-ui-react.svg?style=svg" alt="CircleCI buidl"></a>
-<a href="https://github.com/elastic/app-search-reference-ui-react/releases"><img src="https://img.shields.io/github/release/elastic/app-search-reference-ui-react/all.svg?style=flat-square" alt="GitHub release" /></a></p>
-
 > A configurable, generic search UI for
 > any [Elastic App Search](https://www.elastic.co/cloud/search-lib-service) Engine.
 
