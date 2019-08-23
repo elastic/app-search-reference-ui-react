@@ -117,7 +117,7 @@ what you'll need can be found in the Search UI documentation.
 
 ### Where do I report issues with the Reference UI?
 
-If something is not working as expected, please open an [issue](https://github.comelastice/app-search-reference-ui-react/issues/new).
+If something is not working as expected, please open an [issue](https://github.com/elastic/app-search-reference-ui-react/issues/new).
 
 ### Where can I learn more about App Search?
 
