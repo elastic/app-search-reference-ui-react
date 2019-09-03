@@ -14,7 +14,7 @@ import {
   Sorting,
   WithSearch
 } from "@elastic/react-search-ui";
-import { Layout, SingleLinksFacet } from "@elastic/react-search-ui-views";
+import { Layout } from "@elastic/react-search-ui-views";
 import "@elastic/react-search-ui-views/lib/styles/styles.css";
 
 import {
@@ -61,12 +61,7 @@ export default function App() {
                         />
                       )}
                       {getFacetFields().map(field => (
-                        <Facet
-                          key={field}
-                          field={field}
-                          label={field}
-                          view={SingleLinksFacet}
-                        />
+                        <Facet key={field} field={field} label={field} />
                       ))}
                     </div>
                   }
