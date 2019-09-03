@@ -61,12 +61,7 @@ export default function App() {
                         />
                       )}
                       {getFacetFields().map(field => (
-                        <Facet
-                          key={field}
-                          field={field}
-                          label={field}
-                          view={SingleLinksFacet}
-                        />
+                        <Facet key={field} field={field} label={field} />
                       ))}
                     </div>
                   }
