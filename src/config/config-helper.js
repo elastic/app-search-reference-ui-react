@@ -140,7 +140,7 @@ export function buildFacetConfigFromConfig() {
     acc = acc || {};
     acc[n] = {
       type: "value",
-      size: 10
+      size: 100
     };
     return acc;
   }, undefined);
