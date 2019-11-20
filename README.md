@@ -1,7 +1,7 @@
 <p align="center"><img src="https://github.com/elastic/app-search-reference-ui-react/blob/master/logo-app-search.png?raw=true" alt="Elastic App Search Logo"></p>
 
 > A configurable, generic search UI for
-> any [Elastic App Search](https://www.elastic.co/cloud/search-lib-service) Engine.
+> any [Elastic App Search](https://www.elastic.co/products/app-search) Engine.
 
 ## Contents
 
@@ -31,7 +31,7 @@ Run the following commands to start this application:
 # Run the `cd` command to change the current directory to the
 # location of your downloaded Reference UI. Replace the path
 # below with the actual path of your project.
-cd ~/Downloads/search-lib-reference-ui
+cd ~/Downloads/app-search-reference-ui
 
 # Run this to set everything up
 npm install
@@ -75,7 +75,7 @@ The following is a complete list of options available for configuration in [engi
 | `titleField`         | String        | optional          | The field to display as the title in results.                                                                                                                                          |
 | `urlField`           | String        | optional          | A field with a url to use as a link in results.                                                                                                                                        |
 | `sortFields`         | Array[String] | optional          | A list of fields that will be used for sort options.                                                                                                                                   |
-| `facets`             | Array[String] | optional          | A list of fields that will be available as "facet" filters. Read more about facets within the [App Search documentation](https://swiftype.com/documentation/search-lib/guides/facets). |
+| `facets`             | Array[String] | optional          | A list of fields that will be available as "facet" filters. Read more about facets within the [App Search documentation](https://swiftype.com/documentation/app-search/guides/facets). |
 
 ### External configuration
 
