@@ -39,7 +39,8 @@ const config = {
     ...buildSearchOptionsFromConfig()
   },
   autocompleteQuery: buildAutocompleteQueryConfig(),
-  apiConnector: connector
+  apiConnector: connector,
+  alwaysSearchOnInitialLoad: true
 };
 
 export default function App() {
