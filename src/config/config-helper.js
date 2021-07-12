@@ -45,6 +45,10 @@ export function getUrlField() {
   return getConfig().urlField;
 }
 
+export function getThumbnailField() {
+  return getConfig().thumbnailField;
+}
+
 export function getFacetFields() {
   return getConfig().facets || [];
 }
@@ -68,7 +72,8 @@ export function stripUnnecessaryResultFields(resultFields) {
         "_meta",
         "id",
         toLowerCase(getTitleField()),
-        toLowerCase(getUrlField())
+        toLowerCase(getUrlField()),
+        toLowerCase(getThumbnailField()),
       ].includes(toLowerCase(n))
     ) {
       return acc;
@@ -105,10 +110,20 @@ export function buildSearchOptionsFromConfig() {
     undefined
   );
 
-  // We can't use url or title fields unless they're actually
+  // We can't use url, thumbnail, or title fields unless they're actually
   // in the reuslts.
   if (config.urlField) {
     resultFields[config.urlField] = {
+      raw: {},
+      snippet: {
+        size: 100,
+        fallback: true
+      }
+    };
+  }
+
+  if (config.thumbnailField) {
+    resultFields[config.thumbnailField] = {
       raw: {},
       snippet: {
         size: 100,
