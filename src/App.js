@@ -26,9 +26,9 @@ import {
   getFacetFields
 } from "./config/config-helper";
 
-const { hostIdentifier, searchKey, endpointBase, engineName } = getConfig();
+const { hostIdentifier, endpointBase, engineName } = getConfig();
 const connector = new AppSearchAPIConnector({
-  searchKey,
+  searchKey: process.env.REACT_APP_APPSEARCH_SEARCHKEY,
   engineName,
   hostIdentifier,
   endpointBase

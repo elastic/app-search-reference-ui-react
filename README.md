@@ -46,6 +46,9 @@ Run the following commands to start this application:
 # below with the actual path of your project.
 cd ~/Downloads/app-search-reference-ui
 
+#Run this command to save the searchKey as an envrionment variable. This is required to Reference UI to connect to App Search. Replace the search key with the actual key from the App Search credentials section.
+export REACT_APP_APPSEARCH_SEARCHKEY=search-XXXXXXXXXXXXXXXXXXXXXXX
+
 # Run this to set everything up
 npm install
 
