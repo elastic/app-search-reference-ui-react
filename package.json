@@ -15,7 +15,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build-js": "node ./scripts/build-no-chunks.js",
-    "build": "build-js",
+    "build": "npm run build-js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
