@@ -1,48 +1,43 @@
 {
   "name": "app-search-reference-ui-react",
-  "version": "1.2.0",
-  "license": "Apache-2.0",
+  "version": "1.6.0",
   "private": true,
   "dependencies": {
-    "@elastic/react-search-ui": "1.7.0",
-    "@elastic/search-ui-app-search-connector": "1.7.0",
-    "prop-types": "^15.6.2",
-    "react": "^16.8.1",
-    "react-dom": "^16.8.1",
-    "react-scripts": "^3.4.1"
-  },
-  "scripts": {
-    "build-css": "node-sass-chokidar src/ -o src/",
-    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
-    "start": "react-scripts start",
-    "start-dev": "npm-run-all -p watch-css start",
-    "build-js": "node ./scripts/build-no-chunks.js",
-    "build": "npm-run-all build-css build-js",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "postinstall": "npm-run-all build-css"
+    "@elastic/react-search-ui": "^1.9.0",
+    "@elastic/search-ui-app-search-connector": "^1.9.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "5.0.0"
   },
   "devDependencies": {
-    "enzyme": "^3.4.4",
-    "enzyme-adapter-react-16": "^1.15.6",
-    "enzyme-to-json": "^3.3.4",
-    "node-sass-chokidar": "^1.5.0",
-    "npm-run-all": "^4.1.3",
-    "rewire": "^4.0.1"
+    "rewire": "^6.0.0"
   },
-  "jest": {
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
+  "scripts": {
+    "start": "react-scripts start",
+    "build-js": "node ./scripts/build-no-chunks.js",
+    "build": "build-js",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
     ]
   },
-  "browserslist": [
-    ">0.2%",
-    "chrome 44",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ],
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "engines": {
-    "node": "14.17.0"
+    "node": "16.13.0"
   }
 }
