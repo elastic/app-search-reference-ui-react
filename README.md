@@ -24,16 +24,16 @@ The Reference UI is great for:
 Requires [npm](https://www.npmjs.com/).
 
 Dependencies:
-- Node v14.17.0
+- Node v16.13.0
 
 One can leverage [NVM](https://github.com/nvm-sh/nvm) to install Node before proceeding to start the application by running the following commands:
 
 ```bash
-# Run this to install Node 14.17.0
-nvm install 14.17.0
+# Run this to install Node 16.13.0
+nvm install 16.13.0
 
 # Run this to use the installed Node version 
-nvm use 14.17.0
+nvm use 16.13.0
 ```
 
 The README assumes that you have generated this code from within the App Search dashboard.
