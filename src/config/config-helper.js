@@ -1,4 +1,13 @@
-import config from "../config/engine.json";
+let config = {};
+try {
+  config = require("../config/engine.json");
+}
+catch (e) {
+  if (e instanceof Error && e.code === "MODULE_NOT_FOUND")
+    console.log("Configuration file not found");
+  else
+    throw e;
+}
 
 /**
  * This file abstracts most logic around the configuration of the Reference UI.
@@ -9,10 +18,33 @@ import config from "../config/engine.json";
  * that end, this file attempts to contain most of that logic to one place.
  */
 
+function getEnv() {
+  if (!process.env.REACT_APP_ENGINE_NAME) {
+    return {}
+  }
+
+  return {
+    endpointBase: process.env.REACT_APP_ENDPOINT_BASE,
+    engineName: process.env.REACT_APP_ENGINE_NAME,
+    hostIdentifier: process.env.REACT_APP_HOST_IDENTIFIER,
+    searchKey: process.env.REACT_APP_SEARCH_KEY,
+    searchFields: process.env.REACT_APP_SEARCH_FIELDS.split(','),
+    resultFields: process.env.REACT_APP_RESULT_FIELDS.split(','),
+    querySuggestFields: process.env.REACT_APP_QUERY_SUGGESTION_FIELDS.split(','),
+    titleField: process.env.REACT_APP_TITLE_FIELD,
+    urlField: process.env.REACT_APP_URL_FIELD,
+    thumbnailField: process.env.REACT_APP_THUMBNAIL_FIELD,
+    sortFields: process.env.REACT_APP_SORT_FIELDS.split(','),
+    facets: process.env.REACT_APP_FACETS.split(',')
+  }
+}
+
 export function getConfig() {
   if (process.env.NODE_ENV === "test") {
     return {};
   }
+
+  if (process.env.REACT_APP_ENGINE_NAME) return getEnv();
 
   if (config.engineName) return config;
 
