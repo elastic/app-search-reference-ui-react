@@ -1,14 +1,26 @@
 {
-  "endpointBase": "http://127.0.0.1:3002",
-  "engineName": "your-engine-name",
-  "hostIdentifier": "host-XXXXX",
-  "searchKey": "search-XXXXXXXXXXXXXXXXXXXXXXX",
-  "searchFields": ["title", "description"],
-  "resultFields": ["id", "title", "anotherField", "someField", "created"],
+  "endpointBase": "https://search-ui-sandbox.ent.us-central1.gcp.cloud.es.io",
+  "engineName": "national-parks",
+  "searchKey": "search-nyxkw1fuqex9qjhfvatbqfmw",
+  "searchFields": ["title", "description", "states"],
+  "resultFields": [
+    "id",
+    "title",
+    "description",
+    "states",
+    "visitors",
+    "square_km",
+    "world_heritage_site",
+    "date_established",
+    "image_url",
+    "location",
+    "acres",
+    "nps_link"
+  ],
   "querySuggestFields": ["title"],
   "titleField": "title",
-  "urlField": "url",
-  "thumbnailField": "imageUrl",
-  "sortFields": ["title", "anotherField"],
-  "facets": ["anotherField", "someField"]
+  "urlField": "nps_link",
+  "thumbnailField": "image_url",
+  "sortFields": ["title", "states"],
+  "facets": ["states", "world_heritage_site"]
 }
