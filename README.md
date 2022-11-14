@@ -1,25 +1,17 @@
-<p align="center"><img src="https://github.com/elastic/app-search-reference-ui-react/blob/master/logo-app-search.png?raw=true" alt="Elastic App Search Logo"></p>
-
-> A configurable, generic search UI for
-> any [Elastic App Search](https://www.elastic.co/products/app-search) Engine.
-
 ## Contents
 
 - [Getting started](#getting-started-)
 - [Usage](#usage)
 - [FAQ](#faq-)
-- [Contribute](#contribute-)
 - [License](#license-)
 
 ---
 
 ## Getting started 🐣
 
-The Reference UI is great for:
+This is a generated search experience created with [Search UI](https://github.com/elastic/search-ui).
 
-- search demos
-- functional tests of App Search Engine data
-- a starting point for new search experiences
+To set up and run this project, follow the instructions below.
 
 Requires [npm](https://www.npmjs.com/).
 
@@ -35,8 +27,6 @@ nvm install 16.13.0
 # Run this to use the installed Node version 
 nvm use 16.13.0
 ```
-
-The README assumes that you have generated this code from within the App Search dashboard.
 
 Run the following commands to start this application:
 
@@ -57,16 +47,7 @@ npm start
 
 ### Updating configuration
 
-The project can be configured via a JSON [config file](src/config/engine.json).
-
-You can easily control things like...
-
-- The Engine the UI runs against
-- Which fields are displayed
-- The filters that are used
-
-If you would like to make configuration changes, there is no need to regenerate
-this app from your App Search Dashboard!
+The project is configured via a JSON [config file](src/config/engine.json). This file has been automatically generated for you when downloading this project. If you would like to make configuration changes, there is no need to regenerate this app from your App Search Dashboard. Additional configuration can be made by modifying that file.
 
 You can simply open up the
 [engine.json](src/config/engine.json) file, update the [options](#config),
@@ -79,8 +60,7 @@ The following is a complete list of options available for configuration in [engi
 | option               | value type    | required/optional | source                                                                                                                                                                                          |
 | -------------------- | ------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `engineName`         | String        | required          | Found in your App Search Dashboard.                                                                                                                                                             |
-| `endpointBase`       | String        | required*         | (*) Elastic Enterprise Search deployment URL, example: "http://127.0.0.1:3002". Not required if using App Search on swiftype.com.                                                               |
-| `hostIdentifier`     | String        | required*         | (*) Only required if using App Search on swiftype.com.                                                                                                                                          |
+| `endpointBase`       | String        | required*         | (*) Elastic Enterprise Search deployment URL, example: "http://127.0.0.1:3002".                                                                                                                 |
 | `searchKey`          | String        | required          | Found in your App Search Dashboard.                                                                                                                                                             |
 | `searchFields`       | Array[String] | required          | A list of fields that will be searched with your search term.                                                                                                                                   |
 | `resultFields`       | Array[String] | required          | A list of fields that will be displayed within your results.                                                                                                                                    |
@@ -90,22 +70,31 @@ The following is a complete list of options available for configuration in [engi
 | `sortFields`         | Array[String] | optional          | A list of fields that will be used for sort options.                                                                                                                                            |
 | `facets`             | Array[String] | optional          | A list of fields that will be available as "facet" filters. Read more about facets within the [App Search documentation](https://www.elastic.co/guide/en/app-search/current/facets-guide.html). |
 
-### External configuration
+## Building and embedding
 
-If you are embedding this app inside of another page, and you would like to
-source the configuration from outside of the `engine.json` file,
-you can simply write the configuration directly to `window.appConfig`.
+To embed this application into a website, it can be built into static assets using the following command:
+```
+npm run build
+```
 
-### If you are checking this project out directly from GitHub... <a id="github"></a>
+This will create two files in the `build` directory:
+```
+build/static/js/main.<hash>.js
+build/static/css/main.<hash>.css
+```
 
-You can follow the previous steps, but then you will need to configure
-[engine.json](src/config/engine.json).
-
-To do so, make a copy of [engine.json.example](src/config/engine.json.example),
-rename it to `engine.json` and configure it with your Engine's specific details.
-
-```bash
-cp src/config/engine.json.example src/config/engine.json
+Include the built static assets as well as an element with `id="root"`. For example:
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script defer="defer" src="/static/js/main.<hash>.js"></script>
+    <link href="/static/css/main.<hash>.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="root" class="app-container"></div>
+  </body>
+</html>
 ```
 
 ## Deploy and Share
@@ -122,6 +111,24 @@ netlify deploy # enter ./build as the deploy path
 
 You'll then simply follow the command prompt to log into Netlify and deploy your site. This can be completed in just a few minutes.
 
+### External configuration
+
+If you are embedding this app inside of another page, and you would like to
+source the configuration from outside of the `engine.json` file,
+you can simply write the configuration directly to `window.appConfig`.
+
+### If you are checking this project out directly from GitHub... <a id="github"></a>
+
+You can follow the previous steps, but then you will need to create and configure
+[engine.json](src/config/engine.json).
+
+To do so, make a copy of [engine.json.example](src/config/engine.json.example),
+rename it to `engine.json` and configure it with your Engine's specific details.
+
+```bash
+cp src/config/engine.json.example src/config/engine.json
+```
+
 ## Customization
 
 This project is built with [Search UI](https://github.com/elastic/search-ui), which is a React library for building search experiences. If you're interested in using this project as a base for your own, most of
@@ -129,27 +136,15 @@ what you'll need can be found in the Search UI documentation.
 
 ## FAQ 🔮
 
-### Where do I report issues with the Reference UI?
+### Where do I report issues with this application?
 
 If something is not working as expected, please open an [issue](https://github.com/elastic/app-search-reference-ui-react/issues/new).
 
-### Where can I learn more about App Search?
-
-Your best bet is to read the [documentation](https://www.elastic.co/guide/en/app-search/current).
 
 ### Where else can I go to get help?
 
-You can checkout the [Elastic App Search community discuss forums](https://discuss.elastic.co/c/app-search).
-
-## Contribute 🚀
-
-We welcome contributors to the project. Before you begin, a couple notes...
-
-- Before opening a pull request, please create an issue to [discuss the scope of your proposal](https://github.com/elastic/app-search-reference-ui-react/issues).
-- Please write simple code and concise documentation, when appropriate.
+You can checkout the [Elastic Enterprise Search community discuss forums](https://discuss.elastic.co/c/enterprise-search/84).
 
 ## License 📗
 
-[Apache-2.0](https://github.com/elastic/app-search-reference-ui-react/blob/master/LICENSE.md) © [Elastic](https://github.com/elastic)
-
-Thank you to all the [contributors](https://github.com/elastic/app-search-reference-ui-react/graphs/contributors)!
+[Apache-2.0](https://github.com/elastic/app-search-reference-ui-react/blob/master/LICENSE.txt) © [Elastic](https://github.com/elastic)
