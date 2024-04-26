@@ -1,10 +1,10 @@
 {
   "name": "app-search-reference-ui-react",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "private": true,
   "dependencies": {
-    "@elastic/react-search-ui": "^1.15.0",
-    "@elastic/search-ui-app-search-connector": "^1.15.0",
+    "@elastic/react-search-ui": "latest",
+    "@elastic/search-ui-app-search-connector": "latest",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0"
@@ -36,8 +36,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "engines": {
-    "node": "16.13.0"
   }
 }
